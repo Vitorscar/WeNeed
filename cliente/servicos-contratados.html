@@ -3,204 +3,310 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Serviços Contratados · Bizuxo</title>
+<title>Serviços Contratados · WENEED</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
+<meta name="theme-color" content="#0A0A0A">
 <link rel="stylesheet" href="../style.css">
+
 <style>
-  .new-btn-wrap{ display:flex; }
-  .new-btn{ width:auto; padding:12px 20px; }
-  .loading-spinner {
-    text-align: center;
-    padding: 40px;
-    color: var(--ink-soft);
+  /* ============================================================
+     Serviços Contratados — tokens do style.css
+     ============================================================ */
+
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{
+    width:16px; height:16px;
+    stroke:currentColor;
+    stroke-width:1.75;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    flex-shrink:0;
+    display:block;
   }
-  .loading-spinner::after {
-    content: '';
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-left: 10px;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  .error-message {
-    text-align: center;
-    padding: 40px;
-    color: var(--alert);
-    background: var(--alert-soft);
-    border-radius: var(--radius-lg);
-    margin: 20px 0;
-  }
-  .error-message button {
-    margin-top: 12px;
-    padding: 10px 20px;
-    background: var(--alert);
-    color: white;
-    border: none;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
+  .icon-sm{ width:14px; height:14px; stroke-width:2; }
+  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
+  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+  .icon-xl{ width:28px; height:28px; stroke-width:1.5; }
+
+  /* ---------- PAGE TOPBAR BUTTON ---------- */
+  .new-btn{
+    width:auto;
+    padding:12px 20px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
   }
 
-  /* Navegação mobile */
-  .mobile-nav { display: none; }
-  
-  @media (max-width: 768px) {
-    .sidebar { display: none; } 
-    .app-shell { grid-template-columns: 1fr; } 
-    .main-content { padding: 20px 16px 100px 16px !important; }
-    
-    .mobile-nav { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr 72px 1fr 1fr; 
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 64px; 
-      background: var(--surface); 
-      border-top: 1px solid var(--border); 
-      align-items: stretch; 
-      z-index: 9999; 
-      padding-bottom: env(safe-area-inset-bottom); 
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05); 
-      isolation: isolate; 
+  /* ---------- TOOLBAR ---------- */
+  .toolbar{
+    display:flex;
+    gap:var(--space-3);
+    margin:var(--space-6) 0 var(--space-4);
+    flex-wrap:wrap;
+    align-items:center;
+  }
+
+  /* ---------- FILTER CHIPS ---------- */
+  .chip-select{
+    display:flex;
+    gap:var(--space-2);
+    flex-wrap:wrap;
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    padding:9px 15px;
+    border:1.5px solid var(--border-default);
+    background:var(--surface-subtle);
+    border-radius:var(--radius-full);
+    color:var(--text-secondary);
+    cursor:pointer;
+    transition:background   var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out),
+               color        var(--duration-fast) var(--ease-out);
+    user-select:none;
+    line-height:1.2;
+  }
+  .chip:hover{
+    border-color:var(--color-black);
+    color:var(--color-black);
+  }
+  .chip.selected{
+    background:var(--color-black);
+    color:var(--color-white);
+    border-color:var(--color-black);
+  }
+
+  /* ---------- LOADING ---------- */
+  .loading-spinner{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:var(--space-3);
+    padding:var(--space-10);
+    color:var(--text-secondary);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-medium);
+  }
+  .loading-spinner::after{
+    content:'';
+    display:inline-block;
+    width:20px; height:20px;
+    border:2.5px solid var(--color-gray-200);
+    border-top-color:var(--color-brand-blue-deep);
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ---------- ERROR ---------- */
+  .error-message{
+    text-align:center;
+    padding:var(--space-8);
+    color:var(--color-error);
+    background:rgba(240,68,56,.08);
+    border:1px solid rgba(240,68,56,.24);
+    border-radius:var(--radius-lg);
+    margin:var(--space-5) 0;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-medium);
+  }
+  .error-message button{
+    display:inline-flex;
+    align-items:center;
+    margin-top:var(--space-3);
+    padding:10px 20px;
+    background:var(--color-black);
+    color:var(--color-white);
+    border:none;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-sm);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    transition:background var(--duration-fast) var(--ease-out);
+  }
+  .error-message button:hover{ background:var(--color-gray-900); }
+
+  /* ---------- LIST ROW EXTRAS ---------- */
+  .list-row-value{
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-base);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tight);
+  }
+  .list-row-date{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:var(--font-size-xs);
+    color:var(--text-link);
+    font-weight:var(--font-weight-semibold);
+  }
+
+  /* ---------- STATUS BADGES ---------- */
+  .status-pendente{
+    background:var(--color-gray-100);
+    color:var(--color-gray-700);
+  }
+  .status-agendado{
+    background:var(--color-gray-100);
+    color:var(--color-gray-700);
+  }
+  .status-andamento{
+    background:var(--color-brand-blue-deep);
+    color:var(--color-white);
+  }
+  .status-concluido{
+    background:var(--color-black);
+    color:var(--color-white);
+  }
+  .status-cancelado{
+    background:var(--color-gray-50);
+    color:var(--color-gray-400);
+    border:1px solid var(--color-gray-200);
+  }
+
+  /* ---------- EMPTY STATE ---------- */
+  .empty-state .btn{
+    width:auto;
+    display:inline-flex;
+    margin-top:var(--space-4);
+    padding:12px 20px;
+    text-decoration:none;
+  }
+
+  /* ---------- AVATAR FALLBACK ---------- */
+  .avatar img{
+    width:100%; height:100%;
+    border-radius:50%;
+    object-fit:cover;
+  }
+
+  /* ---------- MOBILE NAV ---------- */
+  .mobile-nav{ display:none; }
+
+  @media (max-width:768px){
+    .sidebar{ display:none; }
+    .app-shell{ grid-template-columns:1fr; }
+    .main-content{ padding:20px 16px 100px 16px !important; }
+
+    .mobile-nav{
+      display:grid;
+      grid-template-columns:1fr 1fr 72px 1fr 1fr;
+      position:fixed; bottom:0; left:0; width:100%;
+      height:64px;
+      background:var(--surface-default);
+      border-top:1px solid var(--border-default);
+      align-items:stretch;
+      z-index:var(--z-sticky);
+      padding-bottom:env(safe-area-inset-bottom);
+      box-shadow:0 -4px 20px rgba(10,10,10,.05);
+      isolation:isolate;
     }
-    
-    .mobile-nav-item { 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center; 
-      text-decoration: none; 
-      color: var(--ink-faint); 
-      font-size: 0.68rem; 
-      font-weight: 600; 
-      gap: 3px; 
-      height: 100%; 
-      position: relative; 
-      transition: color 0.2s ease, transform 0.15s ease; 
-      -webkit-tap-highlight-color: transparent; 
-      touch-action: manipulation; 
-      user-select: none; 
+    .mobile-nav-item{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-decoration:none;
+      color:var(--color-gray-400);
+      font-size:11px;
+      font-weight:var(--font-weight-semibold);
+      gap:3px;
+      height:100%;
+      position:relative;
+      transition:color var(--duration-base) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      user-select:none;
     }
-    
-    .mobile-nav-item .nav-icon { 
-      font-size: 1.35rem; 
-      line-height: 1; 
-      transition: transform 0.2s ease; 
+    .mobile-nav-item .nav-icon{ transition:transform var(--duration-base) var(--ease-out); }
+    .mobile-nav-item:active{ transform:scale(0.88); }
+    .mobile-nav-item:active .nav-icon{ transform:scale(0.9); }
+    .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
+    .mobile-nav-item.active::before{
+      content:'';
+      position:absolute; top:6px; left:50%;
+      transform:translateX(-50%);
+      width:5px; height:5px;
+      background:var(--color-brand-blue);
+      border-radius:50%;
     }
-    
-    .mobile-nav-item:active { 
-      transform: scale(0.88); 
+    .nav-badge{
+      position:absolute; top:8px; right:50%; margin-right:-22px;
+      background:var(--color-black);
+      color:var(--color-white);
+      font-size:10px;
+      font-weight:var(--font-weight-bold);
+      min-width:16px; height:16px;
+      border-radius:8px;
+      display:flex; align-items:center; justify-content:center;
+      padding:0 4px;
+      line-height:1;
     }
-    
-    .mobile-nav-item:active .nav-icon { 
-      transform: scale(0.9); 
+    .mobile-nav-fab-wrapper{
+      display:flex; align-items:flex-start; justify-content:center;
+      position:relative;
     }
-    
-    .mobile-nav-item.active { 
-      color: var(--accent); 
+    .mobile-nav-fab{
+      width:54px; height:54px;
+      background:var(--color-black);
+      color:var(--color-white);
+      border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none;
+      box-shadow:0 4px 15px rgba(10,10,10,.25);
+      transition:transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base);
+      margin-top:-22px;
+      border:3px solid var(--surface-default);
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+      user-select:none;
+      position:relative;
+      z-index:10;
     }
-    
-    .mobile-nav-item.active::before { 
-      content: ''; 
-      position: absolute; 
-      top: 6px; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      width: 5px; 
-      height: 5px; 
-      background: var(--accent); 
-      border-radius: 50%; 
-      box-shadow: 0 0 8px rgba(5, 193, 103, 0.5); 
+    .mobile-nav-fab:active{
+      transform:scale(0.9);
+      box-shadow:0 2px 8px rgba(10,10,10,.20);
     }
-    
-    .nav-badge { 
-      position: absolute; 
-      top: 8px; 
-      right: 50%; 
-      margin-right: -22px; 
-      background: #ff4757; 
-      color: #fff; 
-      font-size: 0.6rem; 
-      font-weight: 700; 
-      min-width: 16px; 
-      height: 16px; 
-      border-radius: 8px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      padding: 0 4px; 
-      line-height: 1; 
+    .mobile-nav-fab::after{
+      content:'';
+      position:absolute; top:-6px; left:-6px; right:-6px; bottom:-6px;
+      border-radius:50%;
+      background:rgba(0,87,255,.15);
+      z-index:-1;
+      animation:pulse-ring 2s ease-in-out infinite;
     }
-    
-    .mobile-nav-fab-wrapper { 
-      display: flex; 
-      align-items: flex-start; 
-      justify-content: center; 
-      position: relative; 
+    @keyframes pulse-ring{
+      0%{ transform:scale(0.9); opacity:0.7; }
+      70%{ transform:scale(1.2); opacity:0; }
+      100%{ transform:scale(1.2); opacity:0; }
     }
-    
-    .mobile-nav-fab { 
-      width: 54px; 
-      height: 54px; 
-      background: var(--accent); 
-      color: #fff; 
-      border-radius: 50%; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-size: 1.9rem; 
-      font-weight: 300; 
-      text-decoration: none; 
-      box-shadow: 0 4px 15px rgba(5, 193, 103, 0.4); 
-      transition: transform 0.2s ease, box-shadow 0.2s ease; 
-      margin-top: -22px; 
-      border: 3px solid var(--surface); 
-      touch-action: manipulation; 
-      -webkit-tap-highlight-color: transparent; 
-      user-select: none; 
-      position: relative; 
-      z-index: 10; 
-    }
-    
-    .mobile-nav-fab:active { 
-      transform: scale(0.9); 
-      box-shadow: 0 2px 8px rgba(5, 193, 103, 0.3); 
-    }
-    
-    .mobile-nav-fab::after { 
-      content: ''; 
-      position: absolute; 
-      top: -6px; 
-      left: -6px; 
-      right: -6px; 
-      bottom: -6px; 
-      border-radius: 50%; 
-      background: rgba(5, 193, 103, 0.15); 
-      z-index: -1; 
-      animation: pulse-ring 2s ease-in-out infinite; 
-    }
-    
-    @keyframes pulse-ring { 
-      0% { transform: scale(0.9); opacity: 0.7; } 
-      70% { transform: scale(1.2); opacity: 0; } 
-      100% { transform: scale(1.2); opacity: 0; } 
+
+    .list-row{ flex-wrap:wrap; }
+    .list-row-side{
+      align-items:flex-start;
+      flex-direction:row;
+      gap:var(--space-3);
+      width:100%;
+      margin-top:var(--space-2);
+      justify-content:space-between;
+      flex-wrap:wrap;
     }
   }
-  
-  @media (max-width: 480px) {
-    .mobile-nav-item { font-size: 0.62rem; }
-    .mobile-nav-item .nav-icon { font-size: 1.2rem; }
-    .mobile-nav-fab { width: 48px; height: 48px; font-size: 1.7rem; margin-top: -18px; }
+
+  @media (max-width:480px){
+    .mobile-nav-item{ font-size:10px; }
+    .mobile-nav-fab{ width:48px; height:48px; margin-top:-18px; }
   }
 </style>
 </head>
@@ -208,14 +314,66 @@
 
 <div class="app-shell">
   <aside class="sidebar">
-    <div class="brand">Bizu<span>xo</span></div>
+    <div class="brand" style="margin-bottom:8px;">WENEED<span>.</span></div>
+
     <nav class="sidebar-nav">
-      <a class="nav-item" href="dashboard-cliente.html"><span class="nav-icon">▤</span> Visão Geral</a>
-      <a class="nav-item" href="minhas-demandas.html"><span class="nav-icon">✉</span> Minhas Demandas</a>
-      <a class="nav-item active" href="servicos-contratados.html"><span class="nav-icon">🛠️</span> Serviços Contratados</a>
-      <a class="nav-item" href="meu-perfil-cliente.html"><span class="nav-icon">⚙️</span> Meus Dados</a>
-      <a class="nav-item" href="#" id="logoutBtn" style="color:var(--alert);"><span class="nav-icon">🚪</span> Sair</a>
+      <a class="nav-item" href="dashboard-cliente.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="7" height="9" x="3" y="3" rx="1"/>
+            <rect width="7" height="5" x="14" y="3" rx="1"/>
+            <rect width="7" height="9" x="14" y="12" rx="1"/>
+            <rect width="7" height="5" x="3" y="16" rx="1"/>
+          </svg>
+        </span>
+        Visão Geral
+      </a>
+
+      <a class="nav-item" href="minhas-demandas.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+            <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+          </svg>
+        </span>
+        Minhas Demandas
+      </a>
+
+      <a class="nav-item active" href="servicos-contratados.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <path d="m9 14 2 2 4-4"/>
+          </svg>
+        </span>
+        Serviços Contratados
+      </a>
+
+      <a class="nav-item" href="meu-perfil-cliente.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        Meus Dados
+      </a>
+
+      <div style="flex:1"></div>
+
+      <a class="nav-item" href="#" id="logoutBtn" style="margin-top:auto;">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+        </span>
+        Sair
+      </a>
     </nav>
+
     <div class="sidebar-foot" id="sidebarUserInfo">
       Carregando...
     </div>
@@ -227,16 +385,22 @@
         <h1>Serviços Contratados</h1>
         <div class="sub">Acompanhe a execução e avalie os serviços que você contratou.</div>
       </div>
-      <a class="btn btn-accent new-btn" href="nova-demanda.html">＋ Nova Demanda</a>
+      <a class="btn btn-primary new-btn" href="nova-demanda.html">
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <path d="M5 12h14"/><path d="M12 5v14"/>
+        </svg>
+        Nova Demanda
+      </a>
     </div>
 
     <div class="toolbar">
       <input class="search-input" id="search" type="text" placeholder="Buscar por serviço ou prestador...">
     </div>
+
     <div class="chip-select" id="filters">
       <span class="chip selected" data-filter="all">Todos</span>
       <span class="chip" data-filter="agendado">Agendados</span>
-      <span class="chip" data-filter="andamento">Em andamento</span>
+      <span class="chip" data-filter="em_andamento">Em andamento</span>
       <span class="chip" data-filter="concluido">Concluídos</span>
     </div>
 
@@ -247,60 +411,100 @@
     <div class="empty-state" id="empty" style="display:none;">
       <h3>Nenhum serviço contratado ainda</h3>
       <p>Quando você aceitar uma proposta de um prestador, ela aparecerá aqui como uma ordem de serviço.</p>
-      <a class="btn btn-accent" href="nova-demanda.html" style="width:auto; display:inline-block; margin-top:16px; padding:12px 20px;">Criar minha primeira demanda</a>
+      <a class="btn btn-primary" href="nova-demanda.html">
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <path d="M5 12h14"/><path d="M12 5v14"/>
+        </svg>
+        Criar minha primeira demanda
+      </a>
     </div>
   </main>
 </div>
 
-<!-- Navegação Mobile -->
+<!-- MOBILE NAV -->
 <nav class="mobile-nav" aria-label="Navegação principal">
-  <a href="dashboard-cliente.html" class="mobile-nav-item"><span class="nav-icon">▤</span><span>Início</span></a>
-  <a href="minhas-demandas.html" class="mobile-nav-item"><span class="nav-icon">✉</span><span>Demandas</span></a>
-  <div class="mobile-nav-fab-wrapper"><a href="nova-demanda.html" class="mobile-nav-fab"><span>+</span></a></div>
-  <a href="servicos-contratados.html" class="mobile-nav-item active"><span class="nav-icon">🛠️</span><span>Serviços</span></a>
-  <a href="meu-perfil-cliente.html" class="mobile-nav-item"><span class="nav-icon">⚙️</span><span>Perfil</span></a>
+  <a href="dashboard-cliente.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </span>
+    <span>Início</span>
+  </a>
+
+  <a href="minhas-demandas.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+        <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+      </svg>
+    </span>
+    <span>Demandas</span>
+  </a>
+
+  <div class="mobile-nav-fab-wrapper">
+    <a href="nova-demanda.html" class="mobile-nav-fab" aria-label="Nova demanda">
+      <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke-width:2.25;">
+        <path d="M5 12h14"/><path d="M12 5v14"/>
+      </svg>
+    </a>
+  </div>
+
+  <a href="servicos-contratados.html" class="mobile-nav-item active">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <path d="m9 14 2 2 4-4"/>
+      </svg>
+    </span>
+    <span>Serviços</span>
+  </a>
+
+  <a href="meu-perfil-cliente.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </span>
+    <span>Perfil</span>
+  </a>
 </nav>
 
-<!-- Scripts -->
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/utils.js"></script>
 <script src="../js/cadastro.js"></script>
 <script src="../js/auth.js"></script>
-  <script src="../app.js"></script>
+<script src="../app.js"></script>
+
 <script>
-  // ============================================
-  // CONFIGURAÇÃO
-  // ============================================
+  /* ============================================
+     CONFIGURAÇÃO
+     ============================================ */
   let activeFilter = "all";
   let searchTerm = "";
   let allOrders = [];
 
-  // ============================================
-  // INICIALIZAÇÃO
-  // ============================================
+  /* ============================================
+     INICIALIZAÇÃO
+     ============================================ */
   document.addEventListener('DOMContentLoaded', async function() {
-    console.log('📋 Página de serviços contratados carregada');
-    
-    // Verifica autenticação
     await verificarAutenticacao();
-    
-    // Carrega dados do usuário
     await carregarDadosUsuario();
-    
-    // Carrega serviços contratados
     await carregarServicosContratados();
-    
-    // Configura listeners
     configurarEventListeners();
   });
 
-  // ============================================
-  // VERIFICAÇÃO DE AUTENTICAÇÃO
-  // ============================================
+  /* ============================================
+     AUTENTICAÇÃO
+     ============================================ */
   async function verificarAutenticacao() {
     const supabase = window.supabaseClient || window.supabase;
-    
+
     if (!supabase) {
       window.location.href = '../index.html';
       return;
@@ -308,28 +512,26 @@
 
     try {
       const { data: { user }, error } = await supabase.auth.getUser();
-      
+
       if (error || !user) {
-        console.log('❌ Usuário não autenticado');
         window.location.href = '../index.html';
         return;
       }
-      
-      console.log('✅ Usuário autenticado:', user.id);
+
       window.currentUser = user;
-      
+
     } catch (error) {
       console.error('Erro ao verificar autenticação:', error);
       window.location.href = '../index.html';
     }
   }
 
-  // ============================================
-  // CARREGAR DADOS DO USUÁRIO
-  // ============================================
+  /* ============================================
+     DADOS DO USUÁRIO
+     ============================================ */
   async function carregarDadosUsuario() {
     const supabase = window.supabaseClient || window.supabase;
-    
+
     if (!supabase || !window.currentUser) return;
 
     try {
@@ -345,11 +547,14 @@
         const sidebarUserInfo = document.getElementById('sidebarUserInfo');
         if (sidebarUserInfo) {
           const nomeExibicao = perfil.full_name || perfil.company_name || 'Usuário';
-          const localizacao = perfil.city ? `${perfil.city}${perfil.uf ? ', ' + perfil.uf : ''}` : '';
-          
+          const localizacao = perfil.city
+            ? `${perfil.city}${perfil.uf ? ', ' + perfil.uf : ''}`
+            : '';
+
           sidebarUserInfo.innerHTML = `
-            Olá, ${nomeExibicao.split(' ')[0]}<br>${localizacao}
-            <div class="role-tag">conta cliente</div>
+            <div style="font-weight:600; color:#fff; margin-bottom:4px;">Olá, ${nomeExibicao.split(' ')[0]}</div>
+            <div style="color:var(--color-gray-500); font-size:var(--font-size-xs); margin-bottom:10px;">${localizacao || 'Local não definido'}</div>
+            <div class="role-tag cliente">conta cliente</div>
           `;
         }
       }
@@ -358,15 +563,12 @@
     }
   }
 
-  // ============================================
-  // CARREGAR SERVIÇOS CONTRATADOS
-  // ============================================
-   // ============================================
-  // CARREGAR SERVIÇOS CONTRATADOS (Adaptado para tabela 'contracts')
-  // ============================================
+  /* ============================================
+     SERVIÇOS CONTRATADOS (tabela contracts)
+     ============================================ */
   async function carregarServicosContratados() {
     const supabase = window.supabaseClient || window.supabase;
-    
+
     if (!supabase || !window.currentUser) {
       mostrarErro('Sistema não inicializado');
       return;
@@ -377,13 +579,12 @@
     const list = document.getElementById('list');
     const empty = document.getElementById('empty');
 
-    if (loadingIndicator) loadingIndicator.style.display = 'block';
+    if (loadingIndicator) loadingIndicator.style.display = 'flex';
     if (errorContainer) errorContainer.style.display = 'none';
     if (list) list.style.display = 'none';
     if (empty) empty.style.display = 'none';
 
     try {
-      // Busca os contratos do cliente, trazendo dados aninhados da demanda e da proposta
       const { data: ordens, error } = await supabase
         .from('contracts')
         .select(`
@@ -414,46 +615,44 @@
 
       if (error) throw error;
 
-      console.log('✅ Contratos carregados:', ordens);
-
-      // Transforma os dados para o formato que a UI já espera
       allOrders = (ordens || []).map(ordem => {
         const demand = ordem.demand || {};
         const proposal = ordem.proposal || {};
         const providerProfile = proposal.provider || {};
 
         const statusMap = {
-          'pending': { label: 'Pendente', class: 'pendente' },
-          'agendado': { label: 'Agendado', class: 'agendado' },
+          'pending':      { label: 'Pendente',     class: 'pendente' },
+          'agendado':     { label: 'Agendado',     class: 'agendado' },
           'em_andamento': { label: 'Em andamento', class: 'andamento' },
-          'andamento': { label: 'Em andamento', class: 'andamento' },
-          'concluido': { label: 'Concluído', class: 'concluido' },
-          'concluida': { label: 'Concluído', class: 'concluido' },
-          'cancelado': { label: 'Cancelado', class: 'cancelado' },
-          'cancelada': { label: 'Cancelado', class: 'cancelado' }
-        };
-        
-        const statusInfo = statusMap[ordem.status] || { 
-          label: ordem.status || 'Pendente', 
-          class: 'pendente' 
+          'andamento':    { label: 'Em andamento', class: 'andamento' },
+          'concluido':    { label: 'Concluído',    class: 'concluido' },
+          'concluida':    { label: 'Concluído',    class: 'concluido' },
+          'cancelado':    { label: 'Cancelado',    class: 'cancelado' },
+          'cancelada':    { label: 'Cancelado',    class: 'cancelado' }
         };
 
-        const providerName = providerProfile.company_name || 
-                             providerProfile.full_name || 
+        const statusInfo = statusMap[ordem.status] || {
+          label: ordem.status || 'Pendente',
+          class: 'pendente'
+        };
+
+        const providerName = providerProfile.company_name ||
+                             providerProfile.full_name ||
                              'Prestador não definido';
 
-        const avatar = providerProfile.avatar_url || 
-                      (providerProfile.company_name ? '🏢' : '👤');
+        const avatarUrl = providerProfile.avatar_url || null;
+        const isCompany = !!providerProfile.company_name;
 
-        const localizacao = demand.city || 
-                            demand.neighborhood || 
+        const localizacao = demand.city ||
+                            demand.neighborhood ||
                             'Local não definido';
 
         return {
           id: ordem.id,
           title: demand.title || 'Serviço contratado',
           provider: providerName,
-          avatar: avatar,
+          avatarUrl: avatarUrl,
+          isCompany: isCompany,
           date: formatarData(ordem.started_at || ordem.created_at),
           value: formatarValor(ordem.final_price),
           loc: localizacao,
@@ -469,18 +668,17 @@
       render();
 
     } catch (error) {
-      console.error('❌ Erro ao carregar serviços:', error);
+      console.error('Erro ao carregar serviços:', error);
       if (loadingIndicator) loadingIndicator.style.display = 'none';
       mostrarErro('Erro ao carregar serviços contratados. ' + error.message);
     }
   }
 
-  // ============================================
-  // FUNÇÕES AUXILIARES
-  // ============================================
+  /* ============================================
+     AUXILIARES
+     ============================================ */
   function formatarData(dataString) {
-    if (!dataString) return 'Data não definida';
-    
+    if (!dataString) return '—';
     const data = new Date(dataString);
     return data.toLocaleDateString('pt-BR', {
       day: '2-digit',
@@ -489,8 +687,7 @@
   }
 
   function formatarValor(valor) {
-    if (!valor && valor !== 0) return 'Valor não definido';
-    
+    if (!valor && valor !== 0) return '—';
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
@@ -499,20 +696,26 @@
 
   function getActionText(status) {
     switch (status) {
-      case 'agendado':
-        return 'Ver detalhes';
+      case 'agendado':        return 'Ver detalhes';
       case 'em_andamento':
-      case 'andamento':
-        return 'Acompanhar';
+      case 'andamento':       return 'Acompanhar';
       case 'concluido':
-      case 'concluida':
-        return 'Ver avaliação';
+      case 'concluida':       return 'Ver avaliação';
       case 'cancelado':
-      case 'cancelada':
-        return 'Ver motivo';
-      default:
-        return 'Ver detalhes';
+      case 'cancelada':       return 'Ver motivo';
+      default:                return 'Ver detalhes';
     }
+  }
+
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag]));
   }
 
   function mostrarErro(mensagem) {
@@ -520,15 +723,15 @@
     if (errorContainer) {
       errorContainer.style.display = 'block';
       errorContainer.innerHTML = `
-        <div>${mensagem}</div>
+        <div>${escapeHTML(mensagem)}</div>
         <button onclick="window.location.reload()">Tentar novamente</button>
       `;
     }
   }
 
-  // ============================================
-  // RENDERIZAÇÃO
-  // ============================================
+  /* ============================================
+     RENDER
+     ============================================ */
   function render() {
     const list = document.getElementById('list');
     const empty = document.getElementById('empty');
@@ -538,7 +741,7 @@
     const filtered = allOrders.filter(d => {
       const matchesFilter = activeFilter === 'all' || d.status === activeFilter;
       const matchesSearch = !searchTerm ||
-        d.title.toLowerCase().includes(searchTerm) || 
+        d.title.toLowerCase().includes(searchTerm) ||
         d.provider.toLowerCase().includes(searchTerm);
       return matchesFilter && matchesSearch;
     });
@@ -551,35 +754,67 @@
       const el = document.createElement('a');
       el.href = d.actionLink;
       el.className = 'list-row';
+
+      const avatarContent = d.avatarUrl
+        ? `<img src="${escapeHTML(d.avatarUrl)}" alt="">`
+        : d.isCompany
+          ? `<svg class="icon icon-md" viewBox="0 0 24 24" style="color:var(--color-gray-700);">
+               <rect width="16" height="20" x="4" y="2" rx="2"/>
+               <path d="M9 22v-4h6v4"/>
+               <path d="M8 6h.01"/><path d="M16 6h.01"/>
+               <path d="M12 6h.01"/><path d="M12 10h.01"/>
+               <path d="M12 14h.01"/><path d="M16 10h.01"/>
+               <path d="M16 14h.01"/><path d="M8 10h.01"/>
+               <path d="M8 14h.01"/>
+             </svg>`
+          : `<svg class="icon icon-md" viewBox="0 0 24 24" style="color:var(--color-gray-700);">
+               <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+               <circle cx="12" cy="7" r="4"/>
+             </svg>`;
+
       el.innerHTML = `
-        <div class="avatar avatar-md">${d.avatar}</div>
+        <div class="avatar avatar-md">${avatarContent}</div>
         <div class="list-row-main">
-          <div class="list-row-title">${d.title}</div>
+          <div class="list-row-title">${escapeHTML(d.title)}</div>
           <div class="list-row-sub">
-            <span>${d.provider}</span><span class="sep">·</span><span>📍 ${d.loc}</span><span class="sep">·</span><span>OS #${d.id}</span>
+            <span>${escapeHTML(d.provider)}</span>
+            <span class="sep">·</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;">
+              <svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              ${escapeHTML(d.loc)}
+            </span>
+            <span class="sep">·</span>
+            <span>OS #${escapeHTML(String(d.id))}</span>
           </div>
         </div>
         <div class="list-row-side">
           <span class="status-badge status-${d.statusClass}">${d.statusLabel}</span>
           <span class="list-row-value">${d.value}</span>
-          <span class="list-row-date">${d.date} · ${d.actionText} →</span>
+          <span class="list-row-date">
+            ${d.date} · ${d.actionText}
+            <svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </span>
         </div>
       `;
       list.appendChild(el);
     });
   }
 
-  // ============================================
-  // EVENT LISTENERS
-  // ============================================
+  /* ============================================
+     EVENT LISTENERS
+     ============================================ */
   function configurarEventListeners() {
-    // Filtros
     const filtersElement = document.getElementById('filters');
     if (filtersElement) {
       filtersElement.addEventListener('click', (e) => {
         const chip = e.target.closest('.chip');
         if (!chip) return;
-        
+
         document.querySelectorAll('#filters .chip').forEach(c => c.classList.remove('selected'));
         chip.classList.add('selected');
         activeFilter = chip.dataset.filter;
@@ -587,7 +822,6 @@
       });
     }
 
-    // Busca
     const searchInput = document.getElementById('search');
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
@@ -596,23 +830,22 @@
       });
     }
 
-    // Logout
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async (e) => {
         e.preventDefault();
-        
+
         const supabase = window.supabaseClient || window.supabase;
         if (supabase) {
           await supabase.auth.signOut();
         }
-        
+
         window.location.href = '../index.html';
       });
     }
   }
 </script>
-<script src="../js/mobile-nav.js"></script>
 
+<script src="../js/mobile-nav.js"></script>
 </body>
 </html>

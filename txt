@@ -1,5 +1,5 @@
 
-bizuxo/  #CONCLUIDO
+weneed/  #CONCLUIDO
 │
 ├── index.html                              # Login (ponto de entrada)
 ├── escolha-perfil.html                     # "Sou cliente" / "Sou prestador"

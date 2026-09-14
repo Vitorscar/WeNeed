@@ -3,140 +3,337 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Nova Demanda · Bizuxo</title>
+<title>Nova Demanda · WENEED</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
+<meta name="theme-color" content="#0A0A0A">
 <link rel="stylesheet" href="../style.css">
+
 <style>
-  .wrap { padding: 24px 22px 80px; }
-  .intro { margin-bottom: 20px; }
-  .intro h1 { font-size: 1.35rem; margin: 0 0 6px; }
-  .intro p { font-size: 0.85rem; color: var(--ink-soft); margin: 0; }
-  .terms { font-size: 0.75rem; color: var(--ink-faint); text-align: center; margin-top: 14px; }
-  
-  .chip {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 14px; font-size: 0.85rem; font-weight: 600;
-    color: var(--ink-soft); background: var(--surface-soft);
-    border: 1.5px solid var(--border); border-radius: 100px;
-    cursor: pointer; transition: all 0.2s ease; margin: 4px;
+  /* ============================================================
+     Nova Demanda — tokens do style.css
+     ============================================================ */
+
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{
+    width:16px; height:16px;
+    stroke:currentColor;
+    stroke-width:1.75;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    flex-shrink:0;
+    display:block;
   }
-  .chip:hover { border-color: var(--accent); color: var(--ink); }
-  .chip.selected {
-    background: var(--accent) !important;
-    color: #fff !important;
-    border-color: var(--accent) !important;
+  .icon-sm{ width:14px; height:14px; stroke-width:2; }
+  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
+  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+  .icon-xl{ width:28px; height:28px; stroke-width:1.5; }
+
+  /* ---------- WRAP ---------- */
+  .wrap{
+    padding:var(--space-6) var(--space-5) var(--space-16);
+  }
+  .intro{ margin-bottom:var(--space-5); }
+  .intro p{
+    font-size:var(--font-size-base);
+    color:var(--text-secondary);
+    margin:0;
+    line-height:var(--line-height-normal);
+  }
+  .terms{
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    text-align:center;
+    margin-top:var(--space-3);
+    line-height:var(--line-height-normal);
   }
 
-  /* Botão "Outros" */
-  .outros-btn {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 8px 14px; font-size: 0.85rem; font-weight: 600;
-    color: var(--accent); background: transparent;
-    border: 1.5px dashed var(--accent); border-radius: 100px;
-    cursor: pointer; transition: all 0.2s ease; margin: 4px;
-  }
-  .outros-btn:hover { background: var(--accent-soft); }
-
-  /* Painel flutuante de categorias */
-  .categoria-popover {
-    position: absolute;
-    z-index: 1000;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    max-height: 280px;
-    overflow-y: auto;
-    padding: 8px;
-    display: none;
-    min-width: 220px;
-    margin-top: 4px;
-  }
-  .categoria-popover.active {
-    display: block;
-  }
-  .categoria-popover .popover-item {
-    padding: 10px 12px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--ink);
-    transition: background 0.15s;
-  }
-  .categoria-popover .popover-item:hover {
-    background: var(--surface-soft);
+  /* ---------- CARDS ---------- */
+  .card-label .dot{
+    background:var(--color-black) !important;
   }
 
-  /* Cards de Tipo de Serviço */
-  .service-type-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .service-type-card {
-    background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-md);
-    padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s ease;
+  /* ---------- SERVICE TYPE CARDS ---------- */
+  .service-type-toggle{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:var(--space-3);
+    margin-bottom:var(--space-4);
   }
-  .service-type-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .service-type-card.selected { border-color: var(--accent); background: var(--accent-soft); }
-  .service-type-card .icon { font-size: 1.8rem; margin-bottom: 8px; }
-  .service-type-card .name { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; color: var(--ink); }
-  .service-type-card .desc { font-size: 0.75rem; color: var(--ink-soft); margin-top: 4px; }
+  .service-type-card{
+    background:var(--surface-default);
+    border:1.5px solid var(--border-default);
+    border-radius:var(--radius-md);
+    padding:var(--space-4);
+    text-align:center;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:var(--space-2);
+    color:var(--color-gray-700);
+    transition:border-color var(--duration-base) var(--ease-out),
+               background   var(--duration-base) var(--ease-out),
+               color        var(--duration-base) var(--ease-out),
+               transform    var(--duration-base) var(--ease-out);
+  }
+  .service-type-card:hover{
+    border-color:var(--color-gray-300);
+    transform:translateY(-2px);
+  }
+  .service-type-card.selected{
+    border-color:var(--color-black);
+    background:var(--color-gray-50);
+    color:var(--color-black);
+  }
+  .service-type-card .name{
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-sm);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tight);
+  }
+  .service-type-card .desc{
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    margin:0;
+  }
 
-  /* Upload Area */
-  .upload-area {
-    border: 2px dashed var(--border); border-radius: var(--radius-md); padding: 24px;
-    text-align: center; cursor: pointer; transition: all 0.2s ease; background: var(--surface-soft);
-    position: relative;
+  /* ---------- CATEGORY CHIPS ---------- */
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-secondary);
+    background:var(--surface-subtle);
+    border:1.5px solid var(--border-default);
+    border-radius:var(--radius-full);
+    cursor:pointer;
+    transition:background   var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out),
+               color        var(--duration-fast) var(--ease-out);
+    margin:4px;
+    user-select:none;
+    line-height:1.2;
   }
-  .upload-area:hover, .upload-area.dragover { border-color: var(--accent); background: var(--accent-soft); }
-  .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-  .upload-icon { font-size: 2rem; margin-bottom: 8px; color: var(--ink-soft); }
-  .upload-text { font-size: 0.88rem; color: var(--ink); font-weight: 600; }
-  .upload-subtext { font-size: 0.75rem; color: var(--ink-faint); margin-top: 4px; }
+  .chip:hover{
+    border-color:var(--color-black);
+    color:var(--color-black);
+  }
+  .chip.selected{
+    background:var(--color-black) !important;
+    color:var(--color-white) !important;
+    border-color:var(--color-black) !important;
+  }
 
-  .media-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 12px; margin-top: 16px; }
-  .media-item { position: relative; aspect-ratio: 1; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
-  .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
-  .media-item .remove-btn {
-    position: absolute; top: 4px; right: 4px; width: 24px; height: 24px;
-    background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem;
+  /* ---------- OUTROS BUTTON ---------- */
+  .outros-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    color:var(--color-brand-blue-deep);
+    background:transparent;
+    border:1.5px dashed var(--color-brand-blue-deep);
+    border-radius:var(--radius-full);
+    cursor:pointer;
+    transition:background var(--duration-fast) var(--ease-out);
+    margin:4px;
+    user-select:none;
+  }
+  .outros-btn:hover{
+    background:rgba(0,68,204,.06);
+  }
+  .outros-btn .icon{
+    width:12px; height:12px; stroke-width:2.25;
   }
 
-  /* Loading Overlay */
-  .loading-overlay {
-    position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 9999;
-    display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+  /* ---------- POPOVER ---------- */
+  .categoria-popover{
+    position:absolute;
+    z-index:var(--z-dropdown);
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow-lg);
+    max-height:280px;
+    overflow-y:auto;
+    padding:var(--space-2);
+    display:none;
+    min-width:220px;
+    margin-top:4px;
   }
-  .loading-overlay.active { display: flex; }
-  .spinner {
-    width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--accent);
-    border-radius: 50%; animation: spin 1s linear infinite;
+  .categoria-popover.active{ display:block; }
+  .categoria-popover .popover-item{
+    padding:10px 12px;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-medium);
+    color:var(--text-primary);
+    transition:background var(--duration-fast);
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .categoria-popover .popover-item:hover{
+    background:var(--surface-subtle);
+  }
 
-  /* Container de categorias com posição relativa para o popover */
-  .categoria-wrapper {
-    position: relative;
+  /* ---------- UPLOAD ---------- */
+  .upload-area{
+    border:2px dashed var(--border-default);
+    border-radius:var(--radius-md);
+    padding:var(--space-6);
+    text-align:center;
+    cursor:pointer;
+    transition:border-color var(--duration-base) var(--ease-out),
+               background   var(--duration-base) var(--ease-out);
+    background:var(--surface-subtle);
+    position:relative;
+  }
+  .upload-area:hover,
+  .upload-area.dragover{
+    border-color:var(--color-black);
+    background:var(--color-gray-100);
+  }
+  .upload-area input[type="file"]{
+    position:absolute; inset:0; opacity:0; cursor:pointer;
+  }
+  .upload-icon{
+    display:flex;
+    justify-content:center;
+    margin-bottom:var(--space-3);
+    color:var(--color-gray-500);
+  }
+  .upload-area:hover .upload-icon{ color:var(--color-black); }
+  .upload-text{
+    font-size:var(--font-size-sm);
+    color:var(--text-primary);
+    font-weight:var(--font-weight-semibold);
+  }
+  .upload-subtext{
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    margin-top:var(--space-1);
+  }
+
+  /* ---------- MEDIA PREVIEW ---------- */
+  .media-preview-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(80px, 1fr));
+    gap:var(--space-3);
+    margin-top:var(--space-4);
+  }
+  .media-item{
+    position:relative;
+    aspect-ratio:1;
+    border-radius:var(--radius-sm);
+    overflow:hidden;
+    border:1px solid var(--border-default);
+    background:var(--surface-default);
+  }
+  .media-item img,
+  .media-item video{
+    width:100%; height:100%;
+    object-fit:cover;
+  }
+  .media-item .video-overlay{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(10,10,10,.40);
+    color:var(--color-white);
+    pointer-events:none;
+  }
+  .media-item .remove-btn{
+    position:absolute;
+    top:4px; right:4px;
+    width:22px; height:22px;
+    background:rgba(10,10,10,.70);
+    color:var(--color-white);
+    border:none;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    padding:0;
+    transition:background var(--duration-fast);
+  }
+  .media-item .remove-btn:hover{ background:var(--color-black); }
+  .media-item .remove-btn .icon{
+    width:12px; height:12px; stroke-width:2.5;
+  }
+
+  /* ---------- LOADING OVERLAY ---------- */
+  .loading-overlay{
+    position:fixed; inset:0;
+    background:rgba(255,255,255,.95);
+    z-index:var(--z-modal);
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:var(--space-4);
+  }
+  .loading-overlay.active{ display:flex; }
+  .spinner{
+    width:36px; height:36px;
+    border:3px solid var(--color-gray-200);
+    border-top-color:var(--color-black);
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .loading-title{
+    font-weight:var(--font-weight-semibold);
+    font-size:var(--font-size-base);
+    color:var(--text-primary);
+  }
+  .loading-sub{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+  }
+
+  /* ---------- CATEGORIA WRAPPER ---------- */
+  .categoria-wrapper{ position:relative; }
+
+  /* ---------- PUBLISH BUTTON ---------- */
+  .publish-btn{
+    width:100%;
+    margin-top:var(--space-4);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
   }
 </style>
 </head>
 <body>
 
 <div class="container-mobile">
+
+  <!-- LOADING OVERLAY -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <div style="font-weight: 600; color: var(--ink);">Publicando sua demanda...</div>
-    <div style="font-size: 0.8rem; color: var(--ink-soft);" id="loadingText">Preparando dados...</div>
+    <div class="loading-title">Publicando sua demanda...</div>
+    <div class="loading-sub" id="loadingText">Preparando dados...</div>
   </div>
 
+  <!-- HEADER ESCURO -->
   <header class="header-dark">
     <div class="header-top">
-      <div class="brand">Bizu<span>xo</span></div>
+      <div class="brand">WENEED<span class="dot">.</span></div>
       <a class="pill-link" href="dashboard-cliente.html">Cancelar</a>
     </div>
-    <h2 style="font-size:1.1rem; margin:0;">Publicar nova demanda</h2>
+    <h2 style="font-size:var(--font-size-lg); margin:0; font-weight:var(--font-weight-bold); letter-spacing:var(--tracking-tight);">
+      Publicar nova demanda
+    </h2>
   </header>
 
   <div class="wrap">
@@ -145,39 +342,47 @@
     </div>
 
     <form id="novaDemandaForm">
+
       <!-- 1. TIPO DE SERVIÇO -->
       <div class="card">
-        <div class="card-label"><span class="dot"></span>Tipo de Serviço</div>
+        <div class="card-label"><div class="dot"></div> Tipo de Serviço</div>
+
         <div class="service-type-toggle">
           <div class="service-type-card selected" onclick="selectServiceType('LOCAL', this)">
-            <div class="icon">🔧</div>
+            <svg class="icon icon-xl" viewBox="0 0 24 24">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
             <div class="name">Presencial</div>
             <div class="desc">Alguém vai até você</div>
           </div>
+
           <div class="service-type-card" onclick="selectServiceType('FREELANCE', this)">
-            <div class="icon">💻</div>
+            <svg class="icon icon-xl" viewBox="0 0 24 24">
+              <rect width="20" height="14" x="2" y="3" rx="2"/>
+              <line x1="8" x2="16" y1="21" y2="21"/>
+              <line x1="12" x2="12" y1="17" y2="21"/>
+            </svg>
             <div class="name">Online / Freelance</div>
             <div class="desc">Entrega digital</div>
           </div>
         </div>
       </div>
 
-      <!-- 2. DETALHES DA DEMANDA -->
+      <!-- 2. DETALHES -->
       <div class="card">
-        <div class="card-label"><span class="dot"></span>Detalhes</div>
-        
+        <div class="card-label"><div class="dot"></div> Detalhes</div>
+
         <div class="field">
           <label for="titulo">Título da demanda</label>
-          <input type="text" id="titulo" placeholder="Ex: Instalação de chuveiro ou Criação de Logo" required>
+          <input type="text" id="titulo" placeholder="Ex: Instalação de chuveiro ou Criação de logo" required>
         </div>
 
         <div class="field">
           <label>Categoria</label>
           <div class="categoria-wrapper">
             <div class="chip-select" id="categoriaChips">
-              <span class="chip" style="color: var(--ink-faint);">Carregando...</span>
+              <span class="chip" style="color:var(--text-secondary);">Carregando...</span>
             </div>
-            <!-- Painel flutuante para "Outros" -->
             <div class="categoria-popover" id="categoriaPopover"></div>
           </div>
           <input type="hidden" id="categoria_id" required>
@@ -190,12 +395,12 @@
 
         <div class="field-row">
           <div class="field">
-            <label for="budget_min">Orçamento Mínimo (R$)</label>
-            <input type="number" id="budget_min" placeholder="0,00" step="0.01" min="0">
+            <label for="budget_min">Orçamento mínimo (R$)</label>
+            <input type="number" id="budget_min" placeholder="0,00" step="0.01" min="0" inputmode="decimal">
           </div>
           <div class="field">
-            <label for="budget_max">Orçamento Máximo (R$)</label>
-            <input type="number" id="budget_max" placeholder="0,00" step="0.01" min="0">
+            <label for="budget_max">Orçamento máximo (R$)</label>
+            <input type="number" id="budget_max" placeholder="0,00" step="0.01" min="0" inputmode="decimal">
           </div>
         </div>
 
@@ -205,54 +410,70 @@
         </div>
       </div>
 
-      <!-- 3. LOCALIZAÇÃO (Só aparece se for LOCAL) -->
+      <!-- 3. LOCALIZAÇÃO -->
       <div class="card" id="card-localizacao">
-        <div class="card-label"><span class="dot"></span>Onde é o serviço</div>
+        <div class="card-label"><div class="dot"></div> Onde é o serviço</div>
+
         <div class="field-row">
-          <div class="field" style="flex: 1;">
+          <div class="field" style="flex:1;">
             <label for="zip_code">CEP</label>
-            <input type="text" id="zip_code" placeholder="00000-000" maxlength="9">
+            <input type="text" id="zip_code" placeholder="00000-000" maxlength="9" inputmode="numeric">
           </div>
-          <div class="field" style="flex: 2;">
+          <div class="field" style="flex:2;">
             <label for="city">Cidade</label>
-            <input type="text" id="city" placeholder="Buscando..." readonly style="background: var(--surface-soft);">
+            <input type="text" id="city" placeholder="Buscando..." readonly>
           </div>
         </div>
-        <div class="field-row" style="margin-top: 12px;">
-          <div class="field" style="flex: 2;">
+
+        <div class="field-row" style="margin-top:var(--space-3);">
+          <div class="field" style="flex:2;">
             <label for="neighborhood">Bairro</label>
             <input type="text" id="neighborhood" placeholder="Ex: Asa Norte">
           </div>
-          <div class="field" style="flex: 1;">
+          <div class="field" style="flex:1;">
             <label for="uf">UF</label>
-            <input type="text" id="uf" placeholder="UF" maxlength="2" readonly style="background: var(--surface-soft);">
+            <input type="text" id="uf" placeholder="UF" maxlength="2" readonly>
           </div>
         </div>
+
         <div class="field">
           <label for="address">Endereço (Rua, Avenida, etc.)</label>
           <input type="text" id="address" placeholder="Ex: Rua das Flores, 123">
         </div>
       </div>
 
-      <!-- 4. MÍDIAS (OPCIONAL) -->
+      <!-- 4. MÍDIAS -->
       <div class="card">
-        <div class="card-label"><span class="dot"></span>Fotos ou Vídeos (Opcional)</div>
+        <div class="card-label"><div class="dot"></div> Fotos ou vídeos (opcional)</div>
+
         <div class="upload-area" id="uploadArea">
           <input type="file" id="fileInput" multiple accept="image/*,video/*">
-          <div class="upload-icon">📷 🎥</div>
+          <div class="upload-icon">
+            <svg class="icon icon-xl" viewBox="0 0 24 24">
+              <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+              <circle cx="12" cy="13" r="3"/>
+            </svg>
+          </div>
           <div class="upload-text">Toque para adicionar</div>
-          <div class="upload-subtext">Máx. 5 arquivos</div>
+          <div class="upload-subtext">Máximo 5 arquivos</div>
         </div>
+
         <div class="media-preview-grid" id="mediaPreview"></div>
       </div>
 
-      <button type="submit" class="btn btn-accent" id="publishBtn" style="width: 100%; margin-top: 16px;">Publicar demanda</button>
-      <div class="terms">Ao publicar, você concorda com os Termos de Uso do Bizuxo.</div>
+      <button type="submit" class="btn btn-primary publish-btn" id="publishBtn">
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </svg>
+        Publicar demanda
+      </button>
+
+      <div class="terms">Ao publicar, você concorda com os Termos de Uso do WENEED.</div>
     </form>
   </div>
 </div>
 
-<!-- Scripts -->
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/utils.js"></script>
@@ -260,20 +481,20 @@
 <script src="../app.js"></script>
 
 <script>
-  // ==========================================
-  // 1. ESTADO GLOBAL
-  // ==========================================
+  /* ==========================================
+     1. ESTADO GLOBAL
+     ========================================== */
   let currentServiceType = 'LOCAL';
   let selectedCategoryId = null;
   let arquivosSelecionados = [];
   let clientProfileId = null;
-  let todasCategorias = [];       // Todas as categorias carregadas do banco
-  let categoriasRapidas = [];     // As 3 primeiras (Eletricista, Encanador, Diarista)
-  let categoriasOutras = [];      // As demais
+  let todasCategorias = [];
+  let categoriasRapidas = [];
+  let categoriasOutras = [];
 
-  // ==========================================
-  // 2. INICIALIZAÇÃO E AUTH
-  // ==========================================
+  /* ==========================================
+     2. INICIALIZAÇÃO
+     ========================================== */
   async function init() {
     if (!window.supabaseClient) {
       alert('Erro de configuração. Recarregue a página.');
@@ -304,9 +525,9 @@
     setupMascaras();
   }
 
-  // ==========================================
-  // 3. LÓGICA DE UI E CATEGORIAS
-  // ==========================================
+  /* ==========================================
+     3. TIPO DE SERVIÇO
+     ========================================== */
   function selectServiceType(type, element) {
     currentServiceType = type;
     document.querySelectorAll('.service-type-card').forEach(c => c.classList.remove('selected'));
@@ -325,18 +546,19 @@
       document.getElementById('uf').value = '';
       document.getElementById('address').value = '';
     }
-    
+
     selectedCategoryId = null;
     document.getElementById('categoria_id').value = '';
     carregarCategorias();
   }
 
+  /* ==========================================
+     4. CATEGORIAS
+     ========================================== */
   async function carregarCategorias() {
     const container = document.getElementById('categoriaChips');
-    container.innerHTML = '<span class="chip" style="color: var(--ink-faint);">Carregando...</span>';
-    
-    console.log(`🔍 Buscando categorias para: ${currentServiceType}`);
-    
+    container.innerHTML = '<span class="chip" style="color:var(--text-secondary);">Carregando...</span>';
+
     const { data, error } = await window.supabaseClient
       .from('categories')
       .select('id, name, icon')
@@ -345,42 +567,34 @@
 
     if (error) {
       console.error('Erro ao carregar categorias:', error);
-      container.innerHTML = '<span class="chip" style="color: var(--alert);">Erro ao carregar categorias</span>';
+      container.innerHTML = '<span class="chip" style="color:var(--color-error);">Erro ao carregar categorias</span>';
       return;
     }
 
     if (!data || data.length === 0) {
-      console.warn('⚠️ Nenhuma categoria encontrada para este tipo de serviço.');
-      container.innerHTML = '<span class="chip" style="color: var(--ink-faint);">Nenhuma categoria disponível</span>';
+      container.innerHTML = '<span class="chip" style="color:var(--text-secondary);">Nenhuma categoria disponível</span>';
       return;
     }
 
     todasCategorias = data;
 
-    // Priorizar as três categorias desejadas (se existirem)
     const prioridades = ['Eletricista', 'Encanador', 'Diarista'];
     categoriasRapidas = [];
     categoriasOutras = [];
 
-    // Procura as categorias prioritárias na ordem desejada
     prioridades.forEach(nome => {
       const encontrada = todasCategorias.find(cat => cat.name === nome);
       if (encontrada) {
         categoriasRapidas.push(encontrada);
-        // Remove da lista de todas para não duplicar
         todasCategorias = todasCategorias.filter(cat => cat.id !== encontrada.id);
       }
     });
 
-    // Se não encontrou alguma das prioritárias, completa com as primeiras da lista restante
     while (categoriasRapidas.length < 3 && todasCategorias.length > 0) {
       categoriasRapidas.push(todasCategorias.shift());
     }
 
-    // O restante vai para "Outras"
     categoriasOutras = [...todasCategorias];
-
-    // Ordena as outras por nome
     categoriasOutras.sort((a, b) => a.name.localeCompare(b.name));
 
     renderizarCategorias();
@@ -390,21 +604,24 @@
     const container = document.getElementById('categoriaChips');
     container.innerHTML = '';
 
-    // Renderiza as 3 categorias rápidas
+    // Categorias rápidas (sem emoji — apenas nome)
     categoriasRapidas.forEach(cat => {
       const chip = document.createElement('span');
       chip.className = 'chip';
       chip.dataset.id = cat.id;
-      chip.textContent = `${cat.icon || '📌'} ${cat.name}`;
+      chip.textContent = cat.name;
       chip.onclick = () => selecionarCategoria(chip, cat.id);
       container.appendChild(chip);
     });
 
-    // Se houver categorias adicionais, adiciona o botão "Outros"
+    // Botão "Outros"
     if (categoriasOutras.length > 0) {
       const btnOutros = document.createElement('span');
       btnOutros.className = 'outros-btn';
-      btnOutros.textContent = 'Outros ▾';
+      btnOutros.innerHTML = `
+        Outros
+        <svg class="icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      `;
       btnOutros.onclick = (e) => {
         e.stopPropagation();
         abrirPopover();
@@ -416,27 +633,23 @@
   function abrirPopover() {
     const popover = document.getElementById('categoriaPopover');
     popover.innerHTML = '';
-    
+
     categoriasOutras.forEach(cat => {
       const item = document.createElement('div');
       item.className = 'popover-item';
-      item.textContent = `${cat.icon || '📌'} ${cat.name}`;
-      item.onclick = () => {
-        selecionarCategoriaDoPopover(cat);
-      };
+      item.textContent = cat.name;
+      item.onclick = () => selecionarCategoriaDoPopover(cat);
       popover.appendChild(item);
     });
 
     popover.classList.add('active');
-    
-    // Fecha ao clicar fora
     document.addEventListener('click', fecharPopoverFora);
   }
 
   function fecharPopoverFora(e) {
     const popover = document.getElementById('categoriaPopover');
     const outrosBtn = document.querySelector('.outros-btn');
-    
+
     if (!popover.contains(e.target) && e.target !== outrosBtn && !outrosBtn.contains(e.target)) {
       popover.classList.remove('active');
       document.removeEventListener('click', fecharPopoverFora);
@@ -444,32 +657,28 @@
   }
 
   function selecionarCategoriaDoPopover(cat) {
-    // Marca como selecionado
     selecionarCategoria(null, cat.id);
-    // Atualiza visual do chip correspondente (caso o ID esteja entre as rápidas)
     document.querySelectorAll('#categoriaChips .chip').forEach(chip => {
-      if (chip.dataset.id === cat.id) {
-        chip.classList.add('selected');
-      } else {
-        chip.classList.remove('selected');
-      }
+      chip.classList.toggle('selected', chip.dataset.id === String(cat.id));
     });
-    // Fecha o popover
     document.getElementById('categoriaPopover').classList.remove('active');
     document.removeEventListener('click', fecharPopoverFora);
   }
 
   function selecionarCategoria(chip, categoriaId) {
-    // Remove seleção anterior
     document.querySelectorAll('#categoriaChips .chip').forEach(c => c.classList.remove('selected'));
     if (chip) chip.classList.add('selected');
-    
+
     selectedCategoryId = categoriaId;
     document.getElementById('categoria_id').value = categoriaId;
   }
 
+  /* ==========================================
+     5. MÁSCARA CEP + VIACEP
+     ========================================== */
   function setupMascaras() {
     const cepInput = document.getElementById('zip_code');
+
     cepInput.addEventListener('input', (e) => {
       let v = e.target.value.replace(/\D/g, '').slice(0, 8);
       if (v.length > 5) v = v.replace(/(\d{5})(\d{1,3})/, '$1-$2');
@@ -478,31 +687,33 @@
 
     cepInput.addEventListener('blur', async (e) => {
       const cep = e.target.value.replace(/\D/g, '');
-      if (cep.length === 8) {
-        document.getElementById('city').value = 'Buscando...';
-        try {
-          const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-          const data = await res.json();
-          if (!data.erro) {
-            document.getElementById('city').value = data.localidade || '';
-            document.getElementById('neighborhood').value = data.bairro || '';
-            document.getElementById('uf').value = data.uf || '';
-            document.getElementById('address').value = data.logradouro || '';
-          } else {
-            document.getElementById('city').value = '';
-            alert('CEP não encontrado.');
-          }
-        } catch (err) {
-          console.error('Erro CEP:', err);
+      if (cep.length !== 8) return;
+
+      document.getElementById('city').value = 'Buscando...';
+
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await res.json();
+
+        if (!data.erro) {
+          document.getElementById('city').value = data.localidade || '';
+          document.getElementById('neighborhood').value = data.bairro || '';
+          document.getElementById('uf').value = data.uf || '';
+          document.getElementById('address').value = data.logradouro || '';
+        } else {
           document.getElementById('city').value = '';
+          alert('CEP não encontrado.');
         }
+      } catch (err) {
+        console.error('Erro CEP:', err);
+        document.getElementById('city').value = '';
       }
     });
   }
 
-  // ==========================================
-  // 4. UPLOAD DE MÍDIA
-  // ==========================================
+  /* ==========================================
+     6. UPLOAD DE MÍDIA
+     ========================================== */
   const fileInput = document.getElementById('fileInput');
   const mediaPreview = document.getElementById('mediaPreview');
   const uploadArea = document.getElementById('uploadArea');
@@ -525,38 +736,60 @@
       const isVideo = file.type.startsWith('video/');
       const div = document.createElement('div');
       div.className = 'media-item';
-      div.innerHTML = isVideo ? `<video src="${url}" muted></video><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);color:#fff;font-size:1.5rem;">🎥</div>` : `<img src="${url}" alt="Preview">`;
-      
+
+      if (isVideo) {
+        div.innerHTML = `
+          <video src="${url}" muted></video>
+          <div class="video-overlay">
+            <svg class="icon icon-lg" viewBox="0 0 24 24">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+          </div>
+        `;
+      } else {
+        div.innerHTML = `<img src="${url}" alt="Preview">`;
+      }
+
       const btn = document.createElement('button');
+      btn.type = 'button';
       btn.className = 'remove-btn';
-      btn.innerHTML = '×';
-      btn.onclick = (e) => { e.preventDefault(); arquivosSelecionados.splice(index, 1); renderizarPreview(); };
+      btn.setAttribute('aria-label', 'Remover arquivo');
+      btn.innerHTML = `
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+        </svg>
+      `;
+      btn.onclick = (e) => {
+        e.preventDefault();
+        arquivosSelecionados.splice(index, 1);
+        renderizarPreview();
+      };
       div.appendChild(btn);
       mediaPreview.appendChild(div);
     });
   }
 
-// ==========================================
-// 5. SUBMIT DO FORMULÁRIO
-// ==========================================
-document.getElementById('novaDemandaForm').addEventListener('submit', async (e) => {
+  /* ==========================================
+     7. SUBMIT
+     ========================================== */
+  document.getElementById('novaDemandaForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     if (!selectedCategoryId) {
-      alert('⚠️ Por favor, selecione uma categoria.');
+      alert('Por favor, selecione uma categoria.');
       return;
     }
 
     const loadingOverlay = document.getElementById('loadingOverlay');
     const loadingText = document.getElementById('loadingText');
     const btn = document.getElementById('publishBtn');
-    
+
     loadingOverlay.classList.add('active');
     btn.disabled = true;
     let midiasUrls = [];
 
     try {
-      // A. Upload de Mídias (Graceful)
+      // A. Upload de mídias
       if (arquivosSelecionados.length > 0) {
         loadingText.textContent = 'Enviando arquivos...';
         try {
@@ -565,35 +798,43 @@ document.getElementById('novaDemandaForm').addEventListener('submit', async (e) 
             const { data, error } = await window.supabaseClient.storage
               .from('midias-demandas')
               .upload(fileName, file, { cacheControl: '3600', upsert: false });
-            
+
             if (error) throw new Error(error.message);
-            const { data: urlData } = window.supabaseClient.storage.from('midias-demandas').getPublicUrl(data.path);
+            const { data: urlData } = window.supabaseClient.storage
+              .from('midias-demandas')
+              .getPublicUrl(data.path);
             return urlData.publicUrl;
           });
           midiasUrls = await Promise.all(uploadPromises);
         } catch (uploadErr) {
-          console.warn('⚠️ Upload de mídia falhou (bucket pode não existir), continuando sem midias:', uploadErr.message);
+          console.warn('Upload de mídia falhou (bucket pode não existir), continuando sem mídias:', uploadErr.message);
         }
       }
 
-      // B. Salvar Demanda no Banco
+      // B. Salvar demanda
       loadingText.textContent = 'Salvando sua demanda...';
-      
+
       const now = new Date().toISOString();
-      
+
       const demandData = {
         client_id: clientProfileId,
         category_id: selectedCategoryId,
         title: document.getElementById('titulo').value.trim(),
         description: document.getElementById('descricao').value.trim(),
-        budget_min: document.getElementById('budget_min').value ? parseFloat(document.getElementById('budget_min').value) : null,
-        budget_max: document.getElementById('budget_max').value ? parseFloat(document.getElementById('budget_max').value) : null,
+        budget_min: document.getElementById('budget_min').value
+          ? parseFloat(document.getElementById('budget_min').value) : null,
+        budget_max: document.getElementById('budget_max').value
+          ? parseFloat(document.getElementById('budget_max').value) : null,
         status: 'OPEN',
-        zip_code: currentServiceType === 'LOCAL' ? document.getElementById('zip_code').value.replace(/\D/g, '') : null,
-        city: currentServiceType === 'LOCAL' ? document.getElementById('city').value.trim() : null,
-        neighborhood: currentServiceType === 'LOCAL' ? document.getElementById('neighborhood').value.trim() : null,
-        address: currentServiceType === 'LOCAL' ? document.getElementById('address').value.trim() : null,
-        media_urls: midiasUrls,  // ✅ NOVO: salva as URLs das mídias
+        zip_code: currentServiceType === 'LOCAL'
+          ? document.getElementById('zip_code').value.replace(/\D/g, '') : null,
+        city: currentServiceType === 'LOCAL'
+          ? document.getElementById('city').value.trim() : null,
+        neighborhood: currentServiceType === 'LOCAL'
+          ? document.getElementById('neighborhood').value.trim() : null,
+        address: currentServiceType === 'LOCAL'
+          ? document.getElementById('address').value.trim() : null,
+        media_urls: midiasUrls,
         created_at: now,
         updated_at: now
       };
@@ -606,17 +847,17 @@ document.getElementById('novaDemandaForm').addEventListener('submit', async (e) 
 
       if (dbError) throw dbError;
 
-      alert('✅ Demanda publicada com sucesso!');
+      alert('Demanda publicada com sucesso!');
       window.location.href = 'dashboard-cliente.html';
 
     } catch (err) {
-      console.error('❌ Erro ao publicar demanda:', err);
+      console.error('Erro ao publicar demanda:', err);
       alert('Erro ao publicar: ' + err.message);
       loadingOverlay.classList.remove('active');
       btn.disabled = false;
     }
-});
-  // Iniciar
+  });
+
   init();
 </script>
 </body>

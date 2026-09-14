@@ -3,208 +3,332 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Minhas demandas · Bizuxo</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
-<link rel="stylesheet" href="../style.css">
-<style>
-  /* Mantenha todo o CSS original que você já tem */
-  .new-btn { width: auto; padding: 12px 20px; }
-  .list-row-desc { font-size: 0.82rem; color: var(--ink-soft); margin-top: 4px; max-width: 44ch; line-height: 1.4; }
-  .list-row-info { font-size: 0.85rem; color: var(--ink-soft); display: block; margin-top: 4px; text-align: right; }
-  .list-row-date { font-size: 0.8rem; color: var(--ink-soft); opacity: 0.8; display: block; margin-top: 2px; text-align: right; }
+<title>Minhas demandas · WENEED</title>
 
-  /* Navegação mobile - CSS completo */
-  .mobile-nav { display: none; }
-  
-  @media (max-width: 768px) {
-    .sidebar { display: none; } 
-    .app-shell { grid-template-columns: 1fr; } 
-    .main-content { padding: 20px 16px 100px 16px !important; }
-    
-    .mobile-nav { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr 72px 1fr 1fr; 
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 64px; 
-      background: var(--surface); 
-      border-top: 1px solid var(--border); 
-      align-items: stretch; 
-      z-index: 9999; 
-      padding-bottom: env(safe-area-inset-bottom); 
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05); 
-      isolation: isolate; 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="stylesheet" href="../style.css">
+
+<style>
+  /* ============================================================
+     Minhas Demandas — tokens do style.css
+     ============================================================ */
+
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{
+    width:16px; height:16px;
+    stroke:currentColor;
+    stroke-width:1.75;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    flex-shrink:0;
+    display:block;
+  }
+  .icon-sm{ width:14px; height:14px; stroke-width:2; }
+  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
+  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+  .icon-xl{ width:28px; height:28px; stroke-width:1.5; }
+
+  /* ---------- PAGE TOPBAR BUTTON ---------- */
+  .new-btn{
+    width:auto;
+    padding:12px 20px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+  }
+
+  /* ---------- SEARCH TOOLBAR ---------- */
+  .toolbar{
+    display:flex;
+    gap:var(--space-3);
+    margin:var(--space-6) 0 var(--space-4);
+    flex-wrap:wrap;
+    align-items:center;
+  }
+
+  /* ---------- LIST ROW EXTRAS ---------- */
+  .list-row-desc{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    margin-top:var(--space-1);
+    max-width:44ch;
+    line-height:var(--line-height-normal);
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .list-row-date{
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    display:block;
+  }
+
+  /* ---------- FILTER CHIPS ---------- */
+  .chip-select{
+    display:flex;
+    gap:var(--space-2);
+    flex-wrap:wrap;
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    padding:9px 15px;
+    border:1.5px solid var(--border-default);
+    background:var(--surface-subtle);
+    border-radius:var(--radius-full);
+    color:var(--text-secondary);
+    cursor:pointer;
+    transition:background   var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out),
+               color        var(--duration-fast) var(--ease-out);
+    user-select:none;
+    line-height:1.2;
+  }
+  .chip:hover{
+    border-color:var(--color-black);
+    color:var(--color-black);
+  }
+  .chip.selected{
+    background:var(--color-black);
+    color:var(--color-white);
+    border-color:var(--color-black);
+  }
+
+  /* ---------- STATUS BADGES ---------- */
+  .status-receiving{
+    background:var(--color-gray-100);
+    color:var(--color-gray-700);
+  }
+  .status-selected{
+    background:var(--color-brand-blue-deep);
+    color:var(--color-white);
+  }
+  .status-done{
+    background:var(--color-black);
+    color:var(--color-white);
+  }
+  .status-canceled{
+    background:var(--color-gray-50);
+    color:var(--color-gray-400);
+    border:1px solid var(--color-gray-200);
+  }
+
+  /* ---------- MOBILE NAV ---------- */
+  .mobile-nav{ display:none; }
+
+  @media (max-width:768px){
+    .sidebar{ display:none; }
+    .app-shell{ grid-template-columns:1fr; }
+    .main-content{ padding:20px 16px 100px 16px !important; }
+
+    .mobile-nav{
+      display:grid;
+      grid-template-columns:1fr 1fr 72px 1fr 1fr;
+      position:fixed; bottom:0; left:0; width:100%;
+      height:64px;
+      background:var(--surface-default);
+      border-top:1px solid var(--border-default);
+      align-items:stretch;
+      z-index:var(--z-sticky);
+      padding-bottom:env(safe-area-inset-bottom);
+      box-shadow:0 -4px 20px rgba(10,10,10,.05);
+      isolation:isolate;
     }
-    
-    .mobile-nav-item { 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center; 
-      text-decoration: none; 
-      color: var(--ink-faint); 
-      font-size: 0.68rem; 
-      font-weight: 600; 
-      gap: 3px; 
-      height: 100%; 
-      position: relative; 
-      transition: color 0.2s ease, transform 0.15s ease; 
-      -webkit-tap-highlight-color: transparent; 
-      touch-action: manipulation; 
-      user-select: none; 
+    .mobile-nav-item{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-decoration:none;
+      color:var(--color-gray-400);
+      font-size:11px;
+      font-weight:var(--font-weight-semibold);
+      gap:3px;
+      height:100%;
+      position:relative;
+      transition:color var(--duration-base) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      user-select:none;
     }
-    
-    .mobile-nav-item .nav-icon { 
-      font-size: 1.35rem; 
-      line-height: 1; 
-      transition: transform 0.2s ease; 
+    .mobile-nav-item .nav-icon{ transition:transform var(--duration-base) var(--ease-out); }
+    .mobile-nav-item:active{ transform:scale(0.88); }
+    .mobile-nav-item:active .nav-icon{ transform:scale(0.9); }
+    .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
+    .mobile-nav-item.active::before{
+      content:'';
+      position:absolute; top:6px; left:50%;
+      transform:translateX(-50%);
+      width:5px; height:5px;
+      background:var(--color-brand-blue);
+      border-radius:50%;
     }
-    
-    .mobile-nav-item:active { 
-      transform: scale(0.88); 
+    .nav-badge{
+      position:absolute; top:8px; right:50%; margin-right:-22px;
+      background:var(--color-black);
+      color:var(--color-white);
+      font-size:10px;
+      font-weight:var(--font-weight-bold);
+      min-width:16px; height:16px;
+      border-radius:8px;
+      display:flex; align-items:center; justify-content:center;
+      padding:0 4px;
+      line-height:1;
     }
-    
-    .mobile-nav-item:active .nav-icon { 
-      transform: scale(0.9); 
+    .mobile-nav-fab-wrapper{
+      display:flex; align-items:flex-start; justify-content:center;
+      position:relative;
     }
-    
-    .mobile-nav-item.active { 
-      color: var(--accent); 
+    .mobile-nav-fab{
+      width:54px; height:54px;
+      background:var(--color-black);
+      color:var(--color-white);
+      border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none;
+      box-shadow:0 4px 15px rgba(10,10,10,.25);
+      transition:transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base);
+      margin-top:-22px;
+      border:3px solid var(--surface-default);
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+      user-select:none;
+      position:relative;
+      z-index:10;
     }
-    
-    .mobile-nav-item.active::before { 
-      content: ''; 
-      position: absolute; 
-      top: 6px; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      width: 5px; 
-      height: 5px; 
-      background: var(--accent); 
-      border-radius: 50%; 
-      box-shadow: 0 0 8px rgba(5, 193, 103, 0.5); 
+    .mobile-nav-fab:active{
+      transform:scale(0.9);
+      box-shadow:0 2px 8px rgba(10,10,10,.20);
     }
-    
-    .nav-badge { 
-      position: absolute; 
-      top: 8px; 
-      right: 50%; 
-      margin-right: -22px; 
-      background: #ff4757; 
-      color: #fff; 
-      font-size: 0.6rem; 
-      font-weight: 700; 
-      min-width: 16px; 
-      height: 16px; 
-      border-radius: 8px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      padding: 0 4px; 
-      line-height: 1; 
+    .mobile-nav-fab::after{
+      content:'';
+      position:absolute; top:-6px; left:-6px; right:-6px; bottom:-6px;
+      border-radius:50%;
+      background:rgba(0,87,255,.15);
+      z-index:-1;
+      animation:pulse-ring 2s ease-in-out infinite;
     }
-    
-    .mobile-nav-fab-wrapper { 
-      display: flex; 
-      align-items: flex-start; 
-      justify-content: center; 
-      position: relative; 
+    @keyframes pulse-ring{
+      0%{ transform:scale(0.9); opacity:0.7; }
+      70%{ transform:scale(1.2); opacity:0; }
+      100%{ transform:scale(1.2); opacity:0; }
     }
-    
-    .mobile-nav-fab { 
-      width: 54px; 
-      height: 54px; 
-      background: var(--accent); 
-      color: #fff; 
-      border-radius: 50%; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-size: 1.9rem; 
-      font-weight: 300; 
-      text-decoration: none; 
-      box-shadow: 0 4px 15px rgba(5, 193, 103, 0.4); 
-      transition: transform 0.2s ease, box-shadow 0.2s ease; 
-      margin-top: -22px; 
-      border: 3px solid var(--surface); 
-      touch-action: manipulation; 
-      -webkit-tap-highlight-color: transparent; 
-      user-select: none; 
-      position: relative; 
-      z-index: 10; 
-    }
-    
-    .mobile-nav-fab:active { 
-      transform: scale(0.9); 
-      box-shadow: 0 2px 8px rgba(5, 193, 103, 0.3); 
-    }
-    
-    .mobile-nav-fab::after { 
-      content: ''; 
-      position: absolute; 
-      top: -6px; 
-      left: -6px; 
-      right: -6px; 
-      bottom: -6px; 
-      border-radius: 50%; 
-      background: rgba(5, 193, 103, 0.15); 
-      z-index: -1; 
-      animation: pulse-ring 2s ease-in-out infinite; 
-    }
-    
-    @keyframes pulse-ring { 
-      0% { transform: scale(0.9); opacity: 0.7; } 
-      70% { transform: scale(1.2); opacity: 0; } 
-      100% { transform: scale(1.2); opacity: 0; } 
+
+    .list-row{ flex-wrap:wrap; }
+    .list-row-side{
+      align-items:flex-start;
+      flex-direction:row;
+      gap:var(--space-3);
+      width:100%;
+      margin-top:var(--space-2);
+      justify-content:space-between;
     }
   }
-  
-  @media (max-width: 480px) {
-    .mobile-nav-item { font-size: 0.62rem; }
-    .mobile-nav-item .nav-icon { font-size: 1.2rem; }
-    .mobile-nav-fab { width: 48px; height: 48px; font-size: 1.7rem; margin-top: -18px; }
+
+  @media (max-width:480px){
+    .mobile-nav-item{ font-size:10px; }
+    .mobile-nav-fab{ width:48px; height:48px; margin-top:-18px; }
   }
 </style>
 </head>
 <body>
 
 <div class="app-shell">
-  <!-- Sidebar -->
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand" style="margin-bottom: 8px;">Bizu<span>xo</span></div>
+    <div class="brand" style="margin-bottom:8px;">WENEED<span>.</span></div>
+
     <nav class="sidebar-nav">
-      <a class="nav-item" href="dashboard-cliente.html"><span class="nav-icon">▤</span> Visão Geral</a>
-      <a class="nav-item active" href="minhas-demandas.html"><span class="nav-icon">✉</span> Minhas Demandas</a>
-      <a class="nav-item" href="servicos-contratados.html"><span class="nav-icon">🛠️</span> Serviços Contratados</a>
-      <a class="nav-item" href="meu-perfil-cliente.html"><span class="nav-icon">⚙️</span> Meus Dados</a>
+      <a class="nav-item" href="dashboard-cliente.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="7" height="9" x="3" y="3" rx="1"/>
+            <rect width="7" height="5" x="14" y="3" rx="1"/>
+            <rect width="7" height="9" x="14" y="12" rx="1"/>
+            <rect width="7" height="5" x="3" y="16" rx="1"/>
+          </svg>
+        </span>
+        Visão Geral
+      </a>
+
+      <a class="nav-item active" href="minhas-demandas.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+            <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+          </svg>
+        </span>
+        Minhas Demandas
+      </a>
+
+      <a class="nav-item" href="servicos-contratados.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <path d="m9 14 2 2 4-4"/>
+          </svg>
+        </span>
+        Serviços Contratados
+      </a>
+
+      <a class="nav-item" href="meu-perfil-cliente.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        Meus Dados
+      </a>
+
       <div style="flex:1"></div>
-      <a class="nav-item" href="#" id="logoutBtn" style="color: var(--alert); margin-top: auto;"><span class="nav-icon">🚪</span> Sair</a>
+
+      <a class="nav-item" href="#" id="logoutBtn" style="margin-top:auto;">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+        </span>
+        Sair
+      </a>
     </nav>
+
     <div class="sidebar-foot">
-      <div id="userName" style="font-weight: 600; color: #fff; margin-bottom: 4px;">Carregando...</div>
-      <div id="userLoc" style="color: #8B8E96; font-size: 0.75rem; margin-bottom: 10px;">...</div>
+      <div id="userName" style="font-weight:600; color:#fff; margin-bottom:4px;">Carregando...</div>
+      <div id="userLoc" style="color:var(--color-gray-500); font-size:var(--font-size-xs); margin-bottom:10px;">...</div>
       <div class="role-tag">conta cliente</div>
     </div>
   </aside>
 
+  <!-- MAIN -->
   <main class="main-content">
     <div class="page-topbar">
       <div>
         <h1>Minhas demandas</h1>
         <div class="sub" id="results-count">Carregando...</div>
       </div>
-      <a class="btn btn-accent new-btn" href="nova-demanda.html">＋ Nova Demanda</a>
+      <a class="btn btn-primary new-btn" href="nova-demanda.html">
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <path d="M5 12h14"/><path d="M12 5v14"/>
+        </svg>
+        Nova Demanda
+      </a>
     </div>
 
     <div class="toolbar">
       <input class="search-input" id="search" type="text" placeholder="Buscar por título ou local...">
     </div>
-    
+
     <div class="chip-select" id="filters">
       <span class="chip selected" data-filter="all">Todas</span>
       <span class="chip" data-filter="open">Aguardando propostas</span>
@@ -215,7 +339,7 @@
     </div>
 
     <div id="list" style="margin-top:22px;"></div>
-    
+
     <div class="empty-state" id="empty" style="display:none;">
       <h3>Nenhuma demanda encontrada</h3>
       <p>Tente outro filtro, altere sua busca ou publique uma nova demanda.</p>
@@ -223,38 +347,82 @@
   </main>
 </div>
 
-<!-- Navegação Mobile -->
+<!-- MOBILE NAV -->
 <nav class="mobile-nav" aria-label="Navegação principal">
-  <a href="dashboard-cliente.html" class="mobile-nav-item"><span class="nav-icon">▤</span><span>Início</span></a>
-  <a href="minhas-demandas.html" class="mobile-nav-item active"><span class="nav-icon">✉</span><span>Demandas</span><span class="nav-badge" id="badgeDemandas" style="display: none;">0</span></a>
-  <div class="mobile-nav-fab-wrapper"><a href="nova-demanda.html" class="mobile-nav-fab"><span>+</span></a></div>
-  <a href="servicos-contratados.html" class="mobile-nav-item"><span class="nav-icon">🛠️</span><span>Serviços</span></a>
-  <a href="meu-perfil-cliente.html" class="mobile-nav-item"><span class="nav-icon">⚙️</span><span>Perfil</span></a>
+  <a href="dashboard-cliente.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </span>
+    <span>Início</span>
+  </a>
+
+  <a href="minhas-demandas.html" class="mobile-nav-item active">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+        <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+      </svg>
+    </span>
+    <span>Demandas</span>
+    <span class="nav-badge" id="badgeDemandas" style="display:none;">0</span>
+  </a>
+
+  <div class="mobile-nav-fab-wrapper">
+    <a href="nova-demanda.html" class="mobile-nav-fab" aria-label="Nova demanda">
+      <svg class="icon icon-lg" viewBox="0 0 24 24" style="stroke-width:2.25;">
+        <path d="M5 12h14"/><path d="M12 5v14"/>
+      </svg>
+    </a>
+  </div>
+
+  <a href="servicos-contratados.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <path d="m9 14 2 2 4-4"/>
+      </svg>
+    </span>
+    <span>Serviços</span>
+  </a>
+
+  <a href="meu-perfil-cliente.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </span>
+    <span>Perfil</span>
+  </a>
 </nav>
 
-<!-- Scripts -->
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../app.js"></script>
+
 <script>
-  // ==========================================
-  // CONFIGURAÇÃO E ESTADO
-  // ==========================================
+  /* ==========================================
+     CONFIGURAÇÃO E ESTADO
+     ========================================== */
   let allDemands = [];
   let activeFilter = 'all';
   let searchTerm = '';
   let currentProfileId = null;
 
-  // Mapeamento de status
   const STATUS_MAP = {
-    'OPEN': { class: 'receiving', label: 'Aberta' },
-    'ABERTA': { class: 'receiving', label: 'Aberta' },
+    'OPEN':         { class: 'receiving', label: 'Aberta' },
+    'ABERTA':       { class: 'receiving', label: 'Aberta' },
     'EM_PROPOSTAS': { class: 'receiving', label: 'Com propostas' },
-    'EM_ANDAMENTO': { class: 'selected', label: 'Em andamento' },
-    'CONCLUIDO': { class: 'done', label: 'Concluída' },
-    'CONCLUIDA': { class: 'done', label: 'Concluída' },
-    'CANCELADO': { class: 'done', label: 'Cancelada' }
+    'EM_ANDAMENTO': { class: 'selected',  label: 'Em andamento' },
+    'CONCLUIDO':    { class: 'done',      label: 'Concluída' },
+    'CONCLUIDA':    { class: 'done',      label: 'Concluída' },
+    'CANCELADO':    { class: 'canceled',  label: 'Cancelada' }
   };
 
   const FILTER_TO_DB_STATUS = {
@@ -266,9 +434,9 @@
     done: ['CONCLUIDO', 'CONCLUIDA', 'CANCELADO']
   };
 
-  // ==========================================
-  // INICIALIZAÇÃO
-  // ==========================================
+  /* ==========================================
+     INICIALIZAÇÃO
+     ========================================== */
   async function init() {
     const supabaseClient = window.supabaseClient;
     if (!supabaseClient) {
@@ -282,7 +450,6 @@
       return;
     }
 
-    // Busca perfil
     const { data: profile, error: profileError } = await supabaseClient
       .from('profiles')
       .select('id, full_name, city, uf')
@@ -305,9 +472,9 @@
     configurarRealtime();
   }
 
-  // ==========================================
-  // CARREGAR DEMANDAS
-  // ==========================================
+  /* ==========================================
+     CARREGAR DEMANDAS
+     ========================================== */
   async function carregarDemandas() {
     const supabaseClient = window.supabaseClient;
     if (!currentProfileId || !supabaseClient) return;
@@ -331,7 +498,9 @@
         title: d.title,
         desc: d.description || '',
         loc: d.city || d.neighborhood || 'Local não definido',
-        date: d.created_at ? new Date(d.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '',
+        date: d.created_at
+          ? new Date(d.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+          : '',
         statusKey: d.status,
         statusClass: statusInfo.class,
         statusLabel: statusInfo.label,
@@ -342,27 +511,28 @@
     render();
   }
 
-  // ==========================================
-  // RENDERIZAÇÃO
-  // ==========================================
+  /* ==========================================
+     RENDERIZAÇÃO
+     ========================================== */
   function render() {
     const list = document.getElementById('list');
     const empty = document.getElementById('empty');
-    
+
     const filtered = allDemands.filter(d => {
       if (activeFilter !== 'all') {
         const allowed = FILTER_TO_DB_STATUS[activeFilter] || [];
         if (!allowed.includes(d.statusKey)) return false;
       }
       if (searchTerm) {
-        return d.title.toLowerCase().includes(searchTerm) || 
+        return d.title.toLowerCase().includes(searchTerm) ||
                d.loc.toLowerCase().includes(searchTerm);
       }
       return true;
     });
 
     const count = filtered.length;
-    document.getElementById('results-count').textContent = `${count} demanda${count !== 1 ? 's' : ''}`;
+    document.getElementById('results-count').textContent =
+      `${count} demanda${count !== 1 ? 's' : ''}`;
 
     list.innerHTML = '';
     empty.style.display = count ? 'none' : 'block';
@@ -372,13 +542,28 @@
       el.href = `detalhe-demanda-cliente.html?id=${d.id}`;
       el.className = 'list-row';
       el.innerHTML = `
-        <div class="avatar avatar-md">📋</div>
+        <div class="avatar avatar-md">
+          <svg class="icon icon-md" viewBox="0 0 24 24" style="color:var(--color-gray-700);">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" x2="8" y1="13" y2="13"/>
+            <line x1="16" x2="8" y1="17" y2="17"/>
+          </svg>
+        </div>
         <div class="list-row-main">
           <div class="list-row-title">${escapeHTML(d.title)}</div>
           <div class="list-row-sub">
-            <span>📍 ${escapeHTML(d.loc)}</span><span class="sep">·</span><span>${escapeHTML(d.category)}</span>
+            <span style="display:inline-flex;align-items:center;gap:4px;">
+              <svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              ${escapeHTML(d.loc)}
+            </span>
+            <span class="sep">·</span>
+            <span>${escapeHTML(String(d.category))}</span>
           </div>
-          <div class="list-row-desc">${escapeHTML(d.desc)}</div>
+          ${d.desc ? `<div class="list-row-desc">${escapeHTML(d.desc)}</div>` : ''}
         </div>
         <div class="list-row-side">
           <span class="status-badge status-${d.statusClass}">${d.statusLabel}</span>
@@ -388,23 +573,23 @@
     });
   }
 
-  // ==========================================
-  // ESCAPE HTML
-  // ==========================================
+  /* ==========================================
+     ESCAPE HTML
+     ========================================== */
   function escapeHTML(str) {
     if (!str) return '';
     return String(str).replace(/[&<>'"]/g, tag => ({
-      '&': '&amp;', 
-      '<': '&lt;', 
-      '>': '&gt;', 
-      "'": '&#39;', 
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
       '"': '&quot;'
     }[tag]));
   }
 
-  // ==========================================
-  // REALTIME
-  // ==========================================
+  /* ==========================================
+     REALTIME
+     ========================================== */
   function configurarRealtime() {
     const supabaseClient = window.supabaseClient;
     supabaseClient
@@ -412,21 +597,18 @@
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'demands', filter: `client_id=eq.${currentProfileId}` },
-        () => {
-          console.log('🔄 Mudança em demands, recarregando...');
-          carregarDemandas();
-        }
+        () => carregarDemandas()
       )
       .subscribe();
   }
 
-  // ==========================================
-  // EVENT LISTENERS
-  // ==========================================
+  /* ==========================================
+     EVENT LISTENERS
+     ========================================== */
   document.getElementById('filters').addEventListener('click', (e) => {
     const chip = e.target.closest('.chip');
     if (!chip) return;
-    
+
     document.querySelectorAll('#filters .chip').forEach(c => c.classList.remove('selected'));
     chip.classList.add('selected');
     activeFilter = chip.dataset.filter;
@@ -445,9 +627,9 @@
     window.location.href = '../index.html';
   });
 
-  // Iniciar
   init();
 </script>
+
 <script src="../js/mobile-nav.js"></script>
 </body>
 </html>

@@ -3,86 +3,276 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Escolha seu perfil · Bizuxo</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Escolha seu perfil · WENEED</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
-<link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="stylesheet" href="./style.css">
+
 <style>
-  :root{
-    --bg-app:#0B0B0D; --bg-elevated:#1B1C1F; --surface:#FFFFFF; --surface-soft:#F4F4F2;
-    --ink:#101113; --ink-soft:#6B6E76; --ink-faint:#9A9CA3;
-    --accent:#05C167; --accent-ink:#04572C; --accent-soft:#E1F9EC;
-    --alert:#FF3B30; --alert-ink:#8C1810; --alert-soft:#FFE9E7;
-    --border:#E7E7E4; --radius-lg:20px; --radius-md:14px; --radius-sm:10px;
-    --font-display:'Sora', sans-serif; --font-body:'Inter', sans-serif;
+  /* ============================================================
+     Escolha de perfil — tokens do style.css
+     ============================================================ */
+
+  body{
+    background:var(--color-black);
+    display:flex;
+    justify-content:center;
   }
-  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  body{ margin:0; background:var(--bg-app); font-family:var(--font-body); display:flex; justify-content:center; }
-  .phone{ width:100%; max-width:460px; min-height:100vh; display:flex; flex-direction:column; }
 
-  .top{ padding:48px 26px 32px; color:#fff; }
-  .brand{ font-family:var(--font-display); font-weight:800; font-size:1.1rem; margin-bottom:26px; }
-  .brand span{ color:var(--accent); }
-  .top h1{ font-family:var(--font-display); font-size:1.6rem; font-weight:700; margin:0 0 8px; line-height:1.25; }
-  .top p{ color:#9A9CA3; font-size:0.9rem; margin:0; }
+  .phone{
+    width:100%;
+    max-width:460px;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
 
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{
+    width:16px; height:16px;
+    stroke:currentColor;
+    stroke-width:1.75;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    flex-shrink:0;
+    display:block;
+  }
+  .icon-sm{ width:14px; height:14px; stroke-width:2; }
+  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
+  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+
+  /* ---------- TOPO ESCURO ---------- */
+  .top{
+    padding:48px 26px 32px;
+    color:var(--color-white);
+  }
+
+  .header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:var(--space-6);
+  }
+
+  .brand{
+    font-weight:var(--font-weight-extrabold);
+    font-size:var(--font-size-lg);
+    letter-spacing:var(--tracking-tighter);
+    color:var(--color-white);
+  }
+  .brand .dot{ color:var(--color-brand-blue); }
+
+  .back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    color:var(--color-gray-400);
+    border:1px solid rgba(255,255,255,0.14);
+    padding:7px 12px 7px 10px;
+    border-radius:var(--radius-full);
+    text-decoration:none;
+    transition:background var(--duration-fast) var(--ease-out),
+               color      var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out);
+  }
+  .back:hover{
+    background:rgba(255,255,255,0.06);
+    border-color:rgba(255,255,255,0.30);
+    color:var(--color-white);
+  }
+
+  .top h1{
+    font-weight:var(--font-weight-extrabold);
+    font-size:var(--font-size-2xl);
+    letter-spacing:var(--tracking-tight);
+    line-height:1.2;
+    margin:0 0 var(--space-2);
+    color:var(--color-white);
+  }
+  .top p{
+    color:var(--color-gray-400);
+    font-size:var(--font-size-base);
+    line-height:var(--line-height-normal);
+    margin:0;
+  }
+
+  /* ---------- SHEET BRANCA ---------- */
   .sheet{
-    background:var(--surface); border-radius:var(--radius-lg) var(--radius-lg) 0 0; flex:1;
-    padding:28px 22px 30px; display:flex; flex-direction:column;
+    background:var(--surface-default);
+    border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+    flex:1;
+    padding:var(--space-6) var(--space-5) var(--space-8);
+    display:flex;
+    flex-direction:column;
   }
 
+  /* ---------- CARD DE ESCOLHA ---------- */
   .choice{
-    display:flex; align-items:center; gap:14px; padding:18px; border:1.5px solid var(--border);
-    border-radius:var(--radius-md); margin-bottom:14px; cursor:pointer; transition:border-color .15s, background .15s;
+    display:flex;
+    align-items:center;
+    gap:var(--space-3);
+    padding:var(--space-4);
+    border:1.5px solid var(--border-default);
+    border-radius:var(--radius-md);
+    margin-bottom:var(--space-3);
+    cursor:pointer;
+    background:var(--surface-default);
+    transition:border-color var(--duration-fast) var(--ease-out),
+               background   var(--duration-fast) var(--ease-out);
   }
-  .choice.selected{ border-color:var(--accent); background:var(--accent-soft); }
-  .choice[data-role="prestador"].selected{ border-color:var(--alert); background:var(--alert-soft); }
+  .choice:hover{ border-color:var(--color-gray-300); }
 
+  /* Cliente selecionado = preto */
+  .choice[data-role="cliente"].selected{
+    border-color:var(--color-black);
+    background:var(--color-gray-50);
+  }
+  /* Prestador selecionado = azul */
+  .choice[data-role="prestador"].selected{
+    border-color:var(--color-brand-blue-deep);
+    background:rgba(0,68,204,0.05);
+  }
+
+  /* Ícone circular */
   .choice .icon-circle{
-    width:48px; height:48px; border-radius:50%; background:var(--surface-soft); flex-shrink:0;
-    display:flex; align-items:center; justify-content:center; font-size:1.4rem; border:1px solid var(--border);
+    width:48px; height:48px;
+    border-radius:50%;
+    background:var(--surface-subtle);
+    border:1px solid var(--border-default);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--color-gray-700);
+    flex-shrink:0;
+    transition:background     var(--duration-fast) var(--ease-out),
+               border-color   var(--duration-fast) var(--ease-out),
+               color          var(--duration-fast) var(--ease-out);
   }
-  .choice-text h3{ font-family:var(--font-display); font-size:1rem; margin:0 0 3px; }
-  .choice-text p{ font-size:0.8rem; color:var(--ink-soft); margin:0; line-height:1.4; }
+  .choice .icon-circle .icon{
+    width:22px; height:22px; stroke-width:1.5;
+  }
 
-  .radio{
-    margin-left:auto; width:20px; height:20px; border-radius:50%; border:2px solid #C9CBD1;
-    flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  .choice[data-role="cliente"].selected .icon-circle{
+    background:var(--color-black);
+    border-color:var(--color-black);
+    color:var(--color-white);
   }
-  .choice.selected .radio{ border-color:var(--accent); }
-  .choice[data-role="prestador"].selected .radio{ border-color:var(--alert); }
-  .radio-dot{ width:10px; height:10px; border-radius:50%; background:var(--accent); transform:scale(0); transition:transform .15s; }
-  .choice[data-role="prestador"] .radio-dot{ background:var(--alert); }
+  .choice[data-role="prestador"].selected .icon-circle{
+    background:var(--color-brand-blue-deep);
+    border-color:var(--color-brand-blue-deep);
+    color:var(--color-white);
+  }
+
+  /* Texto */
+  .choice-text h3{
+    font-size:var(--font-size-base);
+    font-weight:var(--font-weight-bold);
+    letter-spacing:var(--tracking-tight);
+    margin:0 0 3px;
+    color:var(--text-primary);
+  }
+  .choice-text p{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+    margin:0;
+  }
+
+  /* Radio */
+  .radio{
+    margin-left:auto;
+    width:20px; height:20px;
+    border-radius:50%;
+    border:2px solid var(--color-gray-300);
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color var(--duration-fast) var(--ease-out);
+  }
+  .choice[data-role="cliente"].selected .radio{
+    border-color:var(--color-black);
+  }
+  .choice[data-role="prestador"].selected .radio{
+    border-color:var(--color-brand-blue-deep);
+  }
+  .radio-dot{
+    width:10px; height:10px;
+    border-radius:50%;
+    transform:scale(0);
+    transition:transform var(--duration-fast) var(--ease-out);
+  }
+  .choice[data-role="cliente"] .radio-dot{ background:var(--color-black); }
+  .choice[data-role="prestador"] .radio-dot{ background:var(--color-brand-blue-deep); }
   .choice.selected .radio-dot{ transform:scale(1); }
 
   .spacer{ flex:1; }
 
+  /* ---------- BOTÃO ---------- */
   .continue-btn{
-    width:100%; background:var(--ink); color:#fff; border:none; padding:15px;
-    font-family:var(--font-display); font-weight:700; font-size:0.95rem; border-radius:var(--radius-sm);
-    cursor:pointer; opacity:0.4; pointer-events:none; transition:opacity .15s, background .15s;
+    width:100%;
+    background:var(--color-gray-300);
+    color:var(--color-white);
+    border:none;
+    padding:15px;
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-base);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    border-radius:var(--radius-sm);
+    cursor:not-allowed;
+    opacity:0.55;
+    transition:opacity var(--duration-fast) var(--ease-out),
+               background var(--duration-fast) var(--ease-out);
   }
-  .continue-btn.enabled{ opacity:1; pointer-events:auto; }
-  .continue-btn.enabled[data-role="prestador"]{ background:var(--alert-ink); }
-
-  .back-link{ display:block; text-align:center; margin-top:16px; color:var(--ink-faint); font-size:0.82rem; text-decoration:none; }
+  .continue-btn.enabled{
+    opacity:1;
+    cursor:pointer;
+  }
+  .continue-btn.enabled[data-role="cliente"]{
+    background:var(--color-black);
+    color:var(--color-white);
+  }
+  .continue-btn.enabled[data-role="prestador"]{
+    background:var(--color-brand-blue-deep);
+    color:var(--color-white);
+  }
+  .continue-btn.enabled:active{ opacity:0.85; }
 </style>
 </head>
 <body>
 
 <div class="phone">
   <div class="top">
-    <div class="brand">
-  Bizu<span id="tipoMarca">xo</span>
-</div>
+    <div class="header-top">
+      <a href="index.html" class="back">
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <path d="M19 12H5"/>
+          <path d="m12 19-7-7 7-7"/>
+        </svg>
+        Voltar
+      </a>
+      <div class="brand">WENEED<span class="dot">.</span></div>
+      <div style="width:60px;"></div>
+    </div>
+
     <h1>Como você vai usar a plataforma?</h1>
     <p>Escolha um perfil para continuar o cadastro.</p>
   </div>
 
   <div class="sheet">
     <div class="choice" data-role="cliente" onclick="selectRole(this)">
-      <div class="icon-circle">🧑</div>
+      <div class="icon-circle">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
       <div class="choice-text">
         <h3>Sou cliente</h3>
         <p>Preciso de um serviço e quero publicar uma demanda para receber propostas.</p>
@@ -91,7 +281,11 @@
     </div>
 
     <div class="choice" data-role="prestador" onclick="selectRole(this)">
-      <div class="icon-circle">🛠️</div>
+      <div class="icon-circle">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+      </div>
       <div class="choice-text">
         <h3>Sou prestador</h3>
         <p>Ofereço serviços e quero ver demandas na minha região para enviar orçamentos.</p>
@@ -102,7 +296,6 @@
     <div class="spacer"></div>
 
     <button class="continue-btn" id="continueBtn" onclick="goNext()">Continuar</button>
-    <a href="index.html" class="back-link">← Voltar para o login</a>
   </div>
 </div>
 
@@ -115,7 +308,6 @@
   };
 
   function selectRole(card) {
-
     document.querySelectorAll('.choice').forEach(c =>
       c.classList.remove('selected')
     );
@@ -125,9 +317,7 @@
     role = card.dataset.role;
 
     const btn = document.getElementById('continueBtn');
-    const tipoMarca = document.getElementById('tipoMarca');
 
-    // Texto do botão
     btn.textContent =
       role === 'cliente'
         ? 'Continuar como cliente'
@@ -135,18 +325,10 @@
 
     btn.dataset.role = role;
     btn.classList.add('enabled');
-
-    // Cor do Bizuxo
-    if (role === 'cliente') {
-      tipoMarca.classList.remove('prestador');
-    } else {
-      tipoMarca.classList.add('prestador');
-    }
   }
 
   function goNext() {
     if (!role) return;
-
     window.location.href = destinations[role];
   }
 </script>

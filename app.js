@@ -14,7 +14,7 @@ if ('serviceWorker' in navigator) {
 }
 // ... (o resto do código do botão de instalar continua igual)
 /* =============================================
-   BOTÃO "INSTALAR BIZUXO" (PWA)
+   BOTÃO "INSTALAR weneed" (PWA)
 ============================================= */
 let deferredPrompt;
 const btnInstalar = document.getElementById('btn-instalar');
@@ -36,7 +36,7 @@ if (btnInstalar) {
       // Aguarda a escolha do usuário
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
-        console.log('Usuário aceitou a instalação do Bizuxo');
+        console.log('Usuário aceitou a instalação do weneed');
       }
       // Limpa a variável
       deferredPrompt = null;
@@ -47,6 +47,6 @@ if (btnInstalar) {
   // Esconde o botão se o app já estiver instalado
   window.addEventListener('appinstalled', () => {
     if (btnInstalar) btnInstalar.style.display = 'none';
-    console.log('Bizuxo instalado com sucesso!');
+    console.log('weneed instalado com sucesso!');
   });
 }

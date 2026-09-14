@@ -3,168 +3,379 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cadastro de Prestador · Bizuxo</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Cadastro de Prestador · WENEED</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
-<link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="stylesheet" href="./style.css">
+
 <style>
-  :root {
-    --bg-app:#0B0B0D; --bg-elevated:#1B1C1F; --surface:#FFFFFF; --surface-soft:#F4F4F2;
-    --ink:#101113; --ink-soft:#6B6E76; --ink-faint:#9A9CA3;
-    --accent:#05C167; --accent-ink:#04572C; --accent-soft:#E1F9EC;
-    --alert:#FF3B30; --alert-ink:#8C1810; --alert-soft:#FFE9E7;
-    --border:#E7E7E4; --radius-lg:20px; --radius-md:14px; --radius-sm:10px;
-    --font-display:'Sora', sans-serif; --font-body:'Inter', sans-serif;
-  }
-  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html, body { margin:0; padding:0; }
-  body { background:var(--surface-soft); color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased; }
-  a { color:inherit; text-decoration:none; }
-  button { font-family:inherit; cursor:pointer; }
+  /* ============================================================
+     Cadastro de Prestador — tokens do style.css
+     ============================================================ */
 
-  .phone { max-width:520px; margin:0 auto; min-height:100vh; background:var(--surface-soft); }
-
-  header {
-    background:var(--bg-app); color:#fff; padding:20px 24px 26px; border-radius:0 0 var(--radius-lg) var(--radius-lg);
-  }
-  .header-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-  .brand { font-family:var(--font-display); font-weight:800; font-size:1rem; }
-  .brand span { color:var(--alert) !important; }
-  .back { font-size:0.78rem; color:#B6B8BE; border:1px solid rgba(255,255,255,0.18); padding:6px 12px; border-radius:100px; transition: 0.2s; }
-  .back:hover { background: rgba(255,255,255,0.1); color: #fff; }
-
-  .type-toggle { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .type-card {
-    background:var(--bg-elevated); border:1.5px solid transparent; border-radius:var(--radius-md);
-    padding:14px 12px; text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
-  }
-  .type-card .icon { font-size:1.3rem; margin-bottom:6px; }
-  .type-card .name { font-family:var(--font-display); font-weight:700; font-size:0.85rem; color:#fff; }
-  .type-card.selected { border-color:var(--alert); background:rgba(255,59,48,0.14); }
-
-  .wrap { padding:24px 22px 60px; }
-  .intro { margin-bottom:20px; }
-  .intro h1 { font-family:var(--font-display); font-size:1.35rem; font-weight:700; margin:0 0 6px; }
-  .intro p { font-size:0.85rem; color:var(--ink-soft); margin:0; }
-
-  .card { background:var(--surface); border-radius:var(--radius-lg); padding:22px 20px; margin-bottom:14px; }
-  .card-label { font-family:var(--font-display); font-size:0.85rem; font-weight:700; color:var(--ink); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-  .card-label .dot { width:7px; height:7px; border-radius:50%; background:var(--alert) !important; }
-  .card-note { font-size:0.78rem; color:var(--ink-soft); margin:0 0 12px 0; }
-
-  .field { margin-bottom:16px; }
-  .field:last-child { margin-bottom:0; }
-  label { display:block; font-size:0.78rem; font-weight:600; color:var(--ink); margin-bottom:7px; }
-  input {
-    width:100%; font-family:var(--font-body); font-size:0.92rem; color:var(--ink);
-    background:var(--surface-soft); border:1.5px solid transparent; border-radius:var(--radius-sm);
-    padding:13px 14px; outline:none; transition:border-color .15s ease, background .15s ease;
-  }
-  input:focus { border-color:var(--ink); background:var(--surface); }
-  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-
-  /* CHIPS DE SELEÇÃO MÚLTIPLA */
-  .chip-select { display:flex; gap:8px; flex-wrap:wrap; }
-  
-  .chip-option {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 10px 14px; font-size: 0.85rem; font-weight: 600;
-    color: var(--ink-soft); background: var(--surface-soft);
-    border: 1.5px solid var(--border); border-radius: 100px;
-    cursor: pointer; transition: all 0.2s ease;
-    position: relative;
-    padding-right: 32px;
-    user-select: none;
-  }
-  
-  .chip-option:hover { 
-    border-color: var(--ink); 
-    color: var(--ink); 
-    transform: translateY(-1px);
-  }
-  
-  .chip-option.selected {
-    background: var(--alert); 
-    color: #fff; 
-    border-color: var(--alert);
-    box-shadow: 0 2px 8px rgba(255, 59, 48, 0.25);
-  }
-  
-  .chip-option.selected::after {
-    content: '✓';
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-weight: 800;
-    font-size: 0.9rem;
+  body{
+    background:var(--surface-subtle);
+    color:var(--text-primary);
+    display:flex;
+    justify-content:center;
   }
 
-  /* REGIÕES ADICIONADAS */
-  .region-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--alert-soft);
-    color: var(--alert-ink);
-    padding: 8px 12px;
-    border-radius: 100px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin: 4px;
-  }
-  
-  .region-tag button {
-    background: none;
-    border: none;
-    color: var(--alert);
-    cursor: pointer;
-    font-size: 1.2rem;
-    padding: 0;
-    margin-left: 4px;
+  .phone{
+    width:100%;
+    max-width:520px;
+    min-height:100vh;
+    background:var(--surface-subtle);
   }
 
-  .add-region-btn {
-    width: 100%;
-    padding: 12px;
-    background: var(--surface-soft);
-    border: 1.5px dashed var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--ink-soft);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{
+    width:16px; height:16px;
+    stroke:currentColor;
+    stroke-width:1.75;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    flex-shrink:0;
+    display:block;
   }
-  
-  .add-region-btn:hover {
-    border-color: var(--alert);
-    color: var(--alert);
-    background: var(--alert-soft);
+  .icon-sm{ width:14px; height:14px; stroke-width:2; }
+  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
+  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+
+  /* ---------- HEADER ESCURO ---------- */
+  header{
+    background:var(--color-black);
+    color:var(--color-white);
+    padding:var(--space-5) var(--space-6) var(--space-6);
+    border-radius:0 0 var(--radius-lg) var(--radius-lg);
+  }
+  .header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:var(--space-5);
+  }
+  .brand{
+    font-weight:var(--font-weight-extrabold);
+    font-size:var(--font-size-md);
+    letter-spacing:var(--tracking-tighter);
+    color:var(--color-white);
+  }
+  .brand .dot{ color:var(--color-brand-blue); }
+
+  .back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    color:var(--color-gray-400);
+    border:1px solid rgba(255,255,255,0.14);
+    padding:7px 12px 7px 10px;
+    border-radius:var(--radius-full);
+    text-decoration:none;
+    transition:background var(--duration-fast) var(--ease-out),
+               color      var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out);
+  }
+  .back:hover{
+    background:rgba(255,255,255,0.06);
+    border-color:rgba(255,255,255,0.30);
+    color:var(--color-white);
   }
 
-  .create-btn {
-    width:100%; background:var(--ink); color:#fff; border:none; padding:16px; margin-top:6px;
-    font-family:var(--font-display); font-weight:700; font-size:0.95rem; border-radius:var(--radius-sm);
-    transition:opacity .15s, background .15s;
+  /* ---------- TYPE TOGGLE ---------- */
+  .type-toggle{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:var(--space-2);
   }
-  .create-btn:active { opacity:0.85; }
-  .create-btn:disabled { opacity:0.6; cursor:not-allowed; background: var(--ink-faint); }
-  
-  .terms { font-size:0.75rem; color:var(--ink-faint); text-align:center; margin-top:14px; }
-  .login-note { text-align:center; font-size:0.85rem; color:var(--ink-soft); margin-top:22px; }
-  .login-note a { color:var(--ink); font-weight:700; text-decoration: underline; }
-
-  #selection-count { 
-    font-size: 0.75rem; 
-    font-weight: 600; 
-    margin-top: 8px; 
-    display: block; 
+  .type-card{
+    background:var(--color-gray-100);       /* cinza claro — sempre visível */
+    border:1.5px solid transparent;
+    border-radius:var(--radius-md);
+    padding:14px 12px;
+    text-align:center;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    color:var(--color-gray-700);            /* ícone escuro */
+    transition:border-color var(--duration-fast) var(--ease-out),
+               background   var(--duration-fast) var(--ease-out),
+               color        var(--duration-fast) var(--ease-out);
+  }
+  .type-card .name{
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-sm);
+    color:var(--color-gray-900);            /* texto quase preto */
+    letter-spacing:var(--tracking-tight);
+  }
+  .type-card:hover{
+    background:var(--color-gray-200);
+    border-color:var(--color-gray-300);
+  }
+  .type-card.selected{
+    background:var(--color-white);          /* branco puro — destaque */
+    border-color:var(--color-brand-blue-deep); /* azul do prestador */
+    color:var(--color-black);
+  }
+  .type-card.selected .name{
+    color:var(--color-black);
   }
 
-  @media (max-width:480px) {
-    .field-row { grid-template-columns:1fr; }
+  /* ---------- WRAP ---------- */
+  .wrap{ padding:var(--space-6) var(--space-5) var(--space-16); }
+
+  .intro{ margin-bottom:var(--space-5); }
+  .intro h1{
+    font-weight:var(--font-weight-extrabold);
+    font-size:var(--font-size-2xl);
+    letter-spacing:var(--tracking-tight);
+    margin:0 0 var(--space-2);
+  }
+  .intro p{
+    font-size:var(--font-size-base);
+    color:var(--text-secondary);
+    margin:0;
+    line-height:var(--line-height-normal);
+  }
+
+  /* ---------- CARD ---------- */
+  .card{
+    background:var(--surface-default);
+    border-radius:var(--radius-lg);
+    padding:var(--space-5) var(--space-5);
+    margin-bottom:var(--space-3);
+  }
+  .card-label{
+    display:flex;
+    align-items:center;
+    gap:var(--space-2);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tight);
+    margin-bottom:var(--space-4);
+  }
+  .card-label .dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--color-brand-blue);
+    flex-shrink:0;
+  }
+  .card-note{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    margin:0 0 var(--space-3) 0;
+    line-height:var(--line-height-normal);
+  }
+
+  /* ---------- FORM ---------- */
+  .field{ margin-bottom:var(--space-4); }
+  .field:last-child{ margin-bottom:0; }
+  label{
+    display:block;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-primary);
+    margin-bottom:7px;
+  }
+  input{
+    width:100%;
+    font-family:var(--font-family-base);
+    font-size:var(--font-size-base);
+    color:var(--text-primary);
+    background:var(--surface-subtle);
+    border:1.5px solid transparent;
+    border-radius:var(--radius-sm);
+    padding:13px 14px;
+    outline:none;
+    transition:border-color var(--duration-fast) var(--ease-out),
+               background   var(--duration-fast) var(--ease-out),
+               box-shadow   var(--duration-fast) var(--ease-out);
+  }
+  input:focus{
+    border-color:var(--border-focus);
+    background:var(--surface-default);
+    box-shadow:var(--shadow-focus);
+  }
+  input:read-only{
+    color:var(--text-secondary);
+    cursor:not-allowed;
+  }
+  .field-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:var(--space-3);
+  }
+
+  /* ---------- CHIPS DE SELEÇÃO MÚLTIPLA ---------- */
+  .chip-select{
+    display:flex;
+    gap:var(--space-2);
+    flex-wrap:wrap;
+  }
+  .chip-option{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 32px 9px 13px;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-medium);
+    color:var(--text-secondary);
+    background:var(--surface-subtle);
+    border:1.5px solid var(--border-default);
+    border-radius:var(--radius-full);
+    cursor:pointer;
+    transition:all var(--duration-fast) var(--ease-out);
+    position:relative;
+    user-select:none;
+    line-height:1.2;
+  }
+  .chip-option .icon{
+    color:var(--color-gray-500);
+    transition:color var(--duration-fast) var(--ease-out);
+  }
+  .chip-option:hover{
+    border-color:var(--color-black);
+    color:var(--color-black);
+  }
+  .chip-option:hover .icon{ color:var(--color-black); }
+  .chip-option.selected{
+    background:var(--color-black);
+    color:var(--color-white);
+    border-color:var(--color-black);
+  }
+  .chip-option.selected .icon{ color:var(--color-white); }
+  .chip-option.selected::after{
+    content:'';
+    position:absolute;
+    right:12px;
+    top:50%;
+    width:10px; height:10px;
+    transform:translateY(-50%);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+  }
+
+  /* ---------- REGIÕES ADICIONADAS ---------- */
+  .region-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--color-gray-50);
+    color:var(--text-primary);
+    border:1px solid var(--border-default);
+    padding:8px 10px 8px 12px;
+    border-radius:var(--radius-full);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-medium);
+    margin:4px 4px 0 0;
+  }
+  .region-tag button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:none;
+    border:none;
+    color:var(--color-gray-500);
+    cursor:pointer;
+    padding:0;
+    margin-left:2px;
+    transition:color var(--duration-fast);
+  }
+  .region-tag button:hover{ color:var(--color-black); }
+  .region-tag button .icon{ width:12px; height:12px; stroke-width:2.25; }
+
+  .add-region-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    padding:12px;
+    background:var(--surface-subtle);
+    border:1.5px dashed var(--border-default);
+    border-radius:var(--radius-sm);
+    color:var(--text-secondary);
+    font-family:var(--font-family-base);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    cursor:pointer;
+    transition:all var(--duration-fast) var(--ease-out);
+    margin-top:var(--space-2);
+  }
+  .add-region-btn:hover{
+    border-color:var(--color-black);
+    color:var(--color-black);
+    background:var(--surface-default);
+    border-style:solid;
+  }
+
+  /* ---------- BOTÃO ---------- */
+  .create-btn{
+    width:100%;
+    background:var(--color-brand-blue-deep);
+    color:var(--color-white);
+    border:none;
+    padding:16px;
+    margin-top:var(--space-2);
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-base);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    transition:opacity var(--duration-fast) var(--ease-out),
+               background var(--duration-fast) var(--ease-out);
+  }
+  .create-btn:hover:not(:disabled){ background:var(--color-brand-blue); }
+  .create-btn:active{ opacity:0.85; }
+  .create-btn:disabled{
+    opacity:0.55;
+    cursor:not-allowed;
+    background:var(--color-gray-300);
+  }
+
+  .terms{
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    text-align:center;
+    margin-top:var(--space-3);
+    line-height:var(--line-height-normal);
+  }
+  .login-note{
+    text-align:center;
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    margin-top:var(--space-5);
+  }
+  .login-note a{
+    color:var(--text-link);
+    font-weight:var(--font-weight-bold);
+  }
+  .login-note a:hover{ text-decoration:underline; }
+
+  #selection-count{
+    display:block;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-semibold);
+    color:var(--color-brand-blue-deep);
+    margin-top:var(--space-3);
+  }
+
+  @media (max-width:480px){
+    .field-row{ grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -173,9 +384,12 @@
 <div class="phone">
   <header>
     <div class="header-top">
-      <a href="escolha-perfil.html" class="back">← Voltar</a>
-      <div class="brand">Bizu<span>xo</span></div>
-      <div style="width: 60px;"></div>
+      <a href="escolha-perfil.html" class="back">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        Voltar
+      </a>
+      <div class="brand">WENEED<span class="dot">.</span></div>
+      <div style="width:60px;"></div>
     </div>
   </header>
 
@@ -185,120 +399,199 @@
       <p>Configure seu perfil para receber demandas e enviar propostas.</p>
     </div>
 
-    <!-- CARD 1: TIPO DE CONTA -->
+    <!-- CARD 1 · TIPO DE CONTA -->
     <div class="card">
       <div class="card-label"><div class="dot"></div> Tipo de Conta</div>
       <div class="type-toggle">
         <div class="type-card selected" onclick="selectType(this, 'PF')">
-          <div class="icon">👤</div>
+          <svg class="icon icon-lg" viewBox="0 0 24 24">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
           <div class="name">Pessoa Física</div>
         </div>
         <div class="type-card" onclick="selectType(this, 'PJ')">
-          <div class="icon">🏢</div>
+          <svg class="icon icon-lg" viewBox="0 0 24 24">
+            <rect width="16" height="20" x="4" y="2" rx="2"/>
+            <path d="M9 22v-4h6v4"/>
+            <path d="M8 6h.01"/><path d="M16 6h.01"/>
+            <path d="M12 6h.01"/><path d="M12 10h.01"/>
+            <path d="M12 14h.01"/><path d="M16 10h.01"/>
+            <path d="M16 14h.01"/><path d="M8 10h.01"/>
+            <path d="M8 14h.01"/>
+          </svg>
           <div class="name">Pessoa Jurídica</div>
         </div>
       </div>
     </div>
 
-    <!-- CARD 2: DADOS CADASTRAIS -->
+    <!-- CARD 2 · DADOS PRINCIPAIS -->
     <div class="card">
       <div class="card-label"><div class="dot"></div> Dados Principais</div>
-      
+
       <div id="fields-pf">
         <div class="field">
-          <label>Nome Completo</label>
-          <input type="text" id="full_name" placeholder="Ex: João da Silva">
+          <label for="full_name">Nome Completo</label>
+          <input type="text" id="full_name" placeholder="Ex: João da Silva" autocomplete="name">
         </div>
         <div class="field">
-          <label>CPF</label>
-          <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+          <label for="cpf">CPF</label>
+          <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
         </div>
       </div>
 
-      <div id="fields-pj" style="display: none;">
+      <div id="fields-pj" style="display:none;">
         <div class="field">
-          <label>Razão Social</label>
+          <label for="company_name">Razão Social</label>
           <input type="text" id="company_name" placeholder="Ex: Empresa XYZ Ltda">
         </div>
         <div class="field">
-          <label>Nome Fantasia</label>
+          <label for="trade_name">Nome Fantasia</label>
           <input type="text" id="trade_name" placeholder="Ex: XYZ Serviços">
         </div>
         <div class="field">
-          <label>CNPJ</label>
-          <input type="text" id="cnpj" placeholder="00.000.000/0000-00" maxlength="18">
+          <label for="cnpj">CNPJ</label>
+          <input type="text" id="cnpj" placeholder="00.000.000/0000-00" maxlength="18" inputmode="numeric">
         </div>
       </div>
 
       <div class="field">
-        <label>WhatsApp</label>
-        <input type="tel" id="whatsapp" placeholder="(11) 99999-9999">
+        <label for="whatsapp">WhatsApp</label>
+        <input type="tel" id="whatsapp" placeholder="(11) 99999-9999" autocomplete="tel" inputmode="tel">
       </div>
       <div class="field">
-        <label>E-mail</label>
-        <input type="email" id="email" placeholder="voce@email.com">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="voce@email.com" autocomplete="email">
       </div>
       <div class="field">
-        <label>Criar senha</label>
-        <input type="password" id="senha" placeholder="mínimo 8 caracteres" minlength="8">
+        <label for="senha">Criar senha</label>
+        <input type="password" id="senha" placeholder="mínimo 8 caracteres" minlength="8" autocomplete="new-password">
       </div>
     </div>
 
-    <!-- CARD 3: ÁREAS DE ATUAÇÃO (Categorias) -->
+    <!-- CARD 3 · ÁREAS DE ATUAÇÃO -->
     <div class="card">
       <div class="card-label"><div class="dot"></div> Áreas de Atuação</div>
       <p class="card-note">Selecione todos os serviços que você sabe realizar.</p>
-      
+
       <div class="chip-select" id="categories-container">
-        <div class="chip-option" onclick="toggleChip(this)" data-id="1">🔌 Eletricista</div>
-        <div class="chip-option" onclick="toggleChip(this)" data-id="2">🚿 Encanador</div>
-        <div class="chip-option" onclick="toggleChip(this)" data-id="3">✨ Diarista</div>
-        <div class="chip-option" onclick="toggleChip(this)" data-id="4">🛠️ Montador</div>
-        <div class="chip-option" onclick="toggleChip(this)" data-id="5">💻 Téc. Informática</div>
-        <div class="chip-option" onclick="toggleChip(this)" data-id="6">🎨 Design Gráfico</div>
-        <div class="chip-option" onclick="toggleChip(this)" data-id="7">🖥️ Dev. Web</div>
-        <div class="chip-option" onclick="toggleChip(this)" data-id="8">📝 Redação</div>
-        <div class="chip-option" onclick="toggleChip(this)" data-id="9">🎨 Pintura</div>
-        <div class="chip-option" onclick="toggleChip(this)" data-id="10">🧹 Limpeza</div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="1">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Eletricista
+        </div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="2">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          Encanador
+        </div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="3">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/>
+          </svg>
+          Diarista
+        </div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="4">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Montador
+        </div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="5">
+          <svg class="icon" viewBox="0 0 24 24">
+            <rect width="20" height="14" x="2" y="3" rx="2"/>
+            <line x1="8" x2="16" y1="21" y2="21"/>
+            <line x1="12" x2="12" y1="17" y2="21"/>
+          </svg>
+          Téc. Informática
+        </div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="6">
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+            <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+            <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+            <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+          </svg>
+          Design Gráfico
+        </div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="7">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Dev. Web
+        </div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="8">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" x2="8" y1="13" y2="13"/>
+            <line x1="16" x2="8" y1="17" y2="17"/>
+          </svg>
+          Redação
+        </div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="9">
+          <svg class="icon" viewBox="0 0 24 24">
+            <rect width="16" height="6" x="2" y="2" rx="2"/>
+            <path d="M10 8v3a2 2 0 0 0 2 2h2"/>
+            <rect width="8" height="9" x="14" y="13" rx="1"/>
+          </svg>
+          Pintura
+        </div>
+
+        <div class="chip-option" onclick="toggleChip(this)" data-id="10">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M3 3h.01"/><path d="M7 5h.01"/><path d="M11 7h.01"/>
+            <path d="M3 7h.01"/><path d="M7 9h.01"/><path d="M3 11h.01"/>
+            <rect width="4" height="4" x="15" y="5"/>
+            <path d="m19 9 2 2v10c0 .6-.4 1-1 1h-6c-.6 0-1-.4-1-1V11l2-2"/>
+          </svg>
+          Limpeza
+        </div>
+
       </div>
-      <span id="selection-count" style="display:none; margin-top:8px; font-size:0.75rem; color:var(--ink-soft);">0 serviços selecionados</span>
+      <span id="selection-count" style="display:none;">0 serviços selecionados</span>
     </div>
 
-    <!-- CARD 4: LOCALIZAÇÃO DE ATUAÇÃO -->
+    <!-- CARD 4 · LOCALIZAÇÃO DE ATUAÇÃO -->
     <div class="card">
       <div class="card-label"><div class="dot"></div> Localização de Atuação</div>
       <p class="card-note">Adicione as regiões onde você atende. Você pode adicionar várias.</p>
-      
+
       <div class="field-row">
         <div class="field">
-          <label>CEP</label>
-          <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+          <label for="cep">CEP</label>
+          <input type="text" id="cep" placeholder="00000-000" maxlength="9" inputmode="numeric">
         </div>
         <div class="field">
-          <label>Cidade</label>
+          <label for="city">Cidade</label>
           <input type="text" id="city" placeholder="Ex: São Paulo" readonly>
         </div>
       </div>
-      
+
       <div class="field">
-        <label>Bairro/Região</label>
+        <label for="neighborhood">Bairro/Região</label>
         <input type="text" id="neighborhood" placeholder="Ex: Centro, Pinheiros...">
       </div>
-      
+
       <div class="field">
-        <label>UF</label>
+        <label for="uf">UF</label>
         <input type="text" id="uf" placeholder="Ex: SP" maxlength="2" readonly>
       </div>
-      
+
       <button type="button" class="add-region-btn" onclick="adicionarRegiao()">
-        + Adicionar região de atuação
+        <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        Adicionar região de atuação
       </button>
-      
-      <div id="regions-container" style="margin-top: 12px;"></div>
+
+      <div id="regions-container" style="margin-top:var(--space-3);"></div>
     </div>
 
     <button class="create-btn" onclick="finalizarCadastro('prestador')">Criar conta de prestador</button>
-    <p class="terms">Ao continuar, você concorda com os Termos de Uso e Política de Privacidade do Bizuxo.</p>
+    <p class="terms">Ao continuar, você concorda com os Termos de Uso e Política de Privacidade do WENEED.</p>
     <div class="login-note">Já tem conta? <a href="index.html">Entrar</a></div>
   </div>
 </div>
@@ -308,6 +601,6 @@
 <script src="js/utils.js"></script>
 <script src="js/cadastro.js"></script>
 <script src="js/auth.js"></script>
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

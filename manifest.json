@@ -1,6 +1,6 @@
 {
-  "name": "Bizuxo",
-  "short_name": "Bizuxo",
+  "name": "weneed",
+  "short_name": "weneed",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0B0B0D",

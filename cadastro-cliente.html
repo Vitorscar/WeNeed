@@ -3,86 +3,286 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cadastro de Cliente · Bizuxo</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Cadastro de Cliente · WENEED</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
-  <link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="stylesheet" href="./style.css">
+
 <style>
-  :root {
-    --bg-app:#0B0B0D; --bg-elevated:#1B1C1F; --surface:#FFFFFF; --surface-soft:#F4F4F2;
-    --ink:#101113; --ink-soft:#6B6E76; --ink-faint:#9A9CA3;
-    --accent:#05C167; --accent-ink:#04572C; --accent-soft:#E1F9EC;
-    --alert:#FF3B30; --alert-ink:#8C1810; --alert-soft:#FFE9E7;
-    --border:#E7E7E4; --radius-lg:20px; --radius-md:14px; --radius-sm:10px;
-    --font-display:'Sora', sans-serif; --font-body:'Inter', sans-serif;
+  /* ============================================================
+     Cadastro de Cliente — tokens do style.css
+     ============================================================ */
+
+  body{
+    background:var(--surface-subtle);
+    color:var(--text-primary);
+    display:flex;
+    justify-content:center;
   }
-  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html, body { margin:0; padding:0; }
-  body { background:var(--surface-soft); color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased; }
-  a { color:inherit; text-decoration:none; }
-  button { font-family:inherit; cursor:pointer; }
 
-  .phone { max-width:520px; margin:0 auto; min-height:100vh; background:var(--surface-soft); }
-
-  header {
-    background:var(--bg-app); color:#fff; padding:20px 24px 26px; border-radius:0 0 var(--radius-lg) var(--radius-lg);
+  .phone{
+    width:100%;
+    max-width:520px;
+    min-height:100vh;
+    background:var(--surface-subtle);
   }
-  .header-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-  .brand { font-family:var(--font-display); font-weight:800; font-size:1rem; }
-  .brand span { color:var(--accent) !important; }
-  .back { font-size:0.78rem; color:#B6B8BE; border:1px solid rgba(255,255,255,0.18); padding:6px 12px; border-radius:100px; transition: 0.2s; }
-  .back:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
-  .type-toggle { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .type-card {
-    background:var(--bg-elevated); border:1.5px solid transparent; border-radius:var(--radius-md);
-    padding:14px 12px; text-align:center; cursor:pointer; transition:border-color .15s, background .15s;
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{
+    width:16px; height:16px;
+    stroke:currentColor;
+    stroke-width:1.75;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    flex-shrink:0;
+    display:block;
   }
-  .type-card .icon { font-size:1.3rem; margin-bottom:6px; }
-  .type-card .name { font-family:var(--font-display); font-weight:700; font-size:0.85rem; color:#fff; }
-  .type-card.selected { border-color:var(--accent); background:rgba(5,193,103,0.14); }
+  .icon-sm{ width:14px; height:14px; stroke-width:2; }
+  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
+  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
 
-  .wrap { padding:24px 22px 60px; }
-  .intro { margin-bottom:20px; }
-  .intro h1 { font-family:var(--font-display); font-size:1.35rem; font-weight:700; margin:0 0 6px; }
-  .intro p { font-size:0.85rem; color:var(--ink-soft); margin:0; }
-
-  .card { background:var(--surface); border-radius:var(--radius-lg); padding:22px 20px; margin-bottom:14px; }
-  .card-label { font-family:var(--font-display); font-size:0.85rem; font-weight:700; color:var(--ink); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-  .card-label .dot { width:7px; height:7px; border-radius:50%; background:var(--accent) !important; }
-  .card-note { font-size:0.78rem; color:var(--ink-soft); margin:0 0 12px 0; }
-
-  .field { margin-bottom:16px; }
-  .field:last-child { margin-bottom:0; }
-  label { display:block; font-size:0.78rem; font-weight:600; color:var(--ink); margin-bottom:7px; }
-  input {
-    width:100%; font-family:var(--font-body); font-size:0.92rem; color:var(--ink);
-    background:var(--surface-soft); border:1.5px solid transparent; border-radius:var(--radius-sm);
-    padding:13px 14px; outline:none; transition:border-color .15s ease, background .15s ease;
+  /* ---------- HEADER ESCURO ---------- */
+  header{
+    background:var(--color-black);
+    color:var(--color-white);
+    padding:var(--space-5) var(--space-6) var(--space-6);
+    border-radius:0 0 var(--radius-lg) var(--radius-lg);
   }
-  input:focus { border-color:var(--ink); background:var(--surface); }
-  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-
-  .cep-status { display:flex; align-items:center; gap:6px; margin-top:8px; font-size:0.78rem; font-weight:600; }
-  .cep-status.ok { color:var(--accent-ink); }
-  .cep-status.err { color:var(--alert); }
-  .cep-status.loading { color:var(--ink-faint); }
-
-  .helper { font-size:0.76rem; color:var(--ink-faint); margin-top:6px; }
-
-  .create-btn {
-    width:100%; background:var(--ink); color:#fff; border:none; padding:16px; margin-top:6px;
-    font-family:var(--font-display); font-weight:700; font-size:0.95rem; border-radius:var(--radius-sm);
-    transition:opacity .15s, background .15s;
+  .header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:var(--space-5);
   }
-  .create-btn:active { opacity:0.85; }
-  .create-btn:disabled { opacity:0.6; cursor:not-allowed; background: var(--ink-faint); }
-  .terms { font-size:0.75rem; color:var(--ink-faint); text-align:center; margin-top:14px; }
-  .login-note { text-align:center; font-size:0.85rem; color:var(--ink-soft); margin-top:22px; }
-  .login-note a { color:var(--ink); font-weight:700; text-decoration: underline; }
+  .brand{
+    font-weight:var(--font-weight-extrabold);
+    font-size:var(--font-size-md);
+    letter-spacing:var(--tracking-tighter);
+    color:var(--color-white);
+  }
+  .brand .dot{ color:var(--color-brand-blue); }
 
-  @media (max-width:480px) { .field-row { grid-template-columns:1fr; } }
+  .back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    color:var(--color-gray-400);
+    border:1px solid rgba(255,255,255,0.14);
+    padding:7px 12px 7px 10px;
+    border-radius:var(--radius-full);
+    text-decoration:none;
+    transition:background var(--duration-fast) var(--ease-out),
+               color      var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out);
+  }
+  .back:hover{
+    background:rgba(255,255,255,0.06);
+    border-color:rgba(255,255,255,0.30);
+    color:var(--color-white);
+  }
+
+    /* ---------- TYPE TOGGLE ---------- */
+  .type-toggle{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:var(--space-2);
+  }
+  .type-card{
+    background:var(--color-gray-100);          /* cinza claro — sempre visível */
+    border:1.5px solid transparent;
+    border-radius:var(--radius-md);
+    padding:14px 12px;
+    text-align:center;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    color:var(--color-gray-700);               /* ícone escuro */
+    transition:border-color var(--duration-fast) var(--ease-out),
+               background   var(--duration-fast) var(--ease-out),
+               color        var(--duration-fast) var(--ease-out);
+  }
+  .type-card .name{
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-sm);
+    color:var(--color-gray-900);               /* texto quase preto */
+    letter-spacing:var(--tracking-tight);
+  }
+  .type-card:hover{
+    background:var(--color-gray-200);
+    border-color:var(--color-gray-300);
+  }
+  .type-card.selected{
+    background:var(--color-white);             /* branco puro — destaque */
+    border-color:var(--color-black);
+    color:var(--color-black);
+  }
+  .type-card.selected .name{
+    color:var(--color-black);
+  }
+  /* ---------- WRAP ---------- */
+  .wrap{ padding:var(--space-6) var(--space-5) var(--space-16); }
+
+  .intro{ margin-bottom:var(--space-5); }
+  .intro h1{
+    font-weight:var(--font-weight-extrabold);
+    font-size:var(--font-size-2xl);
+    letter-spacing:var(--tracking-tight);
+    margin:0 0 var(--space-2);
+  }
+  .intro p{
+    font-size:var(--font-size-base);
+    color:var(--text-secondary);
+    margin:0;
+    line-height:var(--line-height-normal);
+  }
+
+  /* ---------- CARD ---------- */
+  .card{
+    background:var(--surface-default);
+    border-radius:var(--radius-lg);
+    padding:var(--space-5) var(--space-5);
+    margin-bottom:var(--space-3);
+  }
+  .card-label{
+    display:flex;
+    align-items:center;
+    gap:var(--space-2);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tight);
+    margin-bottom:var(--space-4);
+  }
+  .card-label .dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--color-black);
+    flex-shrink:0;
+  }
+  .card-note{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    margin:0 0 var(--space-3) 0;
+    line-height:var(--line-height-normal);
+  }
+
+  /* ---------- FORM ---------- */
+  .field{ margin-bottom:var(--space-4); }
+  .field:last-child{ margin-bottom:0; }
+  label{
+    display:block;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-primary);
+    margin-bottom:7px;
+  }
+  input{
+    width:100%;
+    font-family:var(--font-family-base);
+    font-size:var(--font-size-base);
+    color:var(--text-primary);
+    background:var(--surface-subtle);
+    border:1.5px solid transparent;
+    border-radius:var(--radius-sm);
+    padding:13px 14px;
+    outline:none;
+    transition:border-color var(--duration-fast) var(--ease-out),
+               background   var(--duration-fast) var(--ease-out),
+               box-shadow   var(--duration-fast) var(--ease-out);
+  }
+  input:focus{
+    border-color:var(--border-focus);
+    background:var(--surface-default);
+    box-shadow:var(--shadow-focus);
+  }
+  input:read-only{
+    color:var(--text-secondary);
+    cursor:not-allowed;
+  }
+  .field-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:var(--space-3);
+  }
+
+  .helper{
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    margin-top:6px;
+    line-height:var(--line-height-normal);
+  }
+
+  /* ---------- CEP STATUS ---------- */
+  .cep-status{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-top:8px;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-semibold);
+  }
+  .cep-status.ok{ color:var(--color-success); }
+  .cep-status.err{ color:var(--color-error); }
+  .cep-status.loading{ color:var(--text-secondary); }
+
+  /* ---------- BOTÃO ---------- */
+  .create-btn{
+    width:100%;
+    background:var(--color-black);
+    color:var(--color-white);
+    border:none;
+    padding:16px;
+    margin-top:var(--space-2);
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-base);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    transition:opacity var(--duration-fast) var(--ease-out),
+               background var(--duration-fast) var(--ease-out);
+  }
+  .create-btn:hover:not(:disabled){ background:var(--color-gray-900); }
+  .create-btn:active{ opacity:0.85; }
+  .create-btn:disabled{
+    opacity:0.55;
+    cursor:not-allowed;
+    background:var(--color-gray-300);
+  }
+
+  .terms{
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    text-align:center;
+    margin-top:var(--space-3);
+    line-height:var(--line-height-normal);
+  }
+  .login-note{
+    text-align:center;
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    margin-top:var(--space-5);
+  }
+  .login-note a{
+    color:var(--text-link);
+    font-weight:var(--font-weight-bold);
+  }
+  .login-note a:hover{ text-decoration:underline; }
+
+  @media (max-width:480px){
+    .field-row{ grid-template-columns:1fr; }
+  }
 </style>
 </head>
 <body>
@@ -90,9 +290,15 @@
 <div class="phone">
   <header>
     <div class="header-top">
-      <a href="escolha-perfil.html" class="back">← Voltar</a>
-      <div class="brand">Bizu<span>xo</span></div>
-      <div style="width: 60px;"></div>
+      <a href="escolha-perfil.html" class="back">
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <path d="M19 12H5"/>
+          <path d="m12 19-7-7 7-7"/>
+        </svg>
+        Voltar
+      </a>
+      <div class="brand">WENEED<span class="dot">.</span></div>
+      <div style="width:60px;"></div>
     </div>
   </header>
 
@@ -102,110 +308,122 @@
       <p>Preencha seus dados para começar a publicar demandas.</p>
     </div>
 
-    <!-- CARD 1: TIPO DE CONTA -->
+    <!-- CARD 1 · TIPO DE CONTA -->
     <div class="card">
       <div class="card-label"><div class="dot"></div> Tipo de Conta</div>
       <div class="type-toggle">
         <div class="type-card selected" onclick="selectType(this, 'PF')">
-          <div class="icon">👤</div>
+          <svg class="icon icon-lg" viewBox="0 0 24 24">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
           <div class="name">Pessoa Física</div>
         </div>
         <div class="type-card" onclick="selectType(this, 'PJ')">
-          <div class="icon">🏢</div>
+          <svg class="icon icon-lg" viewBox="0 0 24 24">
+            <rect width="16" height="20" x="4" y="2" rx="2"/>
+            <path d="M9 22v-4h6v4"/>
+            <path d="M8 6h.01"/><path d="M16 6h.01"/>
+            <path d="M12 6h.01"/><path d="M12 10h.01"/>
+            <path d="M12 14h.01"/><path d="M16 10h.01"/>
+            <path d="M16 14h.01"/><path d="M8 10h.01"/>
+            <path d="M8 14h.01"/>
+          </svg>
           <div class="name">Pessoa Jurídica</div>
         </div>
       </div>
     </div>
 
-    <!-- CARD 2: DADOS CADASTRAIS -->
+    <!-- CARD 2 · DADOS PRINCIPAIS -->
     <div class="card">
       <div class="card-label"><div class="dot"></div> Dados Principais</div>
-      
+
       <div id="fields-pf">
         <div class="field">
-          <label>Nome Completo</label>
-          <input type="text" id="full_name" placeholder="Ex: João da Silva">
+          <label for="full_name">Nome Completo</label>
+          <input type="text" id="full_name" placeholder="Ex: João da Silva" autocomplete="name">
         </div>
         <div class="field">
-          <label>CPF</label>
-          <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+          <label for="cpf">CPF</label>
+          <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
         </div>
       </div>
 
-      <div id="fields-pj" style="display: none;">
+      <div id="fields-pj" style="display:none;">
         <div class="field">
-          <label>Razão Social</label>
+          <label for="company_name">Razão Social</label>
           <input type="text" id="company_name" placeholder="Ex: Empresa XYZ Ltda">
         </div>
         <div class="field">
-          <label>Nome Fantasia</label>
+          <label for="trade_name">Nome Fantasia</label>
           <input type="text" id="trade_name" placeholder="Ex: XYZ Serviços">
         </div>
         <div class="field">
-          <label>CNPJ</label>
-          <input type="text" id="cnpj" placeholder="00.000.000/0000-00" maxlength="18">
+          <label for="cnpj">CNPJ</label>
+          <input type="text" id="cnpj" placeholder="00.000.000/0000-00" maxlength="18" inputmode="numeric">
         </div>
       </div>
 
       <div class="field">
-        <label>WhatsApp</label>
-        <input type="tel" id="whatsapp" placeholder="(11) 99999-9999">
+        <label for="whatsapp">WhatsApp</label>
+        <input type="tel" id="whatsapp" placeholder="(11) 99999-9999" autocomplete="tel" inputmode="tel">
       </div>
       <div class="field">
-        <label>E-mail</label>
-        <input type="email" id="email" placeholder="voce@email.com">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="voce@email.com" autocomplete="email">
       </div>
       <div class="field">
-        <label>Criar senha</label>
-        <input type="password" id="senha" placeholder="mínimo 6 caracteres" minlength="6">
+        <label for="senha">Criar senha</label>
+        <input type="password" id="senha" placeholder="mínimo 6 caracteres" minlength="6" autocomplete="new-password">
         <div class="helper">Use pelo menos 6 caracteres</div>
       </div>
     </div>
 
-    <!-- CARD 3: ENDEREÇO -->
+    <!-- CARD 3 · ENDEREÇO -->
     <div class="card">
       <div class="card-label"><div class="dot"></div> Endereço de Referência</div>
       <p class="card-note">Isso nos ajuda a mostrar prestadores próximos a você.</p>
-      
+
       <div class="field-row">
         <div class="field">
-          <label>CEP</label>
-          <input type="text" id="zip_code" placeholder="00000-000" maxlength="9">
+          <label for="zip_code">CEP</label>
+          <input type="text" id="zip_code" placeholder="00000-000" maxlength="9" inputmode="numeric">
           <div class="cep-status" id="cepStatus"></div>
         </div>
         <div class="field">
-          <label>Cidade</label>
-          <input type="text" id="city" placeholder="Ex: São Paulo">
+          <label for="city">Cidade</label>
+          <input type="text" id="city" placeholder="Ex: São Paulo" autocomplete="address-level2">
         </div>
       </div>
-      
+
       <div class="field">
-        <label>Bairro</label>
-        <input type="text" id="neighborhood" placeholder="Ex: Centro">
+        <label for="neighborhood">Bairro</label>
+        <input type="text" id="neighborhood" placeholder="Ex: Centro" autocomplete="address-level3">
       </div>
-      
+
       <div class="field">
-        <label>Endereço</label>
-        <input type="text" id="address" placeholder="Ex: Rua das Flores, 123">
+        <label for="address">Endereço</label>
+        <input type="text" id="address" placeholder="Ex: Rua das Flores, 123" autocomplete="street-address">
       </div>
-      
+
       <div class="field">
-        <label>UF</label>
-        <input type="text" id="uf" placeholder="Ex: SP" maxlength="2">
+        <label for="uf">UF</label>
+        <input type="text" id="uf" placeholder="Ex: SP" maxlength="2" autocomplete="address-level1">
       </div>
-      
+
       <div class="field">
-        <label>Complemento</label>
+        <label for="complement">Complemento</label>
         <input type="text" id="complement" placeholder="Ex: Apto 101, Bloco B">
         <div class="helper">Opcional. Ex: apartamento, bloco, casa, sala etc.</div>
       </div>
     </div>
 
     <button class="create-btn" onclick="finalizarCadastro('cliente')">Criar conta de cliente</button>
-    <p class="terms">Ao continuar, você concorda com os Termos de Uso e Política de Privacidade do Bizuxo.</p>
+    <p class="terms">Ao continuar, você concorda com os Termos de Uso e Política de Privacidade do WENEED.</p>
     <div class="login-note">Já tem conta? <a href="cliente/dashboard-cliente.html">Entrar</a></div>
   </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-cliente.js"></script>
 <script src="js/utils.js"></script>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bizuxo-cache-v1';
+const CACHE_NAME = 'weneed-cache-v1';
 
 const ASSETS_TO_CACHE = [
   './',

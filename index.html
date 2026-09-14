@@ -3,71 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Entrar · Bizuxo</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!-- Caminho corrigido para a raiz -->
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
-<link rel="stylesheet" href="./style.css">
-<style>
-  :root{
-    --bg-app:#0B0B0D; --bg-elevated:#1B1C1F; --surface:#FFFFFF; --surface-soft:#F4F4F2;
-    --ink:#101113; --ink-soft:#6B6E76; --ink-faint:#9A9CA3;
-    --accent:#05C167; --accent-ink:#04572C; --accent-soft:#E1F9EC;
-    --alert:#FF3B30; --alert-ink:#8C1810; --alert-soft:#FFE9E7;
-    --border:#E7E7E4; --radius-lg:20px; --radius-md:14px; --radius-sm:10px;
-    --font-display:'Sora', sans-serif; --font-body:'Inter', sans-serif;
-  }
-  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html,body{ margin:0; padding:0; height:100%; }
-  body{ font-family:var(--font-body); color:var(--ink); -webkit-font-smoothing:antialiased; background:var(--surface-soft); }
-  a{ color:inherit; text-decoration:none; }
-  button{ font-family:inherit; cursor:pointer; }
+<title>Entrar · WENEED</title>
 
-  .screen{ display:grid; grid-template-columns:1fr 1fr; min-height:100vh; }
-  .panel{ background:var(--bg-app); color:#fff; padding:56px 52px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="stylesheet" href="./style.css">
+
+<style>
+  /* ---- Login específico (usa tokens do style.css) ---- */
+  .screen{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    min-height:100vh;
+  }
+
+  /* Painel esquerdo — preto sólido */
+  .panel{
+    background:var(--color-black);
+    color:var(--color-white);
+    padding:56px 52px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    position:relative; overflow:hidden;
+  }
   .panel-content{ position:relative; z-index:1; }
-  .brand{ font-family:var(--font-display); font-weight:800; font-size:1.15rem; margin-bottom:64px; }
-  .brand span{ color:var(--accent); }
-  .panel h1{ font-family:var(--font-display); font-size:2.3rem; font-weight:700; line-height:1.2; letter-spacing:-0.01em; max-width:14ch; margin:0 0 16px; }
-  .panel h1 em{ color:var(--accent); font-style:normal; }
-  .panel p{ font-size:0.95rem; color:#B6B8BE; max-width:36ch; line-height:1.6; }
-  .stat-row{ display:flex; gap:36px; position:relative; z-index:1; }
-  .stat-row .stat b{ display:block; font-family:var(--font-display); font-size:1.5rem; color:var(--accent); }
-  .stat-row .stat span{ font-size:0.75rem; color:#8B8E96; }
-  .form-col{ background:var(--surface-soft); display:flex; align-items:center; justify-content:center; padding:40px; }
-  .login-card{ width:100%; max-width:380px; background:var(--surface); border-radius:var(--radius-lg); box-shadow:0 2px 24px rgba(16,17,19,0.06); padding:30px 28px 28px; }
-  .role-switch{ position:relative; display:grid; grid-template-columns:1fr 1fr; background:var(--surface-soft); border-radius:100px; padding:4px; margin-bottom:24px; height:44px; }
-  .role-pill{ position:absolute; top:4px; left:4px; width:calc(50% - 4px); height:calc(100% - 8px); background:var(--ink); border-radius:100px; transition:transform .2s ease, background .2s ease; z-index:0; }
-  .role-pill.prestador{ transform:translateX(100%); background:var(--alert-ink); }
-  .role-btn{ position:relative; z-index:1; background:transparent; border:none; font-size:0.83rem; font-weight:600; color:var(--ink-soft); transition:color .2s; }
-  .role-btn.active{ color:#fff; }
-  .card-body h2{ font-family:var(--font-display); font-size:1.3rem; font-weight:700; margin:0 0 5px; letter-spacing:-0.01em; }
-  .card-body .sub{ font-size:0.83rem; color:var(--ink-soft); margin-bottom:24px; line-height:1.4; }
-  .field{ margin-bottom:14px; }
-  label{ display:block; font-size:0.78rem; font-weight:600; color:var(--ink); margin-bottom:7px; }
-  input{ width:100%; font-family:var(--font-body); font-size:0.92rem; color:var(--ink); background:var(--surface-soft); border:1.5px solid transparent; border-radius:var(--radius-sm); padding:13px 14px; outline:none; transition:border-color .15s ease, background .15s ease; }
-  input:focus{ border-color:var(--ink); background:var(--surface); }
-  .row-between{ display:flex; justify-content:space-between; align-items:center; margin:2px 0 22px; }
-  .forgot{ font-size:0.8rem; color:var(--ink-soft); font-weight:600; }
-  .remember{ display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--ink-soft); }
-  .enter-btn{ width:100%; background:var(--accent); color:#fff; border:none; padding:15px; font-family:var(--font-display); font-weight:700; font-size:0.92rem; border-radius:var(--radius-sm); transition:background .15s, opacity .15s; }
-  .enter-btn.prestador{ background:var(--alert); }
+  .brand{
+    font-weight:var(--font-weight-extrabold);
+    font-size:var(--font-size-lg);
+    letter-spacing:var(--tracking-tighter);
+    margin-bottom:64px;
+  }
+  .brand .dot{ color:var(--color-brand-blue); }
+  .panel h1{
+    font-size:var(--font-size-4xl);
+    font-weight:var(--font-weight-bold);
+    line-height:1.15;
+    letter-spacing:var(--tracking-tighter);
+    max-width:14ch;
+    margin:0 0 var(--space-4);
+  }
+  .panel h1 em{
+    font-style:normal;
+    color:var(--color-brand-blue);
+  }
+  .panel p{
+    font-size:var(--font-size-base);
+    color:var(--color-gray-400);
+    max-width:36ch;
+    line-height:var(--line-height-relaxed);
+  }
+  .stat-row{
+    display:flex; gap:36px;
+    position:relative; z-index:1;
+  }
+  .stat-row .stat b{
+    display:block;
+    font-size:var(--font-size-2xl);
+    color:var(--color-white);
+    font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tighter);
+  }
+  .stat-row .stat span{
+    font-size:var(--font-size-xs);
+    color:var(--color-gray-400);
+  }
+
+  /* Coluna direita — formulário */
+  .form-col{
+    background:var(--surface-subtle);
+    display:flex; align-items:center; justify-content:center;
+    padding:var(--space-10);
+  }
+  .login-card{
+    width:100%; max-width:380px;
+    background:var(--surface-default);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-md);
+    padding:var(--space-6) var(--space-6) var(--space-5);
+  }
+
+  /* Seletor de perfil */
+  .role-switch{
+    position:relative;
+    display:grid; grid-template-columns:1fr 1fr;
+    background:var(--surface-subtle);
+    border-radius:var(--radius-full);
+    padding:4px;
+    margin-bottom:var(--space-5);
+    height:44px;
+  }
+  .role-pill{
+    position:absolute; top:4px; left:4px;
+    width:calc(50% - 4px); height:calc(100% - 8px);
+    background:var(--color-black);
+    border-radius:var(--radius-full);
+    transition:transform var(--duration-base) var(--ease-out),
+               background var(--duration-base) var(--ease-out);
+    z-index:0;
+  }
+  .role-btn{
+    position:relative; z-index:1;
+    background:transparent; border:none;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-secondary);
+    transition:color var(--duration-base);
+  }
+  .role-btn.active{ color:var(--color-white); }
+
+  .card-body h2{
+    font-size:var(--font-size-xl);
+    font-weight:var(--font-weight-bold);
+    margin:0 0 5px;
+    letter-spacing:var(--tracking-tight);
+  }
+  .card-body .sub{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    margin-bottom:var(--space-5);
+    line-height:var(--line-height-normal);
+  }
+
+  .row-between{
+    display:flex; justify-content:space-between; align-items:center;
+    margin:2px 0 var(--space-5);
+  }
+  .forgot{
+    font-size:var(--font-size-sm);
+    color:var(--text-link);
+    font-weight:var(--font-weight-semibold);
+  }
+  .forgot:hover{ text-decoration:underline; }
+  .remember{
+    display:flex; align-items:center; gap:6px;
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+  }
+  .remember input{ width:auto; }
+
+  .enter-btn{
+    width:100%;
+    background:var(--color-black);
+    color:var(--color-white);
+    border:none;
+    padding:15px;
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-base);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    border-radius:var(--radius-sm);
+    transition:opacity var(--duration-fast), background var(--duration-fast);
+  }
   .enter-btn:active{ opacity:0.85; }
   .enter-btn:disabled{ opacity:0.6; cursor:not-allowed; }
-  .signup-note{ text-align:center; font-size:0.85rem; color:var(--ink-soft); margin-top:20px; }
-  .signup-note a{ color:var(--ink); font-weight:700; }
+
+  .signup-note{
+    text-align:center;
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    margin-top:var(--space-5);
+  }
+  .signup-note a{
+    color:var(--text-link);
+    font-weight:var(--font-weight-bold);
+  }
+  .signup-note a:hover{ text-decoration:underline; }
 
   @media (max-width:840px){
     .screen{ grid-template-columns:1fr; }
-    .panel{ padding:40px 26px; min-height:auto; border-radius:0 0 var(--radius-lg) var(--radius-lg); }
-    .panel h1{ font-size:1.8rem; }
+    .panel{
+      padding:40px 26px;
+      min-height:auto;
+      border-radius:0 0 var(--radius-lg) var(--radius-lg);
+    }
+    .panel h1{ font-size:var(--font-size-3xl); }
     .stat-row{ display:none; }
-    .form-col{ padding:28px 18px 48px; background:var(--bg-app); }
+    .form-col{ padding:28px 18px 48px; background:var(--color-black); }
     .login-card{ box-shadow:none; }
   }
-  #roleSubtitle { font-size: 0.8rem; }
 </style>
 </head>
 <body>
@@ -75,8 +192,8 @@
 <div class="screen">
   <div class="panel">
     <div class="panel-content">
-      <div class="brand">Bizu<span id="tipoMarca">xo</span></div>
-      <h1>Conectando <span id="quemPrecisa">quem precisa</span> a <span id="quemResolve">quem resolve</span>.</h1>
+      <div class="brand">WENEED<span class="dot">.</span></div>
+      <h1>Conectando <em id="quemPrecisa">quem precisa</em> a <span id="quemResolve">quem resolve</span>.</h1>
       <p>Publique demandas, receba propostas e gerencie suas ordens de serviço em um só lugar.</p>
     </div>
     <div class="stat-row">
@@ -94,39 +211,42 @@
         <button type="button" class="role-btn" id="btnPrestador" onclick="setRole('prestador')">Sou Prestador</button>
       </div>
 
-      <h2>Bem-vindo de volta</h2>
-      <div class="sub" id="roleSubtitle">Acesse para publicar demandas e acompanhar seus serviços.</div>
+      <div class="card-body">
+        <h2>Bem-vindo de volta</h2>
+        <div class="sub" id="roleSubtitle">Acesse para publicar demandas e acompanhar seus serviços.</div>
 
-      <form id="loginForm">
-        <div class="field">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" placeholder="voce@email.com" required>
+        <form id="loginForm">
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="voce@email.com" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+
+          <div class="row-between">
+            <label class="remember">
+              <input type="checkbox"> Lembrar de mim
+            </label>
+            <a class="forgot" href="esqueci-senha.html">Esqueci a senha</a>
+          </div>
+
+          <button type="submit" class="enter-btn" id="enterBtn">Entrar</button>
+        </form>
+
+        <div class="signup-note">
+          Ainda não tem conta? <a href="escolha-perfil.html">Cadastre-se grátis</a>
         </div>
-        <div class="field">
-          <label for="senha">Senha</label>
-          <input type="password" id="senha" placeholder="••••••••" required>
-        </div>
-
-        <div class="row-between">
-          <label class="remember">
-            <input type="checkbox" style="width:auto;"> Lembrar de mim
-          </label>
-          <a class="forgot" href="esqueci-senha.html">esqueci a senha</a>
-        </div>
-
-        <button type="submit" class="enter-btn" id="enterBtn">Entrar</button>
-      </form>
-
-      <div class="signup-note">Ainda não tem conta? <a href="escolha-perfil.html">Cadastre-se grátis</a></div>
+      </div>
     </div>
   </div>
 </div>
- 
-<button id="btn-instalar" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: #4F46E5; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-  📲 Instalar Bizuxo
+
+<button id="btn-instalar" style="display:none; position:fixed; bottom:20px; right:20px; z-index:var(--z-toast); background:var(--color-black); color:var(--color-white); border:none; padding:12px 20px; border-radius:var(--radius-full); cursor:pointer; box-shadow:var(--shadow-md); font-family:var(--font-family-base); font-weight:var(--font-weight-semibold); font-size:var(--font-size-sm);">
+  Instalar WENEED
 </button>
 
-<!-- Supabase e Scripts (Caminhos padronizados para a pasta js/) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-cliente.js"></script>
 <script src="js/utils.js"></script>
@@ -135,41 +255,46 @@
 
 <script>
 /* =============================================
-   FUNÇÃO DE TROCA DE PERFIL (cliente / prestador)
+   TROCA DE PERFIL (cliente / prestador)
+   Sem cor: diferenciação por posição da pill,
+   texto do painel e ícone do perfil.
 ============================================= */
 function setRole(role) {
-  const pill = document.getElementById('rolePill');
-  const btnC = document.getElementById('btnCliente');
-  const btnP = document.getElementById('btnPrestador');
-  const subtitle = document.getElementById('roleSubtitle');
-  const enterBtn = document.getElementById('enterBtn');
+  const pill        = document.getElementById('rolePill');
+  const btnC        = document.getElementById('btnCliente');
+  const btnP        = document.getElementById('btnPrestador');
+  const subtitle    = document.getElementById('roleSubtitle');
+  const enterBtn    = document.getElementById('enterBtn');
   const quemPrecisa = document.getElementById('quemPrecisa');
   const quemResolve = document.getElementById('quemResolve');
-  const tipoMarca = document.getElementById('tipoMarca');
 
   if (role === 'cliente') {
-    pill.classList.remove('prestador');
+    pill.style.transform = 'translateX(0)';
+    pill.style.background = 'var(--color-black)';
     btnC.classList.add('active');
     btnP.classList.remove('active');
+
     subtitle.textContent = 'Acesse para publicar demandas e acompanhar seus serviços.';
-    enterBtn.classList.remove('prestador');
-    quemPrecisa.style.color = 'var(--accent)';
-    quemResolve.style.color = '#fff';
-    tipoMarca.classList.remove('prestador');
+    enterBtn.textContent = 'Entrar';
+
+    quemPrecisa.style.color = 'var(--color-brand-blue)';
+    quemResolve.style.color = 'var(--color-white)';
   } else {
-    pill.classList.add('prestador');
+    pill.style.transform = 'translateX(100%)';
+    pill.style.background = 'var(--color-brand-blue-deep)';
     btnP.classList.add('active');
     btnC.classList.remove('active');
+
     subtitle.textContent = 'Acesse para ver demandas na sua região e gerenciar suas OS.';
-    enterBtn.classList.add('prestador');
-    quemPrecisa.style.color = '#fff';
-    quemResolve.style.color = 'var(--alert)';
-    tipoMarca.classList.add('prestador');
+    enterBtn.textContent = 'Entrar';
+
+    quemPrecisa.style.color = 'var(--color-white)';
+    quemResolve.style.color = 'var(--color-brand-blue)';
   }
 }
 
 /* =============================================
-   LOGIN REAL (Supabase Auth)
+   LOGIN (Supabase Auth)
 ============================================= */
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
