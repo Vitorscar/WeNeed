@@ -3,151 +3,338 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Painel do Profissional · weneed</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-<!-- Use o caminho relativo com ./ para funcionar em qualquer subpasta -->
-<link rel="manifest" href="../manifest.json">
-<meta name="theme-color" content="#4F46E5">
-<link rel="stylesheet" href="../style.css">
-<style>
-  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
-  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; display: flex; flex-direction: column; gap: 8px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16, 17, 19, 0.06); }
-  .stat-card.highlight { border-top: 3px solid var(--alert); background: linear-gradient(to bottom, #fff, var(--surface-soft)); }
-  .stat-value { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--ink); line-height: 1; }
-  .stat-label { font-size: 0.75rem; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; }
-  .section-heading { display: flex; justify-content: space-between; align-items: baseline; margin: 36px 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-  .section-heading h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--ink); margin: 0; }
-  .section-heading a { font-size: 0.82rem; font-weight: 600; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
-  .section-heading a:hover { color: var(--ink); }
-  .cta-banner { background: linear-gradient(135deg, var(--bg-app) 0%, #1A1B1E 100%); color: #fff; border-radius: var(--radius-lg); padding: 28px; display: flex; justify-content: space-between; align-items: center; gap: 24px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 12px 32px rgba(11, 11, 13, 0.15); }
-  .cta-banner h3 { font-size: 1.2rem; margin: 0 0 6px; font-weight: 700; }
-  .cta-banner p { font-size: 0.88rem; color: #B6B8BE; margin: 0; max-width: 45ch; line-height: 1.5; }
-  .cta-banner .btn { width: auto; padding: 12px 24px; flex-shrink: 0; }
-  .status-pendente { background: var(--amber-soft); color: var(--amber); }
-  .status-aceita { background: var(--accent-soft); color: var(--accent-ink); }
-  .status-recusada { background: var(--alert-soft); color: var(--alert-ink); }
-  .status-andamento { background: var(--accent-soft); color: var(--accent-ink); }
+<title>Painel do Profissional · WENEED</title>
 
-  /* Navegação mobile */
-  .mobile-nav { display: none; }
-  
-  @media (max-width: 768px) {
-    .sidebar { display: none; } 
-    .app-shell { grid-template-columns: 1fr; } 
-    .main-content { padding: 20px 16px 100px 16px !important; }
-    
-    .mobile-nav { 
-      display: grid; 
-      grid-template-columns: repeat(5, 1fr); 
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 64px; 
-      background: var(--surface); 
-      border-top: 1px solid var(--border); 
-      align-items: stretch; 
-      z-index: 9999; 
-      padding-bottom: env(safe-area-inset-bottom); 
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05); 
-      isolation: isolate; 
-    }
-    
-    .mobile-nav-item { 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center; 
-      text-decoration: none; 
-      color: var(--ink-faint); 
-      font-size: 0.68rem; 
-      font-weight: 600; 
-      gap: 3px; 
-      height: 100%; 
-      position: relative; 
-      transition: color 0.2s ease, transform 0.15s ease; 
-      -webkit-tap-highlight-color: transparent; 
-      touch-action: manipulation; 
-      user-select: none; 
-    }
-    
-    .mobile-nav-item .nav-icon { 
-      font-size: 1.35rem; 
-      line-height: 1; 
-      transition: transform 0.2s ease; 
-    }
-    
-    .mobile-nav-item:active { 
-      transform: scale(0.88); 
-    }
-    
-    .mobile-nav-item:active .nav-icon { 
-      transform: scale(0.9); 
-    }
-    
-    .mobile-nav-item.active { 
-      color: var(--alert); 
-    }
-    
-    .mobile-nav-item.active::before { 
-      content: ''; 
-      position: absolute; 
-      top: 6px; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      width: 5px; 
-      height: 5px; 
-      background: var(--alert); 
-      border-radius: 50%; 
-      box-shadow: 0 0 8px rgba(255, 59, 48, 0.5); 
-    }
-    
-    .stat-grid { grid-template-columns: 1fr 1fr; }
-    .cta-banner { flex-direction: column; text-align: center; padding: 24px 20px; }
-    .cta-banner p { max-width: 100%; } 
-    .cta-banner .btn { width: 100%; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="stylesheet" href="../style.css">
+
+<style>
+  /* ============================================================
+     Dashboard Prestador — tokens do style.css
+     Acento: azul WENEED (#0044CC)
+     ============================================================ */
+
+  /* ---------- STAT GRID ---------- */
+  .stat-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:var(--space-3);
+    margin-bottom:var(--space-8);
   }
-  
-  @media (max-width: 480px) { 
-    .stat-grid { grid-template-columns: 1fr; } 
-    .mobile-nav-item { font-size: 0.62rem; }
-    .mobile-nav-item .nav-icon { font-size: 1.2rem; }
+  .stat-card{
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+    padding:var(--space-5);
+    display:flex;
+    flex-direction:column;
+    gap:var(--space-2);
+    transition:transform var(--duration-base) var(--ease-out),
+               box-shadow var(--duration-base) var(--ease-out);
+  }
+  .stat-card:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-md);
+  }
+  /* Card destacado = borda-topo azul (identidade do prestador) */
+  .stat-card.highlight{
+    border-top:3px solid var(--color-brand-blue-deep);
+  }
+  .stat-value{
+    font-size:var(--font-size-4xl);
+    font-weight:var(--font-weight-extrabold);
+    color:var(--text-primary);
+    line-height:1;
+    letter-spacing:var(--tracking-tighter);
+  }
+  .stat-label{
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-secondary);
+    text-transform:uppercase;
+    letter-spacing:var(--tracking-wider);
+    line-height:var(--line-height-snug);
+  }
+
+  /* ---------- SECTION HEADING ---------- */
+  .section-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:var(--space-3);
+    margin:var(--space-8) 0 var(--space-4);
+    padding-bottom:var(--space-3);
+    border-bottom:1px solid var(--border-default);
+  }
+  .section-heading h2{
+    font-size:var(--font-size-lg);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tight);
+    margin:0;
+  }
+  .section-heading a{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-link);
+    text-decoration:none;
+    white-space:nowrap;
+    transition:opacity var(--duration-fast);
+  }
+  .section-heading a:hover{ opacity:0.7; }
+
+  /* ---------- CTA BANNER ---------- */
+  .cta-banner{
+    background:var(--color-black);
+    color:var(--color-white);
+    border-radius:var(--radius-lg);
+    padding:var(--space-6);
+    display:flex;
+    flex-direction:column;
+    gap:var(--space-4);
+    margin-top:var(--space-2);
+    box-shadow:var(--shadow-lg);
+  }
+  .cta-banner h3{
+    font-size:var(--font-size-lg);
+    font-weight:var(--font-weight-bold);
+    letter-spacing:var(--tracking-tight);
+    margin:0 0 var(--space-2);
+    line-height:var(--line-height-snug);
+  }
+  .cta-banner p{
+    font-size:var(--font-size-sm);
+    color:var(--color-gray-400);
+    margin:0;
+    line-height:var(--line-height-normal);
+  }
+  /* Botão do CTA usa azul (acento do prestador) */
+  .cta-banner .btn{
+    width:100%;
+    background:var(--color-brand-blue-deep);
+    color:var(--color-white);
+    border:none;
+    padding:16px 20px;
+    border-radius:var(--radius-sm);
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-base);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    cursor:pointer;
+    transition:background var(--duration-fast) var(--ease-out);
+  }
+  .cta-banner .btn:hover{ background:var(--color-brand-blue); }
+
+  /* ---------- MOBILE NAV ---------- */
+  .mobile-nav{ display:none; }
+
+  @media (max-width:1023px){
+    .mobile-nav{
+      display:grid;
+      grid-template-columns:repeat(5, 1fr);
+      position:fixed;
+      bottom:0; left:0; right:0;
+      height:var(--app-mobile-nav-height);
+      background:var(--surface-default);
+      border-top:1px solid var(--border-default);
+      align-items:stretch;
+      z-index:var(--z-sticky);
+      padding-bottom:env(safe-area-inset-bottom);
+      box-shadow:0 -4px 20px rgba(10,10,10,.05);
+      isolation:isolate;
+    }
+    .mobile-nav-item{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:3px;
+      text-decoration:none;
+      color:var(--color-gray-400);
+      font-size:11px;
+      font-weight:var(--font-weight-semibold);
+      height:100%;
+      position:relative;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      user-select:none;
+      transition:color var(--duration-base) var(--ease-out),
+                 transform var(--duration-fast) var(--ease-out);
+    }
+    .mobile-nav-item:active{ transform:scale(0.88); }
+    /* Ativo = azul (prestador) */
+    .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
+    .mobile-nav-item.active::before{
+      content:'';
+      position:absolute;
+      top:6px; left:50%;
+      transform:translateX(-50%);
+      width:5px; height:5px;
+      background:var(--color-brand-blue);
+      border-radius:50%;
+    }
+  }
+
+  /* ============================================================
+     TABLET (≥ 640px)
+     ============================================================ */
+  @media (min-width:640px){
+    .stat-grid{ grid-template-columns:repeat(2, 1fr); }
+
+    .cta-banner{
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      text-align:left;
+    }
+    .cta-banner .btn{ width:auto; flex-shrink:0; }
+  }
+
+  /* ============================================================
+     DESKTOP (≥ 1024px)
+     ============================================================ */
+  @media (min-width:1024px){
+    .stat-grid{ grid-template-columns:repeat(3, 1fr); }
+
+    /* Acento do prestador = azul no sidebar ativo */
+    .nav-item.active{
+      background:rgba(0,87,255,.14);
+      border-left:2px solid var(--color-brand-blue);
+    }
   }
 </style>
 </head>
 <body>
 
 <div class="app-shell">
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand alert" style="margin-bottom: 8px;">Bizu<span>xo</span></div>
+    <div class="brand" style="margin-bottom:8px;">WENEED<span>.</span></div>
+
     <nav class="sidebar-nav">
-      <a class="nav-item active" href="dashboard-prestador.html"><span class="nav-icon">▤</span> Visão Geral</a>
-      <a class="nav-item" href="demandas-disponiveis.html"><span class="nav-icon">🔍</span> Demandas Disponíveis</a>
-      <a class="nav-item" href="minhas-propostas.html"><span class="nav-icon">📨</span> Minhas Propostas</a>
-      <a class="nav-item" href="ordens-servico.html"><span class="nav-icon">🛠️</span> Ordens de Serviço</a>
-      <a class="nav-item" href="historico-financeiro.html"><span class="nav-icon">💳</span> Histórico Financeiro</a>
-      <a class="nav-item" href="meu-perfil-prestador.html"><span class="nav-icon">⚙️</span> Meus Dados</a>
-      <a class="nav-item" href="meus-trabalhos.html"><span class="nav-icon">💼</span> Meus Trabalhos</a>
+      <a class="nav-item active" href="dashboard-prestador.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="7" height="9" x="3" y="3" rx="1"/>
+            <rect width="7" height="5" x="14" y="3" rx="1"/>
+            <rect width="7" height="9" x="14" y="12" rx="1"/>
+            <rect width="7" height="5" x="3" y="16" rx="1"/>
+          </svg>
+        </span>
+        Visão Geral
+      </a>
+
+      <a class="nav-item" href="demandas-disponiveis.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+        </span>
+        Demandas Disponíveis
+      </a>
+
+      <a class="nav-item" href="minhas-propostas.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" x2="8" y1="13" y2="13"/>
+            <line x1="16" x2="8" y1="17" y2="17"/>
+          </svg>
+        </span>
+        Minhas Propostas
+      </a>
+
+      <a class="nav-item" href="ordens-servico.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <path d="m9 14 2 2 4-4"/>
+          </svg>
+        </span>
+        Ordens de Serviço
+      </a>
+
+      <a class="nav-item" href="historico-financeiro.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="20" height="14" x="2" y="5" rx="2"/>
+            <line x1="2" x2="22" y1="10" y2="10"/>
+          </svg>
+        </span>
+        Histórico Financeiro
+      </a>
+
+      <a class="nav-item" href="meu-perfil-prestador.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        Meus Dados
+      </a>
+
+      <a class="nav-item" href="meus-trabalhos.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="20" height="14" x="2" y="7" rx="2"/>
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          </svg>
+        </span>
+        Meus Trabalhos
+      </a>
+
       <div style="flex:1"></div>
-      <a class="nav-item" href="#" id="logoutBtn" style="color: var(--alert); margin-top: auto;"><span class="nav-icon">🚪</span> Sair</a>
+
+      <a class="nav-item" href="#" id="logoutBtn" style="margin-top:auto;">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+        </span>
+        Sair
+      </a>
     </nav>
+
     <div class="sidebar-foot">
-      <div id="userName" style="font-weight: 600; color: #fff; margin-bottom: 4px;">Carregando...</div>
-      <div id="userLoc" style="color: #8B8E96; font-size: 0.75rem; margin-bottom: 10px;">...</div>
-      <div class="role-tag" style="color: #FF3B30 !important; border-color: rgba(255, 59, 48, 0.45) !important;">conta prestador</div>
+      <div id="userName" style="font-weight:600; color:#fff; margin-bottom:4px;">Carregando...</div>
+      <div id="userLoc" style="color:var(--color-gray-500); font-size:var(--font-size-xs); margin-bottom:10px;">...</div>
+      <div class="role-tag prestador">conta prestador</div>
     </div>
   </aside>
 
+  <!-- MAIN -->
   <main class="main-content">
     <div class="page-topbar">
       <div>
         <h1>Painel do Profissional</h1>
         <div class="sub">Gerencie suas propostas e acompanhe seus serviços ativos.</div>
       </div>
-      <a class="btn btn-alert" href="demandas-disponiveis.html" style="width: auto; display: inline-flex; align-items: center; gap: 8px;">
-        <span>🔍</span> Buscar Demandas
+      <a class="btn btn-brand" href="demandas-disponiveis.html">
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+        Buscar Demandas
       </a>
     </div>
 
@@ -171,162 +358,214 @@
         <h3>Novas oportunidades na sua região</h3>
         <p>Existem demandas em aberto perto de você. Seja rápido: envie uma proposta antes que outro profissional feche o serviço.</p>
       </div>
-      <a class="btn btn-alert" href="demandas-disponiveis.html">Ver demandas abertas</a>
+      <a class="btn" href="demandas-disponiveis.html">
+        Ver demandas abertas
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+        </svg>
+      </a>
     </div>
 
     <div class="section-heading">
       <h2>Suas propostas recentes</h2>
-      <a href="minhas-propostas.html">ver todas →</a>
+      <a href="minhas-propostas.html">
+        ver todas
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
     </div>
     <div id="propostasRecentes"></div>
 
     <div class="section-heading">
       <h2>Serviços em andamento</h2>
-      <a href="ordens-servico.html">ver todos →</a>
+      <a href="ordens-servico.html">
+        ver todos
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
     </div>
     <div id="servicosAndamento"></div>
   </main>
 </div>
 
-<!-- Navegação Mobile -->
+<!-- MOBILE NAV -->
 <nav class="mobile-nav" aria-label="Navegação principal">
-  <a href="dashboard-prestador.html" class="mobile-nav-item active"><span class="nav-icon">▤</span><span>Início</span></a>
-  <a href="demandas-disponiveis.html" class="mobile-nav-item"><span class="nav-icon">🔍</span><span>Demandas</span></a>
-  <a href="minhas-propostas.html" class="mobile-nav-item"><span class="nav-icon">📨</span><span>Propostas</span></a>
-  <a href="ordens-servico.html" class="mobile-nav-item"><span class="nav-icon">🛠️</span><span>Ordens</span></a>
-  <a href="meu-perfil-prestador.html" class="mobile-nav-item"><span class="nav-icon">⚙️</span><span>Perfil</span></a>
+  <a href="dashboard-prestador.html" class="mobile-nav-item active">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </span>
+    <span>Início</span>
+  </a>
+
+  <a href="demandas-disponiveis.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.3-4.3"/>
+      </svg>
+    </span>
+    <span>Demandas</span>
+  </a>
+
+  <a href="minhas-propostas.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" x2="8" y1="13" y2="13"/>
+        <line x1="16" x2="8" y1="17" y2="17"/>
+      </svg>
+    </span>
+    <span>Propostas</span>
+  </a>
+
+  <a href="ordens-servico.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <path d="m9 14 2 2 4-4"/>
+      </svg>
+    </span>
+    <span>Ordens</span>
+  </a>
+
+  <a href="meu-perfil-prestador.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </span>
+    <span>Perfil</span>
+  </a>
 </nav>
 
-<!-- Supabase -->
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/utils.js"></script>
 <script src="../js/cadastro.js"></script>
 <script src="../js/auth.js"></script>
-  <script src="../app.js"></script>
+<script src="../app.js"></script>
 
 <script>
-  // ==========================================
-  // FUNÇÃO ÚNICA DE INICIALIZAÇÃO (CORRIGIDA)
-  // ==========================================
+  /* ==========================================
+     INICIALIZAÇÃO
+     ========================================== */
   async function init() {
-    console.log("🚀 1. Iniciando dashboard...");
-    
-    // 1. Verifica se o cliente do Supabase está pronto
     if (!window.supabaseClient) {
-      console.error("❌ Supabase Client não encontrado. Recarregando...");
+      console.error("Supabase Client não encontrado. Recarregando...");
       window.location.reload();
       return;
     }
 
     try {
-      // 2. Busca a sessão usando a variável CORRETA
       const { data: sessionData, error: sessionError } = await window.supabaseClient.auth.getSession();
-      
+
       if (sessionError || !sessionData.session) {
-        console.warn("⚠️ Usuário não logado. Redirecionando...");
         window.location.href = '../index.html';
         return;
       }
-      
-      const userId = sessionData.session.user.id;
-      console.log("✅ 3. User ID identificado:", userId);
 
-      // 3. Buscar Perfil (COM OS NOMES DE COLUNA CORRETOS DA ETAPA 1)
-      console.log("📡 4. Buscando perfil do usuário...");
+      const userId = sessionData.session.user.id;
+
+      // Buscar perfil
       const { data: profile, error: profileError } = await window.supabaseClient
         .from('profiles')
-        .select('full_name, city, uf, entity_type') // ✅ Nomes corretos
-        .eq('user_id', userId)                   // ✅ Chave correta
+        .select('full_name, city, uf, entity_type')
+        .eq('user_id', userId)
         .single();
-      
+
       if (profile) {
         const nomeEl = document.getElementById('userName');
         const locEl = document.getElementById('userLoc');
-        if(nomeEl) nomeEl.textContent = `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
-        if(locEl) locEl.textContent = profile.city ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}` : 'Local não definido';
-        console.log("👤 Perfil carregado com sucesso");
+        if (nomeEl) nomeEl.textContent = `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
+        if (locEl) locEl.textContent = profile.city
+          ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
+          : 'Local não definido';
       } else {
         console.warn("Perfil não encontrado:", profileError);
       }
 
-      // 4. Buscar Estatísticas (COM PROTEÇÃO TRY/CATCH PARA FASE 2)
+      // Estatísticas
       let countPropostas = 0;
       let countOrdens = 0;
       let countDisponiveis = 0;
 
       try {
-        const { count: c1 } = await window.supabaseClient.from('proposals').select('*', { count: 'exact', head: true }).eq('provider_id', userId);
+        const { count: c1 } = await window.supabaseClient
+          .from('proposals')
+          .select('*', { count: 'exact', head: true })
+          .eq('provider_id', userId);
         countPropostas = c1 || 0;
-      } catch (e) { console.log("Tabela 'proposals' indisponível (Fase 2)"); }
+      } catch (e) { console.log("Tabela 'proposals' indisponível"); }
 
       try {
-        const { count: c2 } = await window.supabaseClient.from('service_orders').select('*', { count: 'exact', head: true }).eq('provider_id', userId).in('status', ['agendado', 'em_andamento', 'andamento']);
+        const { count: c2 } = await window.supabaseClient
+          .from('service_orders')
+          .select('*', { count: 'exact', head: true })
+          .eq('provider_id', userId)
+          .in('status', ['agendado', 'em_andamento', 'andamento']);
         countOrdens = c2 || 0;
-      } catch (e) { console.log("Tabela 'service_orders' indisponível (Fase 2)"); }
+      } catch (e) { console.log("Tabela 'service_orders' indisponível"); }
 
       try {
-        const { count: c3 } = await window.supabaseClient.from('demands').select('*', { count: 'exact', head: true }).in('status', ['OPEN', 'ABERTA', 'EM_PROPOSTAS']);
+        const { count: c3 } = await window.supabaseClient
+          .from('demands')
+          .select('*', { count: 'exact', head: true })
+          .in('status', ['OPEN', 'ABERTA', 'EM_PROPOSTAS']);
         countDisponiveis = c3 || 0;
-      } catch (e) { console.log("Tabela 'demands' indisponível (Fase 2)"); }
+      } catch (e) { console.log("Tabela 'demands' indisponível"); }
 
-      // 5. Atualizar Estatísticas no DOM
       document.getElementById('statDisponiveis').textContent = countDisponiveis;
       document.getElementById('statPropostas').textContent = countPropostas;
       document.getElementById('statAndamento').textContent = countOrdens;
 
-      // 6. Renderizar Listas (Vazias por enquanto, já que é Fase 1)
       renderPropostas([]);
       renderServicos([]);
 
-      // 7. Configurar realtime
       configurarRealtime();
 
-      console.log("✅ 8. Dashboard carregado com sucesso!");
-
     } catch (err) {
-      console.error("💥 ERRO CRÍTICO NO DASHBOARD:", err);
+      console.error("Erro crítico no dashboard:", err);
       const nomeEl = document.getElementById('userName');
-      if(nomeEl) nomeEl.textContent = "Erro ao carregar. Veja o Console (F12).";
+      if (nomeEl) nomeEl.textContent = "Erro ao carregar.";
     }
   }
 
-  // ==========================================
-  // CONFIGURAR REALTIME
-  // ==========================================
+  /* ==========================================
+     REALTIME
+     ========================================== */
   function configurarRealtime() {
     const supabase = window.supabaseClient;
     if (!supabase) return;
 
     supabase
       .channel('dashboard-prestador-realtime')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'proposals' },
-        () => init()
-      )
-      .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'service_orders' },
-        () => init()
-      )
-      .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'demands' },
-        () => init()
-      )
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'proposals' },      () => init())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'service_orders' }, () => init())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'demands' },        () => init())
       .subscribe();
   }
 
-  // ==========================================
-  // FUNÇÕES DE RENDERIZAÇÃO (SEGURAS)
-  // ==========================================
+  /* ==========================================
+     RENDER · ESTADO VAZIO
+     ========================================== */
   function renderPropostas(proposals) {
     const el = document.getElementById('propostasRecentes');
     if (!el) return;
-    
+
     if (!proposals || proposals.length === 0) {
-      el.innerHTML = `<div class="empty-state"><h3>Nenhuma proposta recente</h3><p>Busque demandas disponíveis e envie sua primeira proposta.</p></div>`;
+      el.innerHTML = `
+        <div class="empty-state">
+          <h3>Nenhuma proposta recente</h3>
+          <p>Busque demandas disponíveis e envie sua primeira proposta.</p>
+        </div>`;
       return;
     }
-    // Lógica de renderização quando tiver dados da Fase 2
+    // Renderização real quando houver dados
   }
 
   function renderServicos(orders) {
@@ -334,15 +573,19 @@
     if (!el) return;
 
     if (!orders || orders.length === 0) {
-      el.innerHTML = `<div class="empty-state"><h3>Nenhum serviço em andamento</h3><p>Seus serviços ativos aparecerão aqui assim que uma proposta for aceita.</p></div>`;
+      el.innerHTML = `
+        <div class="empty-state">
+          <h3>Nenhum serviço em andamento</h3>
+          <p>Seus serviços ativos aparecerão aqui assim que uma proposta for aceita.</p>
+        </div>`;
       return;
     }
-    // Lógica de renderização quando tiver dados da Fase 2
+    // Renderização real quando houver dados
   }
 
-  // ==========================================
-  // LOGOUT
-  // ==========================================
+  /* ==========================================
+     LOGOUT
+     ========================================== */
   document.getElementById('logoutBtn').addEventListener('click', async (e) => {
     e.preventDefault();
     const supabase = window.supabaseClient;
@@ -352,7 +595,6 @@
     window.location.href = '../index.html';
   });
 
-  // Iniciar o dashboard
   init();
 </script>
 </body>
