@@ -14,6 +14,17 @@
 <link rel="stylesheet" href="../style.css">
 
 <style>
+  /* ---------- BLINDAGEM LOCAL ---------- */
+  /* Garante que nada vaze entre mobile e desktop, mesmo se o style.css falhar */
+  @media (max-width:1023px){
+    .sidebar{ display:none !important; }
+    .app-shell{ display:block !important; }
+  }
+  @media (min-width:1024px){
+    .mobile-nav{ display:none !important; }
+  }
+
+  /* ---------- ICON SYSTEM ---------- */
   .icon{
     width:16px; height:16px;
     stroke:currentColor;
@@ -28,6 +39,21 @@
   .icon-md{ width:18px; height:18px; stroke-width:1.75; }
   .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
 
+  /* ---------- PAGE TOPBAR ---------- */
+  /* Mobile: título em cima, botão embaixo ocupando 100% */
+  .page-topbar{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:var(--space-3);
+    margin-bottom:var(--space-4);
+  }
+  .page-topbar .btn{
+    width:100% !important;
+    display:inline-flex !important;
+    justify-content:center !important;
+  }
+
+  /* ---------- STAT GRID ---------- */
   .stat-grid{
     display:grid;
     grid-template-columns:1fr;
@@ -68,6 +94,7 @@
     line-height:var(--line-height-snug);
   }
 
+  /* ---------- SECTION HEADING ---------- */
   .section-heading{
     display:flex;
     justify-content:space-between;
@@ -97,6 +124,7 @@
   }
   .section-heading a:hover{ opacity:0.7; }
 
+  /* ---------- CTA BANNER ---------- */
   .cta-banner{
     background:var(--color-black);
     color:var(--color-white);
@@ -143,11 +171,12 @@
   }
   .cta-banner .btn:hover{ background:var(--color-brand-blue); }
 
+  /* ---------- MOBILE NAV ---------- */
   .mobile-nav{ display:none; }
 
   @media (max-width:1023px){
     .mobile-nav{
-      display:grid;
+      display:grid !important;
       grid-template-columns:repeat(5, 1fr);
       position:fixed;
       bottom:0; left:0; right:0;
@@ -191,6 +220,7 @@
     }
   }
 
+  /* ---------- TABLET (≥ 640px) ---------- */
   @media (min-width:640px){
     .stat-grid{ grid-template-columns:repeat(3, 1fr); }
     .cta-banner{
@@ -200,8 +230,17 @@
       text-align:left;
     }
     .cta-banner .btn{ width:auto; flex-shrink:0; }
+
+    /* Em tablet/desktop o page-topbar fica lado a lado */
+    .page-topbar{
+      flex-direction:row !important;
+      justify-content:space-between;
+      align-items:flex-end;
+    }
+    .page-topbar .btn{ width:auto !important; }
   }
 
+  /* ---------- DESKTOP (≥ 1024px) ---------- */
   @media (min-width:1024px){
     .nav-item.active{
       background:rgba(0,87,255,.14);
@@ -215,6 +254,7 @@
 <div class="app-shell">
   <aside class="sidebar">
     <div class="brand" style="margin-bottom:8px;">WENEED<span>.</span></div>
+
     <nav class="sidebar-nav">
       <a class="nav-item active" href="dashboard-prestador.html">
         <span class="nav-icon">
@@ -296,6 +336,7 @@
         Sair
       </a>
     </nav>
+
     <div class="sidebar-foot">
       <div id="userName" style="font-weight:600; color:#fff; margin-bottom:4px;">Carregando...</div>
       <div id="userLoc" style="color:var(--color-gray-500); font-size:var(--font-size-xs); margin-bottom:10px;">...</div>
