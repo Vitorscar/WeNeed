@@ -15,7 +15,6 @@
 
 <style>
   /* ---------- BLINDAGEM LOCAL ---------- */
-  /* Garante que nada vaze entre mobile e desktop, mesmo se o style.css falhar */
   @media (max-width:1023px){
     .sidebar{ display:none !important; }
     .app-shell{ display:block !important; }
@@ -39,54 +38,70 @@
   .icon-md{ width:18px; height:18px; stroke-width:1.75; }
   .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
 
+  /* ---------- CONTEÚDO MAIS TIGHT ---------- */
+  .main-content{
+    padding:var(--space-4) var(--space-4) var(--space-6);
+  }
+
   /* ---------- PAGE TOPBAR ---------- */
-  /* Mobile: título em cima, botão embaixo ocupando 100% */
   .page-topbar{
-    display:flex !important;
-    flex-direction:column !important;
-    gap:var(--space-3);
-    margin-bottom:var(--space-4);
+    display:flex;
+    flex-direction:column;
+    gap:var(--space-2);
+    margin-bottom:var(--space-3);
+  }
+  .page-topbar h1{
+    font-size:var(--font-size-xl);
+    font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tighter);
+    margin:0 0 2px;
+    line-height:var(--line-height-snug);
+  }
+  .page-topbar .sub{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    line-height:var(--line-height-normal);
   }
   .page-topbar .btn{
-    width:100% !important;
-    display:inline-flex !important;
-    justify-content:center !important;
+    width:100%;
+    padding:13px 18px;
+    font-size:var(--font-size-sm);
   }
 
   /* ---------- STAT GRID ---------- */
   .stat-grid{
     display:grid;
     grid-template-columns:1fr;
-    gap:var(--space-3);
-    margin-bottom:var(--space-8);
+    gap:var(--space-2);
+    margin-bottom:var(--space-5);
   }
   .stat-card{
     background:var(--surface-default);
     border:1px solid var(--border-default);
     border-radius:var(--radius-md);
-    padding:var(--space-5);
+    padding:var(--space-4);
     display:flex;
     flex-direction:column;
-    gap:var(--space-2);
+    gap:2px;
     transition:transform var(--duration-base) var(--ease-out),
                box-shadow var(--duration-base) var(--ease-out);
   }
   .stat-card:hover{
-    transform:translateY(-2px);
-    box-shadow:var(--shadow-md);
+    box-shadow:var(--shadow-sm);
   }
   .stat-card.highlight{
-    border-top:3px solid var(--color-brand-blue-deep);
+    border-left:3px solid var(--color-brand-blue-deep);
   }
   .stat-value{
-    font-size:var(--font-size-4xl);
+    font-size:var(--font-size-2xl);
     font-weight:var(--font-weight-extrabold);
     color:var(--text-primary);
-    line-height:1;
+    line-height:1.1;
     letter-spacing:var(--tracking-tighter);
+    font-variant-numeric:tabular-nums;
   }
   .stat-label{
-    font-size:var(--font-size-xs);
+    font-size:11px;
     font-weight:var(--font-weight-bold);
     color:var(--text-secondary);
     text-transform:uppercase;
@@ -100,12 +115,10 @@
     justify-content:space-between;
     align-items:baseline;
     gap:var(--space-3);
-    margin:var(--space-8) 0 var(--space-4);
-    padding-bottom:var(--space-3);
-    border-bottom:1px solid var(--border-default);
+    margin:var(--space-5) 0 var(--space-3);
   }
   .section-heading h2{
-    font-size:var(--font-size-lg);
+    font-size:var(--font-size-base);
     font-weight:var(--font-weight-bold);
     color:var(--text-primary);
     letter-spacing:var(--tracking-tight);
@@ -115,7 +128,7 @@
     display:inline-flex;
     align-items:center;
     gap:4px;
-    font-size:var(--font-size-sm);
+    font-size:var(--font-size-xs);
     font-weight:var(--font-weight-semibold);
     color:var(--text-link);
     text-decoration:none;
@@ -124,52 +137,28 @@
   }
   .section-heading a:hover{ opacity:0.7; }
 
-  /* ---------- CTA BANNER ---------- */
-  .cta-banner{
-    background:var(--color-black);
-    color:var(--color-white);
-    border-radius:var(--radius-lg);
-    padding:var(--space-6);
-    display:flex;
-    flex-direction:column;
-    gap:var(--space-4);
-    margin-top:var(--space-2);
-    box-shadow:var(--shadow-lg);
+  /* ---------- EMPTY STATE COMPACTO ---------- */
+  .empty-state{
+    text-align:center;
+    padding:var(--space-6) var(--space-4);
+    background:var(--surface-default);
+    border:1px dashed var(--border-default);
+    border-radius:var(--radius-md);
+    color:var(--text-secondary);
   }
-  .cta-banner h3{
-    font-size:var(--font-size-lg);
-    font-weight:var(--font-weight-bold);
-    letter-spacing:var(--tracking-tight);
-    margin:0 0 var(--space-2);
-    line-height:var(--line-height-snug);
-  }
-  .cta-banner p{
+  .empty-state h3{
     font-size:var(--font-size-sm);
-    color:var(--color-gray-400);
-    margin:0;
-    line-height:var(--line-height-normal);
-  }
-  .cta-banner .btn{
-    width:100%;
-    background:var(--color-brand-blue-deep);
-    color:var(--color-white);
-    border:none;
-    padding:16px 20px;
-    border-radius:var(--radius-sm);
-    font-family:var(--font-family-base);
     font-weight:var(--font-weight-bold);
-    font-size:var(--font-size-base);
-    letter-spacing:var(--tracking-wide);
-    text-transform:uppercase;
-    text-decoration:none;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    cursor:pointer;
-    transition:background var(--duration-fast) var(--ease-out);
+    color:var(--text-primary);
+    margin:0 0 4px;
+    letter-spacing:var(--tracking-tight);
   }
-  .cta-banner .btn:hover{ background:var(--color-brand-blue); }
+  .empty-state p{
+    font-size:var(--font-size-xs);
+    line-height:var(--line-height-normal);
+    margin:0 auto;
+    max-width:34ch;
+  }
 
   /* ---------- MOBILE NAV ---------- */
   .mobile-nav{ display:none; }
@@ -222,26 +211,33 @@
 
   /* ---------- TABLET (≥ 640px) ---------- */
   @media (min-width:640px){
-    .stat-grid{ grid-template-columns:repeat(3, 1fr); }
-    .cta-banner{
-      flex-direction:row;
-      align-items:center;
-      justify-content:space-between;
-      text-align:left;
+    .main-content{
+      padding:var(--space-5) var(--space-6) var(--space-8);
     }
-    .cta-banner .btn{ width:auto; flex-shrink:0; }
-
-    /* Em tablet/desktop o page-topbar fica lado a lado */
     .page-topbar{
-      flex-direction:row !important;
+      flex-direction:row;
       justify-content:space-between;
       align-items:flex-end;
     }
-    .page-topbar .btn{ width:auto !important; }
+    .page-topbar .btn{ width:auto; }
+
+    .stat-grid{
+      grid-template-columns:repeat(3, 1fr);
+      gap:var(--space-3);
+    }
+    .stat-card{ padding:var(--space-4) var(--space-5); }
+    .stat-value{ font-size:var(--font-size-3xl); }
   }
 
   /* ---------- DESKTOP (≥ 1024px) ---------- */
   @media (min-width:1024px){
+    .main-content{
+      padding:var(--space-6) var(--space-8) var(--space-12);
+    }
+    .stat-card:hover{
+      transform:translateY(-2px);
+      box-shadow:var(--shadow-md);
+    }
     .nav-item.active{
       background:rgba(0,87,255,.14);
       border-left:2px solid var(--color-brand-blue);
@@ -348,47 +344,34 @@
     <div class="page-topbar">
       <div>
         <h1>Painel do Profissional</h1>
-        <div class="sub">Gerencie suas propostas e acompanhe seus serviços ativos.</div>
+        <div class="sub">Gerencie propostas e acompanhe serviços ativos.</div>
       </div>
       <a class="btn btn-brand" href="demandas-disponiveis.html">
         <svg class="icon icon-sm" viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"/>
           <path d="m21 21-4.3-4.3"/>
         </svg>
-        Buscar Demandas
+        Buscar demandas
       </a>
     </div>
 
     <div class="stat-grid">
       <div class="stat-card highlight">
         <div class="stat-value" id="statDisponiveis">0</div>
-        <div class="stat-label">Oportunidades Próximas</div>
+        <div class="stat-label">Oportunidades próximas</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="statPropostas">0</div>
-        <div class="stat-label">Propostas Enviadas</div>
+        <div class="stat-label">Propostas enviadas</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="statAndamento">0</div>
-        <div class="stat-label">Serviços em Andamento</div>
+        <div class="stat-label">Serviços em andamento</div>
       </div>
-    </div>
-
-    <div class="cta-banner">
-      <div>
-        <h3>Novas oportunidades na sua região</h3>
-        <p>Existem demandas em aberto perto de você. Seja rápido: envie uma proposta antes que outro profissional feche o serviço.</p>
-      </div>
-      <a class="btn" href="demandas-disponiveis.html">
-        Ver demandas abertas
-        <svg class="icon icon-sm" viewBox="0 0 24 24">
-          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-        </svg>
-      </a>
     </div>
 
     <div class="section-heading">
-      <h2>Suas propostas recentes</h2>
+      <h2>Propostas recentes</h2>
       <a href="minhas-propostas.html">
         ver todas
         <svg class="icon icon-sm" viewBox="0 0 24 24">
@@ -563,7 +546,11 @@
     if (!el) return;
 
     if (!proposals || proposals.length === 0) {
-      el.innerHTML = `<div class="empty-state"><h3>Nenhuma proposta recente</h3><p>Busque demandas disponíveis e envie sua primeira proposta.</p></div>`;
+      el.innerHTML = `
+        <div class="empty-state">
+          <h3>Nenhuma proposta ainda</h3>
+          <p>Busque demandas disponíveis e envie sua primeira proposta.</p>
+        </div>`;
       return;
     }
   }
@@ -573,7 +560,11 @@
     if (!el) return;
 
     if (!orders || orders.length === 0) {
-      el.innerHTML = `<div class="empty-state"><h3>Nenhum serviço em andamento</h3><p>Seus serviços ativos aparecerão aqui assim que uma proposta for aceita.</p></div>`;
+      el.innerHTML = `
+        <div class="empty-state">
+          <h3>Nenhum serviço em andamento</h3>
+          <p>Seus serviços ativos aparecerão aqui assim que uma proposta for aceita.</p>
+        </div>`;
       return;
     }
   }
