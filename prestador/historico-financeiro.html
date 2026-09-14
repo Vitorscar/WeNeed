@@ -3,618 +3,759 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Histórico Financeiro · weneed</title>
+<title>Histórico Financeiro · WENEED</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0A0A0A">
 <link rel="stylesheet" href="../style.css">
+
 <style>
-  /* ===== COMPONENTES ESPECÍFICOS DA PÁGINA ===== */
-  
-  /* Cards de saldo premium */
-  .balance-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-    margin: 28px 0 32px;
+  /* ============================================================
+     Histórico Financeiro — tokens do style.css
+     Acento: azul WENEED (#0044CC)
+     ============================================================ */
+
+  /* ---------- BALANCE GRID ---------- */
+  .balance-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:var(--space-3);
+    margin:var(--space-5) 0 var(--space-6);
   }
-  
-  .balance-card {
-    background: var(--surface);
-    border-radius: var(--radius-lg);
-    padding: 22px;
-    position: relative;
-    overflow: hidden;
-    transition: transform .2s, box-shadow .2s;
-    border: 1px solid var(--border);
+  .balance-card{
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-lg);
+    padding:var(--space-5);
+    position:relative;
+    overflow:hidden;
+    transition:transform var(--duration-base) var(--ease-out),
+               box-shadow var(--duration-base) var(--ease-out);
   }
-  
-  .balance-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(16, 17, 19, 0.08);
+  .balance-card:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-md);
   }
-  
-  .balance-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
+  .balance-card::before{
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:3px;
   }
-  
-  .balance-card.available::before {
-    background: var(--accent);
+  /* Cores dos cards — semântica funcional, não identidade */
+  .balance-card.available::before{ background:var(--color-brand-blue-deep); }
+  .balance-card.pending::before  { background:var(--color-warning); }
+  .balance-card.monthly::before  { background:var(--color-black); }
+  .balance-card.fees::before     { background:var(--color-gray-300); }
+
+  .balance-label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-bold);
+    text-transform:uppercase;
+    letter-spacing:var(--tracking-wider);
+    color:var(--text-secondary);
+    margin-bottom:var(--space-3);
   }
-  
-  .balance-card.pending::before {
-    background: var(--amber);
-  }
-  
-  .balance-card.monthly::before {
-    background: var(--ink);
-  }
-  
-  .balance-card.fees::before {
-    background: var(--alert);
-  }
-  
-  .balance-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    color: var(--ink-faint);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  
-  .balance-value {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.8rem;
-    color: var(--ink);
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
-  }
-  
-  .balance-value.available {
-    color: var(--accent-ink);
-  }
-  
-  .balance-value.pending {
-    color: var(--amber);
-  }
-  
-  .balance-value.fees {
-    color: var(--alert-ink);
-  }
-  
-  .balance-trend {
-    font-size: 0.76rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .balance-trend.up {
-    color: var(--accent-ink);
-  }
-  
-  .balance-trend.down {
-    color: var(--alert-ink);
-  }
-  
-  /* Barra de filtros e busca */
-  .filters-bar {
-    background: var(--surface);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    margin-bottom: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-    border: 1px solid var(--border);
-  }
-  
-  .filter-group {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  
-  .filter-btn {
-    padding: 8px 14px;
-    border-radius: 100px;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    color: var(--ink-soft);
-    font-size: 0.8rem;
-    font-weight: 600;
-    transition: all .15s;
-  }
-  
-  .filter-btn:hover {
-    background: var(--surface-soft);
-    color: var(--ink);
-  }
-  
-  .filter-btn.active {
-    background: var(--ink);
-    color: #fff;
-    border-color: var(--ink);
-  }
-  
-  .filter-btn.active.accent {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-  
-  .search-box {
-    flex: 1;
-    min-width: 200px;
-    position: relative;
-  }
-  
-  .search-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--ink-faint);
-    font-size: 0.9rem;
-  }
-  
-  /* Tabela financeira */
-  .table-container {
-    background: var(--surface);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-  
-  .table-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  
-  .table-title {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--ink);
-  }
-  
-  .table-actions {
-    display: flex;
-    gap: 8px;
-  }
-  
-  .action-btn {
-    padding: 9px 16px;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    color: var(--ink-soft);
-    font-size: 0.82rem;
-    font-weight: 600;
-    transition: all .15s;
-    font-family: var(--font-body);
-  }
-  
-  .action-btn:hover {
-    background: var(--surface-soft);
-    color: var(--ink);
-  }
-  
-  .action-btn.primary {
-    background: var(--ink);
-    color: #fff;
-    border-color: var(--ink);
-  }
-  
-  .action-btn.primary:hover {
-    opacity: 0.9;
-  }
-  
-  .fin-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .fin-table thead {
-    background: var(--surface-soft);
-  }
-  
-  .fin-table th {
-    padding: 12px 20px;
-    text-align: left;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--ink-soft);
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .fin-table td {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--surface-soft);
-    font-size: 0.88rem;
-    color: var(--ink);
-  }
-  
-  .fin-table tr:last-child td {
-    border-bottom: none;
-  }
-  
-  .fin-table tbody tr {
-    transition: background .15s;
-  }
-  
-  .fin-table tbody tr:hover {
-    background: var(--surface-soft);
-  }
-  
-  .os-link {
-    font-weight: 700;
-    color: var(--ink);
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-  
-  .client-cell {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .client-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--surface-soft);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--ink-soft);
-  }
-  
-  .amount {
-    font-weight: 600;
-    font-size: 0.88rem;
-  }
-  
-  .amount.gross {
-    color: var(--ink);
-  }
-  
-  .amount.commission {
-    color: var(--alert-ink);
-  }
-  
-  .amount.net {
-    color: var(--accent-ink);
-    font-weight: 700;
-  }
-  
-  .date-cell {
-    font-size: 0.76rem;
-    color: var(--ink-faint);
-    margin-top: 2px;
-  }
-  
-  /* Nota informativa */
-  .fee-info {
-    margin-top: 20px;
-    padding: 16px 20px;
-    background: var(--accent-soft);
-    border-radius: var(--radius-md);
-    font-size: 0.82rem;
-    color: var(--accent-ink);
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    line-height: 1.5;
-    border: 1px solid rgba(5, 193, 103, 0.2);
-  }
-  
-  .fee-info-icon {
-    font-size: 1.1rem;
-    flex-shrink: 0;
-    margin-top: 2px;
+  .balance-label .icon{
+    width:14px; height:14px; stroke-width:2;
   }
 
-  /* Navegação mobile */
-  .mobile-nav { display: none; }
-  
-  @media (max-width: 768px) {
-    .sidebar { display: none; } 
-    .app-shell { grid-template-columns: 1fr; } 
-    .main-content { padding: 20px 16px 100px 16px !important; }
-    
-    .mobile-nav { 
-      display: grid; 
-      grid-template-columns: repeat(5, 1fr); 
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 64px; 
-      background: var(--surface); 
-      border-top: 1px solid var(--border); 
-      align-items: stretch; 
-      z-index: 9999; 
-      padding-bottom: env(safe-area-inset-bottom); 
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05); 
-      isolation: isolate; 
+  .balance-value{
+    font-size:var(--font-size-4xl);
+    font-weight:var(--font-weight-extrabold);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tighter);
+    line-height:1;
+    margin-bottom:var(--space-2);
+    font-variant-numeric:tabular-nums;
+  }
+  .balance-value.available{ color:var(--color-brand-blue-deep); }
+  .balance-value.pending  { color:var(--color-warning); }
+  .balance-value.fees     { color:var(--text-secondary); }
+
+  .balance-trend{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-secondary);
+  }
+  .balance-trend .icon{ width:12px; height:12px; stroke-width:2.5; }
+
+  /* ---------- FILTERS BAR ---------- */
+  .filters-bar{
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+    padding:var(--space-4);
+    margin-bottom:var(--space-5);
+    display:flex;
+    flex-direction:column;
+    gap:var(--space-3);
+  }
+  .filter-group{
+    display:flex;
+    gap:var(--space-2);
+    flex-wrap:wrap;
+  }
+  .filter-btn{
+    display:inline-flex;
+    align-items:center;
+    padding:9px 15px;
+    border-radius:var(--radius-full);
+    border:1.5px solid var(--border-default);
+    background:var(--surface-subtle);
+    color:var(--text-secondary);
+    font-family:var(--font-family-base);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    cursor:pointer;
+    transition:background   var(--duration-fast) var(--ease-out),
+               color        var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out);
+    user-select:none;
+  }
+  .filter-btn:hover{
+    border-color:var(--color-brand-blue-deep);
+    color:var(--color-brand-blue-deep);
+  }
+  .filter-btn.active{
+    background:var(--color-brand-blue-deep);
+    border-color:var(--color-brand-blue-deep);
+    color:var(--color-white);
+  }
+
+  .search-box{
+    position:relative;
+    width:100%;
+  }
+  .search-box .icon{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--text-secondary);
+    pointer-events:none;
+  }
+  .search-box .search-input{
+    padding-left:42px;
+    width:100%;
+  }
+
+  .export-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:12px 16px;
+    border:1.5px solid var(--border-default);
+    border-radius:var(--radius-sm);
+    background:transparent;
+    color:var(--text-primary);
+    font-family:var(--font-family-base);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    cursor:pointer;
+    transition:background var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out);
+  }
+  .export-btn:hover{
+    border-color:var(--color-brand-blue-deep);
+    color:var(--color-brand-blue-deep);
+    background:rgba(0,68,204,.04);
+  }
+  .export-btn .icon{ width:14px; height:14px; stroke-width:2; }
+
+  /* ---------- TABLE ---------- */
+  .table-container{
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+  }
+  .table-header{
+    padding:var(--space-5);
+    border-bottom:1px solid var(--border-default);
+    display:flex;
+    flex-direction:column;
+    gap:var(--space-3);
+  }
+  .table-title{
+    font-size:var(--font-size-lg);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tight);
+    margin:0;
+  }
+  .table-actions{
+    display:flex;
+    gap:var(--space-2);
+    flex-wrap:wrap;
+  }
+  .action-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:10px 14px;
+    border:1.5px solid var(--border-default);
+    border-radius:var(--radius-sm);
+    background:transparent;
+    color:var(--text-primary);
+    font-family:var(--font-family-base);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-semibold);
+    cursor:pointer;
+    transition:background var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out);
+  }
+  .action-btn:hover{
+    border-color:var(--color-black);
+    background:var(--surface-subtle);
+  }
+  .action-btn .icon{ width:12px; height:12px; stroke-width:2; }
+
+  /* Wrapper com scroll horizontal controlado */
+  .table-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .fin-table{
+    width:100%;
+    min-width:640px;
+    border-collapse:collapse;
+  }
+  .fin-table thead{
+    background:var(--surface-subtle);
+  }
+  .fin-table th{
+    padding:12px 16px;
+    text-align:left;
+    font-size:11px;
+    font-weight:var(--font-weight-bold);
+    text-transform:uppercase;
+    letter-spacing:var(--tracking-wider);
+    color:var(--text-secondary);
+    border-bottom:1px solid var(--border-default);
+    white-space:nowrap;
+  }
+  .fin-table td{
+    padding:14px 16px;
+    border-bottom:1px solid var(--border-subtle);
+    font-size:var(--font-size-sm);
+    color:var(--text-primary);
+    vertical-align:middle;
+  }
+  .fin-table tbody tr:last-child td{ border-bottom:none; }
+  .fin-table tbody tr:hover{ background:var(--surface-subtle); }
+
+  .os-link{
+    font-weight:var(--font-weight-bold);
+    color:var(--color-brand-blue-deep);
+    cursor:pointer;
+    text-decoration:none;
+    font-family:var(--font-family-base);
+    font-variant-numeric:tabular-nums;
+  }
+  .os-link:hover{ text-decoration:underline; }
+
+  .client-cell{
+    display:flex;
+    align-items:center;
+    gap:var(--space-2);
+  }
+  .client-avatar{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:var(--surface-subtle);
+    border:1px solid var(--border-default);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-secondary);
+    flex-shrink:0;
+  }
+  .client-name{
+    font-weight:var(--font-weight-medium);
+    color:var(--text-primary);
+    font-size:var(--font-size-sm);
+  }
+  .client-date{
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    margin-top:2px;
+  }
+
+  .amount{
+    font-weight:var(--font-weight-semibold);
+    font-size:var(--font-size-sm);
+    font-variant-numeric:tabular-nums;
+  }
+  .amount.gross{ color:var(--text-primary); }
+  .amount.commission{ color:var(--text-secondary); }
+  .amount.net{
+    color:var(--color-brand-blue-deep);
+    font-weight:var(--font-weight-bold);
+  }
+
+  /* ---------- EMPTY STATE DA TABELA ---------- */
+  .table-empty{
+    text-align:center;
+    padding:var(--space-12) var(--space-5);
+    color:var(--text-secondary);
+  }
+  .table-empty .icon{
+    width:36px;
+    height:36px;
+    stroke-width:1.5;
+    color:var(--color-gray-300);
+    margin:0 auto var(--space-3);
+  }
+  .table-empty h3{
+    font-size:var(--font-size-base);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    margin:0 0 var(--space-2);
+    letter-spacing:var(--tracking-tight);
+  }
+  .table-empty p{
+    font-size:var(--font-size-sm);
+    line-height:var(--line-height-normal);
+    max-width:36ch;
+    margin:0 auto;
+  }
+
+  /* ---------- FEE INFO ---------- */
+  .fee-info{
+    display:flex;
+    gap:var(--space-3);
+    margin-top:var(--space-5);
+    padding:var(--space-4);
+    background:var(--surface-subtle);
+    border-radius:var(--radius-md);
+    border-left:3px solid var(--color-brand-blue);
+    font-size:var(--font-size-xs);
+    line-height:var(--line-height-normal);
+    color:var(--text-secondary);
+  }
+  .fee-info .icon{
+    color:var(--color-brand-blue);
+    flex-shrink:0;
+    margin-top:2px;
+  }
+  .fee-info b{
+    color:var(--text-primary);
+    font-weight:var(--font-weight-semibold);
+  }
+
+  /* ---------- PAGE HEADER ACTION ---------- */
+  .page-topbar .btn-withdraw{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    padding:14px 22px;
+    background:var(--color-brand-blue-deep);
+    color:var(--color-white);
+    border:none;
+    border-radius:var(--radius-sm);
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-sm);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    text-decoration:none;
+    cursor:pointer;
+    transition:background var(--duration-fast) var(--ease-out);
+  }
+  .page-topbar .btn-withdraw:hover{ background:var(--color-brand-blue); }
+  .page-topbar .btn-withdraw .icon{ width:14px; height:14px; stroke-width:2.25; }
+
+  /* ============================================================
+     TABLET (≥ 640px)
+     ============================================================ */
+  @media (min-width:640px){
+    .balance-grid{
+      grid-template-columns:repeat(2, 1fr);
+      gap:var(--space-4);
     }
-    
-    .mobile-nav-item { 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center; 
-      text-decoration: none; 
-      color: var(--ink-faint); 
-      font-size: 0.68rem; 
-      font-weight: 600; 
-      gap: 3px; 
-      height: 100%; 
-      position: relative; 
-      transition: color 0.2s ease, transform 0.15s ease; 
-      -webkit-tap-highlight-color: transparent; 
-      touch-action: manipulation; 
-      user-select: none; 
+    .filters-bar{
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
     }
-    
-    .mobile-nav-item .nav-icon { 
-      font-size: 1.35rem; 
-      line-height: 1; 
-      transition: transform 0.2s ease; 
+    .search-box{ flex:1; min-width:200px; max-width:380px; }
+    .export-btn{ width:auto; }
+
+    .table-header{
+      flex-direction:row;
+      justify-content:space-between;
+      align-items:center;
     }
-    
-    .mobile-nav-item:active { 
-      transform: scale(0.88); 
-    }
-    
-    .mobile-nav-item:active .nav-icon { 
-      transform: scale(0.9); 
-    }
-    
-    .mobile-nav-item.active { 
-      color: var(--alert); 
-    }
-    
-    .mobile-nav-item.active::before { 
-      content: ''; 
-      position: absolute; 
-      top: 6px; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      width: 5px; 
-      height: 5px; 
-      background: var(--alert); 
-      border-radius: 50%; 
-      box-shadow: 0 0 8px rgba(255, 59, 48, 0.5); 
+    .page-topbar .btn-withdraw{ width:auto; }
+  }
+
+  /* ============================================================
+     DESKTOP (≥ 1024px)
+     ============================================================ */
+  @media (min-width:1024px){
+    .balance-grid{
+      grid-template-columns:repeat(4, 1fr);
     }
 
-    .balance-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .nav-item.active{
+      background:rgba(0,87,255,.14);
+      border-left:2px solid var(--color-brand-blue);
     }
-    
-    .filters-bar {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    
-    .table-container {
-      overflow-x: auto;
-    }
-    
-    .fin-table {
-      min-width: 600px;
-    }
-    
-    .table-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .table-actions {
-      width: 100%;
-    }
-    
-    .action-btn {
-      flex: 1;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .balance-grid { grid-template-columns: 1fr; }
-    .mobile-nav-item { font-size: 0.62rem; }
-    .mobile-nav-item .nav-icon { font-size: 1.2rem; }
   }
 </style>
 </head>
 <body>
 
 <div class="app-shell">
-  <aside class="sidebar prestador">
-    <div class="brand alert">Bizu<span>xo</span></div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand" style="margin-bottom:8px;">WENEED<span>.</span></div>
+
     <nav class="sidebar-nav">
-      <a class="nav-item" href="dashboard-prestador.html"><span class="nav-icon">▤</span> Visão Geral</a>
-      <a class="nav-item" href="demandas-disponiveis.html"><span class="nav-icon">🔍</span> Demandas Disponíveis</a>
-      <a class="nav-item" href="minhas-propostas.html"><span class="nav-icon">📨</span> Minhas Propostas</a>
-      <a class="nav-item" href="ordens-servico.html"><span class="nav-icon">🛠️</span> Ordens de Serviço</a>
-      <a class="nav-item active alert" href="historico-financeiro.html"><span class="nav-icon">💳</span> Histórico Financeiro</a>
-      <a class="nav-item" href="meu-perfil-prestador.html"><span class="nav-icon">⚙️</span> Meus Dados</a>
-      <a class="nav-item" href="meus-trabalhos.html"><span class="nav-icon">💼</span> Meus Trabalhos</a>
+      <a class="nav-item" href="dashboard-prestador.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="7" height="9" x="3" y="3" rx="1"/>
+            <rect width="7" height="5" x="14" y="3" rx="1"/>
+            <rect width="7" height="9" x="14" y="12" rx="1"/>
+            <rect width="7" height="5" x="3" y="16" rx="1"/>
+          </svg>
+        </span>
+        Visão Geral
+      </a>
+
+      <a class="nav-item" href="demandas-disponiveis.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+        </span>
+        Demandas Disponíveis
+      </a>
+
+      <a class="nav-item" href="minhas-propostas.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" x2="8" y1="13" y2="13"/>
+            <line x1="16" x2="8" y1="17" y2="17"/>
+          </svg>
+        </span>
+        Minhas Propostas
+      </a>
+
+      <a class="nav-item" href="ordens-servico.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <path d="m9 14 2 2 4-4"/>
+          </svg>
+        </span>
+        Ordens de Serviço
+      </a>
+
+      <a class="nav-item active" href="historico-financeiro.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="20" height="14" x="2" y="5" rx="2"/>
+            <line x1="2" x2="22" y1="10" y2="10"/>
+          </svg>
+        </span>
+        Histórico Financeiro
+      </a>
+
+      <a class="nav-item" href="meu-perfil-prestador.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        Meus Dados
+      </a>
+
+      <a class="nav-item" href="meus-trabalhos.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="20" height="14" x="2" y="7" rx="2"/>
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          </svg>
+        </span>
+        Meus Trabalhos
+      </a>
+
       <div style="flex:1"></div>
-      <a class="nav-item" href="#" id="logoutBtn" style="color:var(--alert); margin-top:auto;"><span class="nav-icon">🚪</span> Sair</a>
+
+      <a class="nav-item" href="#" id="logoutBtn" style="margin-top:auto;">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+        </span>
+        Sair
+      </a>
     </nav>
+
     <div class="sidebar-foot">
-      <div id="userName" style="font-weight: 600; color: #fff; margin-bottom: 4px;">Carregando...</div>
-      <div id="userLoc" style="color: #8B8E96; font-size: 0.75rem; margin-bottom: 10px;">...</div>
-      <div class="role-tag alert">conta prestador</div>
+      <div id="userName" style="font-weight:600; color:#fff; margin-bottom:4px;">Carregando...</div>
+      <div id="userLoc" style="color:var(--color-gray-500); font-size:var(--font-size-xs); margin-bottom:10px;">...</div>
+      <div class="role-tag prestador">conta prestador</div>
     </div>
   </aside>
 
+  <!-- MAIN -->
   <main class="main-content">
     <div class="page-topbar">
       <div>
         <h1>Histórico Financeiro</h1>
-        <div class="sub">Acompanhe seus repasses, comissões e saldo disponível para saque</div>
+        <div class="sub">Acompanhe seus repasses, comissões e saldo disponível para saque.</div>
       </div>
-      <button class="btn-accent" style="width:auto; padding:12px 24px;" onclick="solicitarSaque()">
-        💳 Solicitar Saque
+      <button class="btn-withdraw" onclick="solicitarSaque()">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M12 2v20"/>
+          <path d="m19 15-7 7-7-7"/>
+        </svg>
+        Solicitar saque
       </button>
     </div>
 
-    <!-- Cards de Saldo -->
+    <!-- BALANCE CARDS -->
     <div class="balance-grid">
       <div class="balance-card available">
         <div class="balance-label">
-          <span>💰</span> Disponível para Saque
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+            <path d="M12 6v2M12 16v2"/>
+          </svg>
+          Disponível para saque
         </div>
         <div class="balance-value available" id="saldoDisponivel">R$ 0,00</div>
-        <div class="balance-trend" id="trendDisponivel">Carregando...</div>
+        <div class="balance-trend" id="trendDisponivel">—</div>
       </div>
-      
+
       <div class="balance-card pending">
         <div class="balance-label">
-          <span>⏳</span> Retido em Disputa
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Retido em disputa
         </div>
         <div class="balance-value pending" id="saldoRetido">R$ 0,00</div>
-        <div class="balance-trend" style="color: var(--ink-faint);">Nenhuma disputa ativa</div>
+        <div class="balance-trend" id="trendRetido">Nenhuma disputa ativa</div>
       </div>
-      
+
       <div class="balance-card monthly">
         <div class="balance-label">
-          <span>📈</span> Recebido Este Mês
+          <svg class="icon" viewBox="0 0 24 24">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+            <polyline points="16 7 22 7 22 13"/>
+          </svg>
+          Recebido este mês
         </div>
         <div class="balance-value" id="saldoMes">R$ 0,00</div>
-        <div class="balance-trend up" id="trendMes">Carregando...</div>
+        <div class="balance-trend" id="trendMes">—</div>
       </div>
-      
+
       <div class="balance-card fees">
         <div class="balance-label">
-          <span>📊</span> Comissão Paga (15%)
+          <svg class="icon" viewBox="0 0 24 24">
+            <line x1="12" x2="12" y1="20" y2="10"/>
+            <line x1="18" x2="18" y1="20" y2="4"/>
+            <line x1="6" x2="6" y1="20" y2="16"/>
+          </svg>
+          Comissão da plataforma
         </div>
         <div class="balance-value fees" id="totalComissao">R$ 0,00</div>
-        <div class="balance-trend down">↓ Taxa padrão da plataforma</div>
+        <div class="balance-trend" id="trendComissao">Taxa padrão</div>
       </div>
     </div>
 
-    <!-- Filtros e Busca -->
+    <!-- FILTROS -->
     <div class="filters-bar">
       <div class="filter-group">
         <button class="filter-btn active" data-filter="all">Todas</button>
         <button class="filter-btn" data-filter="completed">Concluídas</button>
-        <button class="filter-btn" data-filter="pending">Em Andamento</button>
+        <button class="filter-btn" data-filter="pending">Em andamento</button>
         <button class="filter-btn" data-filter="cancelled">Canceladas</button>
       </div>
-      
+
       <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input 
-          type="text" 
-          class="search-input" 
-          placeholder="Buscar por OS ou cliente..." 
+        <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Buscar por OS ou cliente..."
           id="searchInput"
-          style="padding-left: 40px;"
         >
       </div>
-      
-      <button class="btn-outline" style="width:auto; padding:10px 16px; font-size:0.82rem;" onclick="exportarDados()">
-        📊 Exportar
+
+      <button class="export-btn" onclick="exportarDados()">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" x2="12" y1="15" y2="3"/>
+        </svg>
+        Exportar
       </button>
     </div>
 
-    <!-- Tabela de Transações -->
+    <!-- TABELA -->
     <div class="table-container">
       <div class="table-header">
-        <h3 class="table-title">Transações Recentes</h3>
+        <h3 class="table-title">Transações recentes</h3>
         <div class="table-actions">
-          <button class="action-btn" onclick="verExtratoCompleto()">Ver Extrato Completo</button>
+          <button class="action-btn" onclick="verExtratoCompleto()">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            Ver extrato completo
+          </button>
         </div>
       </div>
-      
-      <table class="fin-table">
-        <thead>
-          <tr>
-            <th>OS</th>
-            <th>Cliente</th>
-            <th>Valor Bruto</th>
-            <th>Comissão (15%)</th>
-            <th>Valor Líquido</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="transactionsBody"></tbody>
-      </table>
+
+      <div class="table-scroll">
+        <table class="fin-table">
+          <thead>
+            <tr>
+              <th>OS</th>
+              <th>Cliente</th>
+              <th>Valor bruto</th>
+              <th>Comissão</th>
+              <th>Valor líquido</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsBody"></tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Nota Informativa -->
+    <!-- INFO -->
     <div class="fee-info">
-      <span class="fee-info-icon">ℹ️</span>
+      <svg class="icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" x2="12" y1="16" y2="12"/>
+        <line x1="12" x2="12.01" y1="8" y2="8"/>
+      </svg>
       <span>
-        <strong>Importante:</strong> O repasse cai em até 1 dia útil após a confirmação do serviço pelo Código de Fim. 
-        Valores em disputa ficam retidos até a mediação ser concluída pela nossa equipe.
+        <b>Importante:</b> o repasse cai em até 1 dia útil após a confirmação
+        do serviço pelo Código de Fim. Valores em disputa ficam retidos até
+        a mediação ser concluída pela nossa equipe.
       </span>
     </div>
   </main>
 </div>
 
-<!-- Navegação Mobile -->
+<!-- MOBILE NAV -->
 <nav class="mobile-nav" aria-label="Navegação principal">
-  <a href="dashboard-prestador.html" class="mobile-nav-item"><span class="nav-icon">▤</span><span>Início</span></a>
-  <a href="demandas-disponiveis.html" class="mobile-nav-item"><span class="nav-icon">🔍</span><span>Demandas</span></a>
-  <a href="minhas-propostas.html" class="mobile-nav-item"><span class="nav-icon">📨</span><span>Propostas</span></a>
-  <a href="ordens-servico.html" class="mobile-nav-item"><span class="nav-icon">🛠️</span><span>Ordens</span></a>
-  <a href="meu-perfil-prestador.html" class="mobile-nav-item"><span class="nav-icon">⚙️</span><span>Perfil</span></a>
+  <a href="dashboard-prestador.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </span>
+    <span>Início</span>
+  </a>
+
+  <a href="demandas-disponiveis.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.3-4.3"/>
+      </svg>
+    </span>
+    <span>Demandas</span>
+  </a>
+
+  <a href="minhas-propostas.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" x2="8" y1="13" y2="13"/>
+        <line x1="16" x2="8" y1="17" y2="17"/>
+      </svg>
+    </span>
+    <span>Propostas</span>
+  </a>
+
+  <a href="ordens-servico.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <path d="m9 14 2 2 4-4"/>
+      </svg>
+    </span>
+    <span>Ordens</span>
+  </a>
+
+  <a href="meu-perfil-prestador.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </span>
+    <span>Perfil</span>
+  </a>
 </nav>
 
-<!-- Scripts -->
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/utils.js"></script>
 <script src="../js/auth.js"></script>
- <script src="../app.js"></script>
+<script src="../app.js"></script>
 
 <script>
-  // ============================================
-  // ESTADO GLOBAL
-  // ============================================
+  /* ============================================
+     ESTADO
+     ============================================ */
   let allTransactions = [];
   let activeFilter = 'all';
   let searchTerm = '';
   let currentUserId = null;
 
-  // Taxa de comissão (15%)
   const COMMISSION_RATE = 0.15;
 
-  // ============================================
-  // INICIALIZAÇÃO
-  // ============================================
+  /* ============================================
+     INIT
+     ============================================ */
   async function init() {
     const supabase = window.supabaseClient;
-    
+
     if (!supabase) {
       window.location.href = '../index.html';
       return;
@@ -628,22 +769,15 @@
 
     currentUserId = session.user.id;
 
-    // Carrega dados do usuário
     await carregarDadosUsuario(supabase, currentUserId);
-    
-    // Carrega transações financeiras
     await carregarTransacoes(supabase, currentUserId);
-    
-    // Configura listeners
     configurarEventListeners();
-    
-    // Configura realtime
     configurarRealtime(supabase);
   }
 
-  // ============================================
-  // CARREGAR DADOS DO USUÁRIO
-  // ============================================
+  /* ============================================
+     DADOS DO USUÁRIO
+     ============================================ */
   async function carregarDadosUsuario(supabase, userId) {
     try {
       const { data: profile } = await supabase
@@ -653,20 +787,22 @@
         .single();
 
       if (profile) {
-        document.getElementById('userName').textContent = `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
-        document.getElementById('userLoc').textContent = profile.city ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}` : 'Local não definido';
+        document.getElementById('userName').textContent =
+          `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
+        document.getElementById('userLoc').textContent = profile.city
+          ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
+          : 'Local não definido';
       }
     } catch (error) {
       console.error('Erro ao carregar dados do usuário:', error);
     }
   }
 
-  // ============================================
-  // CARREGAR TRANSAÇÕES FINANCEIRAS
-  // ============================================
+  /* ============================================
+     TRANSAÇÕES
+     ============================================ */
   async function carregarTransacoes(supabase, userId) {
     try {
-      // Busca ordens de serviço com status que geram transações financeiras
       const { data: orders, error } = await supabase
         .from('service_orders')
         .select(`
@@ -675,29 +811,23 @@
           total_value,
           created_at,
           completed_at,
-          demand:demands (
-            title
-          ),
-          client:profiles!service_orders_client_id_fkey (
-            full_name
-          )
+          demand:demands ( title ),
+          client:profiles!service_orders_client_id_fkey ( full_name )
         `)
         .eq('provider_id', userId)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      // Transforma ordens em transações financeiras
       allTransactions = (orders || []).map(order => {
-        const gross = order.total_value || 0;
+        const gross = Number(order.total_value) || 0;
         const commission = gross * COMMISSION_RATE;
         const net = gross - commission;
-        
-        // Mapeia status para categorias financeiras
+
         let statusCategory = 'pending';
-        let statusLabel = 'Em Andamento';
+        let statusLabel = 'Em andamento';
         let statusClass = 'status-andamento';
-        
+
         switch (order.status) {
           case 'finalizado':
           case 'concluido':
@@ -712,251 +842,270 @@
             statusClass = 'status-cancelado';
             break;
           case 'aguardando_confirmacao_fim':
-            statusCategory = 'pending';
-            statusLabel = 'Aguardando Cliente';
-            statusClass = 'status-andamento';
+            statusLabel = 'Aguardando cliente';
             break;
           case 'pago_aguardando_inicio':
-            statusCategory = 'pending';
-            statusLabel = 'Aguardando Início';
-            statusClass = 'status-andamento';
+            statusLabel = 'Aguardando início';
             break;
           case 'em_andamento':
           case 'andamento':
-            statusCategory = 'pending';
-            statusLabel = 'Em Andamento';
-            statusClass = 'status-andamento';
+            statusLabel = 'Em andamento';
             break;
           default:
-            statusCategory = 'pending';
-            statusLabel = order.status.replace('_', ' ').toUpperCase();
-            statusClass = 'status-andamento';
+            statusLabel = order.status
+              ? order.status.replace(/_/g, ' ').toUpperCase()
+              : 'Pendente';
         }
 
         const clientName = order.client?.full_name || 'Cliente';
-        const clientInitial = clientName.charAt(0).toUpperCase();
-        const date = new Date(order.completed_at || order.created_at).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric'
-        });
+        const clientInitial = clientName.trim().charAt(0).toUpperCase() || '?';
+
+        const dateSource = order.completed_at || order.created_at;
+        const date = dateSource
+          ? new Date(dateSource).toLocaleDateString('pt-BR', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            })
+          : '';
 
         return {
-          os: order.id.slice(0, 8),
+          os: String(order.id).slice(0, 8),
           osFull: order.id,
           client: clientName,
-          clientInitial: clientInitial,
-          gross: gross,
-          commission: commission,
-          net: net,
-          date: date,
+          clientInitial,
+          gross,
+          commission,
+          net,
+          date,
           status: statusCategory,
-          statusLabel: statusLabel,
-          statusClass: statusClass,
-          demandTitle: order.demand?.title || 'Serviço'
+          statusLabel,
+          statusClass
         };
       });
 
-      // Atualiza os cards de saldo
-      atualizarCardsSaldo();
-      
-      // Renderiza a tabela
-      renderTransactions(allTransactions);
-
+      atualizarSaldos();
+      render();
     } catch (error) {
       console.error('Erro ao carregar transações:', error);
       document.getElementById('transactionsBody').innerHTML = `
         <tr>
-          <td colspan="6" style="text-align:center; padding:40px; color:var(--alert);">
-            Erro ao carregar transações: ${error.message}
+          <td colspan="6">
+            <div class="table-empty">
+              <h3>Erro ao carregar transações</h3>
+              <p>${escapeHTML(error.message)}</p>
+            </div>
           </td>
         </tr>
       `;
     }
   }
 
-  // ============================================
-  // ATUALIZAR CARDS DE SALDO
-  // ============================================
-  function atualizarCardsSaldo() {
-    // Calcula totais
-    const totalDisponivel = allTransactions
-      .filter(t => t.status === 'completed')
-      .reduce((sum, t) => sum + t.net, 0);
-    
-    const totalRetido = allTransactions
-      .filter(t => t.status === 'pending')
-      .reduce((sum, t) => sum + t.gross, 0);
-    
-    const totalMes = allTransactions
-      .filter(t => {
-        const date = new Date(t.date.split('/').reverse().join('-'));
-        const now = new Date();
-        return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
-      })
-      .reduce((sum, t) => sum + t.net, 0);
-    
-    const totalComissao = allTransactions
-      .reduce((sum, t) => sum + t.commission, 0);
+  /* ============================================
+     SALDOS
+     ============================================ */
+  function atualizarSaldos() {
+    const completed = allTransactions.filter(t => t.status === 'completed');
 
-    // Atualiza os cards
-    document.getElementById('saldoDisponivel').textContent = formatCurrency(totalDisponivel);
-    document.getElementById('saldoRetido').textContent = formatCurrency(totalRetido);
-    document.getElementById('saldoMes').textContent = formatCurrency(totalMes);
-    document.getElementById('totalComissao').textContent = formatCurrency(totalComissao);
+    const totalLiquido = completed.reduce((sum, t) => sum + t.net, 0);
+    const totalComissao = completed.reduce((sum, t) => sum + t.commission, 0);
+
+    const now = new Date();
+    const mesAtual = completed.filter(t => {
+      if (!t.date) return false;
+      const [d, m, y] = t.date.split('/');
+      const dt = new Date(`${y}-${m}-${d}`);
+      return dt.getMonth() === now.getMonth() && dt.getFullYear() === now.getFullYear();
+    });
+
+    const totalMes = mesAtual.reduce((sum, t) => sum + t.net, 0);
+
+    document.getElementById('saldoDisponivel').textContent = formatarMoeda(totalLiquido);
+    document.getElementById('saldoMes').textContent = formatarMoeda(totalMes);
+    document.getElementById('totalComissao').textContent = formatarMoeda(totalComissao);
+
+    document.getElementById('trendDisponivel').textContent =
+      completed.length > 0
+        ? `${completed.length} serviço${completed.length !== 1 ? 's' : ''} concluído${completed.length !== 1 ? 's' : ''}`
+        : 'Nenhum valor disponível';
+
+    document.getElementById('trendMes').textContent =
+      mesAtual.length > 0
+        ? `${mesAtual.length} serviço${mesAtual.length !== 1 ? 's' : ''} neste mês`
+        : 'Nenhum serviço neste mês';
+
+    document.getElementById('trendComissao').textContent =
+      completed.length > 0
+        ? `Taxa de ${Math.round(COMMISSION_RATE * 100)}% sobre serviços concluídos`
+        : 'Nenhuma comissão registrada';
+
+    // Retido em disputa (não há fonte no banco — fica em 0)
+    document.getElementById('saldoRetido').textContent = formatarMoeda(0);
+    document.getElementById('trendRetido').textContent = 'Nenhuma disputa ativa';
   }
 
-  // ============================================
-  // FORMATAR MOEDA
-  // ============================================
-  function formatCurrency(value) {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value);
-  }
-
-  // ============================================
-  // RENDERIZAR TABELA
-  // ============================================
-  function renderTransactions(data) {
+  /* ============================================
+     RENDER TABELA
+     ============================================ */
+  function render() {
     const tbody = document.getElementById('transactionsBody');
-    tbody.innerHTML = '';
-    
-    if (data.length === 0) {
+    if (!tbody) return;
+
+    const filtered = allTransactions.filter(t => {
+      const matchesFilter = activeFilter === 'all' || t.status === activeFilter;
+      const matchesSearch = !searchTerm ||
+        t.os.toLowerCase().includes(searchTerm) ||
+        t.client.toLowerCase().includes(searchTerm);
+      return matchesFilter && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="6" style="text-align:center; padding:40px; color:var(--ink-faint);">
-            Nenhuma transação encontrada
+          <td colspan="6">
+            <div class="table-empty">
+              <svg class="icon" viewBox="0 0 24 24">
+                <rect width="20" height="14" x="2" y="5" rx="2"/>
+                <line x1="2" x2="22" y1="10" y2="10"/>
+              </svg>
+              <h3>Nenhuma transação encontrada</h3>
+              <p>Quando você concluir um serviço, os valores aparecerão aqui.</p>
+            </div>
           </td>
-        </tr>
-      `;
+        </tr>`;
       return;
     }
-    
-    data.forEach(t => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
+
+    tbody.innerHTML = filtered.map(t => `
+      <tr>
         <td>
-          <div class="os-link" onclick="verDetalhesOS('${t.osFull}')">#${t.os}</div>
-          <div class="date-cell">${t.date}</div>
+          <a class="os-link"
+             href="detalhe-ordem.html?id=${escapeHTML(t.osFull)}"
+             onclick="return irParaOS(event, '${escapeHTML(t.osFull)}')">
+            #${escapeHTML(t.os)}
+          </a>
         </td>
         <td>
           <div class="client-cell">
-            <div class="client-avatar">${t.clientInitial}</div>
-            <span>${escapeHTML(t.client)}</span>
+            <div class="client-avatar">${escapeHTML(t.clientInitial)}</div>
+            <div>
+              <div class="client-name">${escapeHTML(t.client)}</div>
+              <div class="client-date">${escapeHTML(t.date)}</div>
+            </div>
           </div>
         </td>
-        <td>
-          <span class="amount gross">${formatCurrency(t.gross)}</span>
-        </td>
-        <td>
-          <span class="amount commission">-${formatCurrency(t.commission)}</span>
-        </td>
-        <td>
-          <span class="amount net">${formatCurrency(t.net)}</span>
-        </td>
-        <td>
-          <span class="status-badge ${t.statusClass}">${t.statusLabel}</span>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
+        <td><span class="amount gross">${formatarMoeda(t.gross)}</span></td>
+        <td><span class="amount commission">− ${formatarMoeda(t.commission)}</span></td>
+        <td><span class="amount net">${formatarMoeda(t.net)}</span></td>
+        <td><span class="status-badge ${t.statusClass}">${escapeHTML(t.statusLabel)}</span></td>
+      </tr>
+    `).join('');
   }
 
-  // ============================================
-  // ESCAPE HTML
-  // ============================================
+  /* ============================================
+     AUXILIARES
+     ============================================ */
+  function formatarMoeda(v) {
+    const n = Number(v) || 0;
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(n);
+  }
+
   function escapeHTML(str) {
-    if (!str) return '';
-    return String(str).replace(/[&<>'"]/g, tag => ({ 
-      '&': '&amp;', 
-      '<': '&lt;', 
-      '>': '&gt;', 
-      "'": '&#39;', 
-      '"': '&quot;' 
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
     }[tag]));
   }
 
-  // ============================================
-  // CONFIGURAR EVENT LISTENERS
-  // ============================================
-  function configurarEventListeners() {
-    // Filtros
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        
-        activeFilter = this.dataset.filter;
-        const filteredData = activeFilter === 'all' 
-          ? allTransactions 
-          : allTransactions.filter(t => t.status === activeFilter);
-        
-        renderTransactions(filteredData);
-      });
-    });
-
-    // Busca
-    document.getElementById('searchInput').addEventListener('input', function() {
-      searchTerm = this.value.toLowerCase();
-      const filteredData = allTransactions.filter(t => 
-        t.os.toLowerCase().includes(searchTerm) || 
-        t.client.toLowerCase().includes(searchTerm) ||
-        t.demandTitle.toLowerCase().includes(searchTerm)
-      );
-      renderTransactions(filteredData);
-    });
-
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-      e.preventDefault();
-      const supabase = window.supabaseClient;
-      if (supabase) {
-        await supabase.auth.signOut();
-      }
-      window.location.href = '../index.html';
-    });
+  function irParaOS(event, id) {
+    event.preventDefault();
+    window.location.href = `detalhe-ordem.html?id=${encodeURIComponent(id)}`;
+    return false;
   }
 
-  // ============================================
-  // CONFIGURAR REALTIME
-  // ============================================
+  /* ============================================
+     AÇÕES
+     ============================================ */
+  function solicitarSaque() {
+    const total = document.getElementById('saldoDisponivel').textContent;
+    alert(`Solicitação de saque registrada.\nValor disponível: ${total}\n\nO repasse será processado em até 1 dia útil.`);
+  }
+
+  function exportarDados() {
+    alert('A exportação será liberada em breve.');
+  }
+
+  function verExtratoCompleto() {
+    alert('O extrato completo será liberado em breve.');
+  }
+
+  /* ============================================
+     EVENT LISTENERS
+     ============================================ */
+  function configurarEventListeners() {
+    const filtersEl = document.getElementById('filters');
+    if (filtersEl) {
+      filtersEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        render();
+      });
+    } else {
+      // fallback: pega todos os filter-btn da página
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = btn.dataset.filter;
+          render();
+        });
+      });
+    }
+
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchTerm = e.target.value.trim().toLowerCase();
+        render();
+      });
+    }
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const supabase = window.supabaseClient;
+        if (supabase) {
+          await supabase.auth.signOut();
+        }
+        window.location.href = '../index.html';
+      });
+    }
+  }
+
+  /* ============================================
+     REALTIME
+     ============================================ */
   function configurarRealtime(supabase) {
     supabase
       .channel('historico-financeiro-realtime')
       .on('postgres_changes',
         { event: '*', schema: 'public', table: 'service_orders' },
-        async () => {
-          const session = await supabase.auth.getSession();
-          if (session.data.session) {
-            carregarTransacoes(supabase, session.data.session.user.id);
-          }
-        }
+        () => carregarTransacoes(supabase, currentUserId)
       )
       .subscribe();
   }
 
-  // ============================================
-  // FUNÇÕES GLOBAIS
-  // ============================================
-  window.solicitarSaque = function() {
-    alert('💰 Solicitação de saque iniciada!\n\nO valor será transferido para sua conta cadastrada em até 1 dia útil.');
-  };
-
-  window.exportarDados = function() {
-    alert('📊 Exportação iniciada!\n\nUm arquivo CSV será enviado para seu email.');
-  };
-
-  window.verExtratoCompleto = function() {
-    alert('📋 Abrindo extrato completo...');
-  };
-
-  window.verDetalhesOS = function(osId) {
-    window.location.href = `detalhe-ordem.html?id=${osId}`;
-  };
-
-  // Iniciar
   init();
 </script>
 </body>
