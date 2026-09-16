@@ -3,266 +3,455 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Enviar proposta · weneed</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
-<link rel="stylesheet" href="../style.css">
-<style>
-  .wrap { padding: 24px 22px 80px; }
-  
-  /* Estado de Sucesso */
-  .success-state { text-align: center; padding: 40px 4px; display: none; }
-  .success-state.show { display: block; animation: fadeIn 0.4s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  
-  .check-circle { width: 64px; height: 64px; border-radius: 50%; background: var(--accent-soft); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
-  .check-circle svg { width: 32px; height: 32px; }
-  .check-circle path { stroke: var(--accent-ink); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-  .success-state h3 { font-size: 1.2rem; margin: 0 0 8px; font-family: var(--font-display); }
-  .success-state p { font-size: 0.88rem; color: var(--ink-soft); margin: 0 0 24px; line-height: 1.5; }
+<title>Enviar proposta · WENEED</title>
 
-  /* Detalhes da Demanda */
-  .demand-detail { background: var(--surface); border-radius: var(--radius-lg); padding: 22px 20px; margin-bottom: 14px; border: 1px solid var(--border); }
-  .demand-detail h2 { font-family: var(--font-display); font-size: 1.15rem; margin: 0 0 8px; color: var(--ink); }
-  .demand-detail p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.6; margin: 0 0 16px; }
-  .demand-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.82rem; color: var(--ink-faint); margin-bottom: 16px; }
-  .demand-images { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 4px; }
-  .demand-images img { width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border); cursor: pointer; flex-shrink: 0; }
-  
-  .detail-lines { border-top: 1px solid var(--border); padding-top: 14px; margin-top: 14px; }
-  .detail-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; }
-  .detail-line span:first-child { color: var(--ink-soft); }
-  .detail-line span:last-child { font-weight: 600; color: var(--ink); text-align: right; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="stylesheet" href="../style.css">
+
+<style>
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{
+    width:16px; height:16px;
+    stroke:currentColor;
+    stroke-width:1.75;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    flex-shrink:0;
+    display:block;
+  }
+  .icon-sm{ width:14px; height:14px; stroke-width:2; }
+  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
+  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+
+  /* ---------- WRAP ---------- */
+  .wrap{ padding:var(--space-4) var(--space-5) var(--space-12); }
+
+  /* ---------- CARD LABEL · azul (prestador) ---------- */
+  .card-label .dot{
+    background:var(--color-brand-blue) !important;
+  }
+
+  /* ---------- DETAIL LINES ---------- */
+  .detail-lines{
+    border-top:1px solid var(--border-default);
+    padding-top:var(--space-3);
+  }
+  .detail-line{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:var(--space-3);
+    padding:7px 0;
+    font-size:var(--font-size-sm);
+  }
+  .detail-line span:first-child{ color:var(--text-secondary); }
+  .detail-line span:last-child{
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-primary);
+    text-align:right;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .detail-line .count-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:24px;
+    padding:2px 8px;
+    background:rgba(0,68,204,.10);
+    color:var(--color-brand-blue-deep);
+    border-radius:var(--radius-full);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-bold);
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- DEMAND DESC ---------- */
+  .demand-desc{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    line-height:var(--line-height-relaxed);
+    margin:var(--space-4) 0 0;
+    font-style:italic;
+  }
+
+  /* ---------- SUCCESS ---------- */
+  .success-state{
+    text-align:center;
+    padding:var(--space-6) var(--space-4) var(--space-4);
+    display:none;
+  }
+  .success-state.show{
+    display:block;
+    animation:fadeIn var(--duration-slow) var(--ease-out);
+  }
+  @keyframes fadeIn{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .check-circle{
+    width:56px; height:56px;
+    border-radius:50%;
+    background:rgba(0,68,204,.10);
+    color:var(--color-brand-blue-deep);
+    margin:0 auto var(--space-4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .check-circle .icon{ width:26px; height:26px; stroke-width:2.5; }
+
+  .success-state h3{
+    font-size:var(--font-size-lg);
+    font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tight);
+    margin:0 0 var(--space-2);
+    color:var(--text-primary);
+  }
+  .success-state p{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    margin:0 0 var(--space-5);
+    line-height:var(--line-height-normal);
+    max-width:36ch;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  /* ---------- SEND BUTTON (azul) ---------- */
+  .send-btn{
+    width:100%;
+    margin-top:var(--space-3);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    background:var(--color-brand-blue-deep);
+    color:var(--color-white);
+    border:none;
+    padding:16px 20px;
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-base);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    transition:background var(--duration-fast) var(--ease-out),
+               opacity var(--duration-fast) var(--ease-out);
+  }
+  .send-btn:hover:not(:disabled){ background:var(--color-brand-blue); }
+  .send-btn:active{ opacity:.9; }
+  .send-btn:disabled{ opacity:.55; cursor:not-allowed; }
+  .send-btn .icon{ width:14px; height:14px; stroke-width:2.25; }
+
+  /* ---------- SELECT ARROW ---------- */
+  select{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    background-size:16px;
+    padding-right:42px;
+  }
+
+  /* ---------- ERROR STATE ---------- */
+  .error-state{
+    text-align:center;
+    padding:var(--space-6) var(--space-4);
+    color:var(--color-error);
+    font-size:var(--font-size-sm);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:var(--space-2);
+  }
+  .error-state .icon{ width:28px; height:28px; }
 </style>
 </head>
 <body>
 
 <div class="container-mobile">
+
   <header class="header-dark">
     <div class="header-top">
-      <div class="brand alert">Bizu<span>xo</span></div>
-      <a class="pill-link" href="demandas-disponiveis.html">← Voltar</a>
+      <div class="brand">WENEED<span class="dot">.</span></div>
+      <a class="pill-link" href="demandas-disponiveis.html">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" style="display:inline-block; vertical-align:middle; margin-right:2px;">
+          <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+        </svg>
+        Voltar
+      </a>
     </div>
-    <h2 id="demandTitle" style="font-size:1.1rem; margin:0;">Carregando...</h2>
+    <h2 id="demandTitle" style="font-size:var(--font-size-lg); margin:0; font-weight:var(--font-weight-bold); letter-spacing:var(--tracking-tight);">
+      Carregando demanda...
+    </h2>
   </header>
 
   <div class="wrap">
-    <!-- 1. Detalhes da Demanda -->
-    <div class="demand-detail" id="detailCard">
-      <div id="demandContent">
-        <p style="text-align:center; color:var(--ink-faint);">Buscando detalhes da demanda...</p>
-      </div>
+
+    <!-- DETALHES -->
+    <div class="card" id="detailCard">
+      <div class="card-label"><div class="dot"></div> Detalhes da demanda</div>
+      <div class="detail-lines" id="detailLines"></div>
+      <p id="demandDesc" class="demand-desc"></p>
     </div>
 
-    <!-- 2. Formulário de Proposta -->
+    <!-- FORMULÁRIO -->
     <form id="propostaForm">
       <div class="card">
-        <div class="card-label alert"><span class="dot"></span>Sua proposta</div>
-        
+        <div class="card-label"><div class="dot"></div> Sua proposta</div>
+
         <div class="field-row">
           <div class="field">
             <label for="valor">Valor (R$)</label>
-            <input type="number" id="valor" placeholder="Ex: 150.00" min="1" step="0.01" required>
+            <input type="number" id="valor" placeholder="120" min="1" step="0.01" inputmode="decimal" required>
           </div>
           <div class="field">
-            <label for="prazo">Prazo de entrega</label>
+            <label for="prazo">Prazo</label>
             <select id="prazo" required>
               <option value="">Selecione...</option>
-              <option value="hoje">Ainda hoje</option>
-              <option value="1h">Em 1 hora</option>
-              <option value="2h">Em 2 horas</option>
-              <option value="amanha">Amanhã</option>
-              <option value="semana">Esta semana</option>
+              <option value="1">Amanhã (1 dia)</option>
+              <option value="2">Em 2 dias</option>
+              <option value="3">Em 3 dias</option>
+              <option value="7">Em 1 semana</option>
+              <option value="15">Em 2 semanas</option>
+              <option value="30">Em 1 mês</option>
             </select>
           </div>
         </div>
-        
+
         <div class="field">
           <label for="mensagem">Mensagem para o cliente</label>
-          <textarea id="mensagem" rows="4" placeholder="Ex: Consigo ir aí amanhã às 14h. Já possuo todas as ferramentas necessárias..." required></textarea>
+          <textarea id="mensagem" placeholder="Ex: Consigo ir amanhã às 14h, já levo o material necessário..." required></textarea>
         </div>
       </div>
-      
-      <button type="submit" class="btn btn-alert" id="sendBtn" style="width:100%; margin-top:16px;">Enviar proposta</button>
-      <div class="terms" style="font-size:0.75rem; color:var(--ink-faint); text-align:center; margin-top:14px;">
-        O cliente será notificado e poderá aceitar ou recusar sua proposta.
-      </div9>
+
+      <button type="submit" class="send-btn" id="sendBtn">
+        <svg class="icon" viewBox="0 0 24 24">
+          <line x1="22" x2="11" y1="2" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+        Enviar proposta
+      </button>
     </form>
 
-    <!-- 3. Estado de Sucesso -->
+    <!-- SUCESSO -->
     <div class="success-state" id="successState">
       <div class="check-circle">
-        <svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg>
+        <svg class="icon" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
       </div>
-      <h3>Proposta enviada!</h3>
-      <p>O cliente vai receber sua proposta e pode entrar em contato a qualquer momento pelo chat da plataforma.</p>
-      <a class="btn btn-dark" href="dashboard-prestador.html" style="text-decoration:none;">Voltar ao Painel</a>
+      <h3>Proposta enviada</h3>
+      <p>O cliente vai receber sua proposta e pode entrar em contato a qualquer momento.</p>
+      <a class="btn btn-primary" href="minhas-propostas.html">
+        Ver minhas propostas
+      </a>
     </div>
+
   </div>
 </div>
 
-<!-- Scripts -->
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/utils.js"></script>
+<script src="../js/cadastro.js"></script>
 <script src="../js/auth.js"></script>
-   <script src="../app.js"></script>
+<script src="../app.js"></script>
 
 <script>
-  // Pega o ID da URL (suporta ?id= ou ?demand_id=)
+  /* ============================================
+     ESTADO
+     ============================================ */
+  const db = window.supabaseClient;
   const urlParams = new URLSearchParams(window.location.search);
   const demandId = urlParams.get('id') || urlParams.get('demand_id');
+
   let providerProfileId = null;
 
+  /* ============================================
+     AUXILIARES
+     ============================================ */
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag]));
+  }
+
+  /* ============================================
+     INIT
+     ============================================ */
   async function init() {
-    if (!demandId) { 
-      window.location.href = 'demandas-disponiveis.html'; 
-      return; 
+    if (!db) {
+      console.error('supabaseClient não inicializado');
+      return;
+    }
+    if (!demandId) {
+      window.location.href = 'demandas-disponiveis.html';
+      return;
     }
 
-    if (!window.supabaseClient) { 
-      alert('Erro de configuração do sistema.'); 
-      return; 
+    /* 1. Sessão e perfil */
+    const { data: { session } } = await db.auth.getSession();
+    if (!session) {
+      window.location.href = '../index.html';
+      return;
     }
 
-    // 1. Verificar Autenticação e pegar o ID DO PERFIL (não do auth)
-    const { data: { session } } = await window.supabaseClient.auth.getSession();
-    if (!session) { 
-      window.location.href = '../index.html'; 
-      return; 
-    }
-
-    const { data: profile, error: profileError } = await window.supabaseClient
+    const { data: profile, error: profErr } = await db
       .from('profiles')
       .select('id')
       .eq('user_id', session.user.id)
       .single();
 
-    if (profileError || !profile) {
-      alert('Erro ao carregar seu perfil de prestador.');
+    if (profErr || !profile) {
+      console.error('Erro perfil:', profErr);
+      alert('Perfil de prestador não encontrado.');
       return;
     }
     providerProfileId = profile.id;
 
-    // 2. Carregar detalhes da demanda
-    carregarDemanda();
-  }
-
-  async function carregarDemanda() {
-    const { data: demand, error } = await window.supabaseClient
+    /* 2. Buscar demanda */
+    const { data, error } = await db
       .from('demands')
-      .select(`
-        id, title, description, budget_min, budget_max, city, neighborhood, created_at, media_urls, status,
-        categories(name, icon, service_type),
-        profiles!demands_client_id_fkey(full_name)
-      `)
+      .select('id, title, description, city, neighborhood, status, created_at, category_id')
       .eq('id', demandId)
       .single();
 
-    if (error || !demand) {
-      document.getElementById('demandContent').innerHTML = '<p style="text-align:center; color:var(--alert);">Demanda não encontrada.</p>';
+    if (error || !data) {
+      console.error('Erro ao carregar demanda:', error);
+      document.getElementById('detailCard').innerHTML = `
+        <div class="error-state">
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" x2="12" y1="8" y2="12"/>
+            <line x1="12" x2="12.01" y1="16" y2="16"/>
+          </svg>
+          Demanda não encontrada.
+        </div>`;
       document.getElementById('propostaForm').style.display = 'none';
       return;
     }
 
-    if (demand.status !== 'OPEN') {
-      document.getElementById('demandContent').innerHTML = '<p style="text-align:center; color:var(--alert);">⚠️ Esta demanda não está mais aberta para propostas.</p>';
-      document.getElementById('propostaForm').style.display = 'none';
-      return;
+    /* 3. Categoria (join opcional) */
+    let categoriaNome = '—';
+    if (data.category_id) {
+      const { data: cat } = await db
+        .from('categories')
+        .select('name')
+        .eq('id', data.category_id)
+        .maybeSingle();
+
+      if (cat?.name) categoriaNome = cat.name;
     }
 
-    // Formatar dados para exibição
-    document.getElementById('demandTitle').textContent = demand.title;
-    
-    const isFreelance = demand.categories?.service_type === 'FREELANCE';
-    const budget = demand.budget_max ? `R$ ${parseFloat(demand.budget_max).toFixed(2)}` : (demand.budget_min ? `A partir de R$ ${parseFloat(demand.budget_min).toFixed(2)}` : 'A combinar');
-    const location = isFreelance ? '💻 Online' : `📍 ${demand.city || 'Não especificada'}${demand.neighborhood ? ' - ' + demand.neighborhood : ''}`;
-    const date = new Date(demand.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
-    const clientName = demand.profiles?.full_name ? demand.profiles.full_name.split(' ')[0] : 'Cliente';
+    /* 4. Contar propostas */
+    const { count: propostasCount } = await db
+      .from('proposals')
+      .select('id', { count: 'exact', head: true })
+      .eq('demand_id', demandId);
 
-    let imagesHtml = '';
-    if (demand.media_urls && demand.media_urls.length > 0) {
-      imagesHtml = `<div class="demand-images">${demand.media_urls.map(url => `<img src="${url}" alt="Foto" onclick="window.open('${url}')">`).join('')}</div>`;
-    }
+    /* 5. Preencher DOM */
+    document.getElementById('demandTitle').textContent = data.title || 'Demanda';
+    document.getElementById('demandDesc').textContent = data.description ? `"${data.description}"` : '';
 
-    document.getElementById('demandContent').innerHTML = `
-      ${imagesHtml}
-      <p style="font-size:0.9rem; line-height:1.6; color:var(--ink); margin-bottom:16px;">"${demand.description}"</p>
-      
-      <div class="detail-lines">
-        <div class="detail-line"><span>Categoria</span><span>${demand.categories?.icon || '📌'} ${demand.categories?.name || 'Serviço'}</span></div>
-        <div class="detail-line"><span>Local</span><span>${location}</span></div>
-        <div class="detail-line"><span>Orçamento</span><span style="color:var(--accent-ink); font-weight:700;">${budget}</span></div>
-        <div class="detail-line"><span>Cliente</span><span>${clientName}</span></div>
-        <div class="detail-line"><span>Publicada</span><span>${date}</span></div>
+    const dataPub = data.created_at
+      ? new Date(data.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+      : '—';
+
+    const local = [data.neighborhood, data.city].filter(Boolean).join(', ') || '—';
+
+    document.getElementById('detailLines').innerHTML = `
+      <div class="detail-line">
+        <span>Categoria</span>
+        <span>${escapeHTML(categoriaNome)}</span>
+      </div>
+      <div class="detail-line">
+        <span>Local</span>
+        <span>
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          ${escapeHTML(local)}
+        </span>
+      </div>
+      <div class="detail-line">
+        <span>Publicada</span>
+        <span>${dataPub}</span>
+      </div>
+      <div class="detail-line">
+        <span>Propostas até agora</span>
+        <span class="count-badge">${propostasCount || 0}</span>
       </div>
     `;
+
+    /* 6. Bloquear se não estiver aberta */
+    if (data.status !== 'OPEN' && data.status !== 'ABERTA') {
+      document.getElementById('propostaForm').style.display = 'none';
+    }
   }
 
-  // Envio do Formulário
+  /* ============================================
+     SUBMIT · ENVIAR PROPOSTA
+     ============================================ */
   document.getElementById('propostaForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const valor = parseFloat(document.getElementById('valor').value);
-    const prazoSelect = document.getElementById('prazo').value;
-    const mensagem = document.getElementById('mensagem').value.trim();
-
-    if (!valor || valor <= 0) { alert('Informe um valor válido.'); return; }
-    if (!prazoSelect) { alert('Selecione um prazo.'); return; }
-    if (!mensagem) { alert('Escreva uma mensagem para o cliente.'); return; }
-
-    // Mapear o select de prazo para dias (inteiro) conforme o banco de dados
-    let deadlineDays = 1;
-    let prazoTexto = '';
-    switch(prazoSelect) {
-      case 'hoje': deadlineDays = 0; prazoTexto = 'Ainda hoje'; break;
-      case '1h': deadlineDays = 0; prazoTexto = '1 hora'; break;
-      case '2h': deadlineDays = 0; prazoTexto = '2 horas'; break;
-      case 'amanha': deadlineDays = 1; prazoTexto = 'Amanhã'; break;
-      case 'semana': deadlineDays = 7; prazoTexto = 'Esta semana'; break;
-      default: deadlineDays = 1; prazoTexto = prazoSelect;
+    if (!providerProfileId) {
+      alert('Sessão expirada. Faça login novamente.');
+      window.location.href = '../index.html';
+      return;
     }
 
     const btn = document.getElementById('sendBtn');
-    btn.textContent = 'Enviando...';
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = 'Enviando...';
     btn.disabled = true;
 
-    try {
-      // Inserir proposta no banco
-      const { error } = await window.supabaseClient
-        .from('proposals')
-        .insert({
-          demand_id: demandId,
-          provider_id: providerProfileId, // ✅ USANDO O ID DO PERFIL (CORRETO)
-          price: valor,
-          deadline_days: deadlineDays,
-          message: `[Prazo: ${prazoTexto}]\n\n${mensagem}`, // Salva o prazo junto com a mensagem para contexto
-          status: 'pendente'
-        });
+    const payload = {
+      demand_id: demandId,
+      provider_id: providerProfileId,
+      price: parseFloat(document.getElementById('valor').value),
+      deadline_days: parseInt(document.getElementById('prazo').value, 10),
+      message: document.getElementById('mensagem').value.trim(),
+      status: 'pendente'
+    };
 
-      if (error) {
-        if (error.code === '23505') {
-          throw new Error('Você já enviou uma proposta para esta demanda.');
-        }
-        throw error;
-      }
+    const { error: insertError } = await db.from('proposals').insert(payload);
 
-      // Transição suave para a tela de sucesso
-      document.getElementById('detailCard').style.display = 'none';
-      document.getElementById('propostaForm').style.display = 'none';
-      document.getElementById('successState').classList.add('show');
-      
-      // Opcional: Esconder o header de "Voltar" para forçar o uso do botão do sucesso
-      document.querySelector('.pill-link').style.display = 'none';
-
-    } catch (err) {
-      console.error('Erro ao enviar proposta:', err);
-      alert('❌ Erro: ' + err.message);
-      btn.textContent = 'Enviar proposta';
+    if (insertError) {
+      console.error('Erro insert:', insertError);
+      alert('Erro ao enviar: ' + insertError.message);
+      btn.innerHTML = originalHTML;
       btn.disabled = false;
+      return;
     }
+
+    /* Atualiza status da demanda */
+    await db
+      .from('demands')
+      .update({ status: 'EM_PROPOSTAS' })
+      .eq('id', demandId);
+
+    document.getElementById('detailCard').style.display = 'none';
+    document.getElementById('propostaForm').style.display = 'none';
+    document.getElementById('successState').classList.add('show');
+    document.querySelector('.pill-link').style.display = 'none';
   });
 
   init();

@@ -888,6 +888,7 @@ input:-webkit-autofill:focus{
    ============================================================ */
 .mobile-nav{
   display:none;
+  grid-template-columns:repeat(5, 1fr);
   position:fixed;
   bottom:0; left:0; right:0;
   height:var(--app-mobile-nav-height);
@@ -899,7 +900,6 @@ input:-webkit-autofill:focus{
   box-shadow:0 -4px 20px rgba(10,10,10,.05);
   isolation:isolate;
 }
-
 .mobile-nav-item{
   display:flex;
   flex-direction:column;
@@ -1007,8 +1007,5 @@ input:-webkit-autofill:focus{
     display:block !important;
     grid-template-columns:none !important;
   }
-  .mobile-nav{
-    display:grid !important;
-    grid-template-columns:repeat(5, 1fr);
-  }
+  .mobile-nav{ display:grid !important; }
 }

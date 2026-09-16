@@ -3,272 +3,986 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Visualizar Perfil · weneed</title>
+<title>Visualizar Perfil · WENEED</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#4F46E5">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0A0A0A">
 <link rel="stylesheet" href="../style.css">
 
 <style>
+  /* ---------- BLINDAGEM LOCAL ---------- */
+  @media (max-width:1023px){
+    .sidebar{ display:none !important; }
+    .app-shell{ display:block !important; }
+  }
+  @media (min-width:1024px){
+    .mobile-nav{ display:none !important; }
+  }
+
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{
+    width:16px; height:16px;
+    stroke:currentColor;
+    stroke-width:1.75;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    flex-shrink:0;
+    display:block;
+  }
+  .icon-sm{ width:14px; height:14px; stroke-width:2; }
+  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
+  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+  .icon-xl{ width:28px; height:28px; stroke-width:1.5; }
+
+  /* ---------- CONTEÚDO TIGHT ---------- */
+  .main-content{
+    padding:var(--space-4) var(--space-4) var(--space-6);
+    max-width:900px;
+  }
+
+  /* ---------- PAGE TOPBAR ---------- */
+  .page-topbar{
+    display:flex;
+    flex-direction:column;
+    gap:var(--space-2);
+    margin-bottom:var(--space-4);
+  }
+  .page-topbar h1{
+    font-size:var(--font-size-xl);
+    font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tighter);
+    margin:0 0 2px;
+    line-height:var(--line-height-snug);
+  }
+  .page-topbar .sub{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+  }
+  .page-topbar .btn{
+    width:100%;
+    padding:13px 18px;
+    font-size:var(--font-size-sm);
+  }
+
+  /* ---------- PREVIEW WRAPPER ---------- */
+  .preview-wrapper{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-bottom:var(--space-6);
+  }
+
+  .preview-banner{
+    display:flex;
+    align-items:center;
+    gap:var(--space-2);
+    background:rgba(0,68,204,.08);
+    color:var(--color-brand-blue-deep);
+    border:1px solid rgba(0,68,204,.24);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-bold);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    padding:10px 14px;
+    border-radius:var(--radius-full);
+    margin-bottom:var(--space-4);
+  }
+  .preview-banner .icon{ width:14px; height:14px; stroke-width:2.25; }
+
+  /* ---------- PREVIEW DEVICE (mockup) ---------- */
+  .preview-device{
+    width:100%;
+    max-width:480px;
+    background:var(--surface-default);
+    border-radius:var(--radius-xl);
+    border:1px solid var(--border-default);
+    box-shadow:var(--shadow-lg);
+    overflow:hidden;
+    position:relative;
+  }
+
   /* ============================================================
-     Estilos específicos para a tela de Preview (Mockup)
+     MOCKUP · o que o cliente vê
+     Fundo escuro no hero, CTA preto (client color)
      ============================================================ */
-  
-  .preview-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 40px;
+  .profile-hero{
+    background:var(--color-black);
+    color:var(--color-white);
+    padding:var(--space-5) var(--space-5) var(--space-6);
+    text-align:center;
   }
 
-  .preview-banner {
-    background: var(--amber-soft);
-    color: var(--amber);
-    border: 1px solid var(--amber);
-    font-size: 0.82rem;
-    font-weight: 700;
-    padding: 10px 20px;
-    border-radius: var(--radius-sm);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .profile-back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:var(--font-size-xs);
+    color:var(--color-gray-400);
+    text-align:left;
+    margin-bottom:var(--space-4);
+    cursor:default;
+  }
+  .profile-back .icon{ width:14px; height:14px; stroke-width:2; }
+
+  .profile-avatar{
+    width:84px;
+    height:84px;
+    border-radius:50%;
+    background:var(--color-gray-900);
+    border:3px solid var(--color-black);
+    box-shadow:0 4px 12px rgba(0,0,0,.30);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--color-gray-400);
+    margin:0 auto var(--space-4);
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .profile-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
   }
 
-  /* O "Celular" simulado */
-  .preview-device {
-    width: 100%;
-    max-width: 480px;
-    background: var(--surface-soft);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
-    box-shadow: 0 20px 40px rgba(16, 17, 19, 0.08);
-    overflow: hidden; /* Garante que o conteúdo respeite as bordas arredondadas */
-    position: relative;
+  .profile-name{
+    font-size:var(--font-size-2xl);
+    font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tighter);
+    margin:0 0 var(--space-3);
+    color:var(--color-white);
+    line-height:var(--line-height-snug);
+    word-break:break-word;
   }
 
-  /* Reaproveitamento dos estilos do perfil do cliente para garantir 100% de fidelidade */
-  .profile-hero {
-    background: var(--bg-app);
-    color: #fff;
-    padding: 24px 20px 32px;
-    text-align: center;
+  .verified-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(0,87,255,.15);
+    color:var(--color-brand-blue);
+    font-size:11px;
+    font-weight:var(--font-weight-bold);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    padding:5px 12px;
+    border-radius:var(--radius-full);
+    margin-bottom:var(--space-3);
   }
-  .profile-avatar {
-    width: 80px; height: 80px; border-radius: 50%; background: var(--surface-soft);
-    border: 3px solid var(--bg-app); box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    display: flex; align-items: center; justify-content: center; font-size: 2.2rem;
-    margin: 0 auto 16px;
+  .verified-badge .icon{ width:12px; height:12px; stroke-width:2.5; }
+
+  .profile-rating{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:var(--font-size-sm);
+    color:var(--color-gray-400);
+    font-weight:var(--font-weight-medium);
   }
-  .profile-name { font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; margin: 0 0 8px; }
-  .verified-badge {
-    display: inline-flex; align-items: center; gap: 6px; background: rgba(5, 193, 103, 0.15);
-    color: var(--accent); font-size: 0.75rem; font-weight: 700; padding: 4px 12px;
-    border-radius: 100px; margin-bottom: 12px;
-  }
-  .verified-badge svg { width: 14px; height: 14px; fill: currentColor; }
-  .profile-rating { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; color: #B6B8BE; font-weight: 500; }
-  .profile-rating svg { width: 16px; height: 16px; fill: var(--amber); }
-
-  .specialties-wrap { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
-  .specialties-wrap .chip { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); font-size: 0.8rem; padding: 6px 14px; }
-
-  .stats-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border);
-    border-radius: var(--radius-md); overflow: hidden; margin: 24px 20px 0; border: 1px solid var(--border);
-  }
-  .stat-item { background: var(--surface); padding: 16px 8px; text-align: center; }
-  .stat-item b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: var(--ink); margin-bottom: 4px; }
-  .stat-item span { font-size: 0.7rem; color: var(--ink-soft); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.3; }
-
-  .content-wrap { padding: 0 20px 100px; } /* 100px de respiro para o sticky footer */
-
-  .review-item { padding: 16px 0; border-bottom: 1px solid var(--border); }
-  .review-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .review-item:first-child { padding-top: 0; }
-  .review-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .review-name { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; color: var(--ink); }
-  .review-stars { display: flex; gap: 2px; }
-  .review-stars svg { width: 14px; height: 14px; }
-  .review-stars .filled { fill: var(--amber); }
-  .review-stars .empty { fill: var(--border); }
-  .review-text { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.5; margin: 0 0 10px; }
-  .review-tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-  .review-tag { font-size: 0.72rem; background: var(--surface-soft); color: var(--ink-soft); padding: 3px 8px; border-radius: 6px; font-weight: 500; }
-  .review-date { font-size: 0.72rem; color: var(--ink-faint); margin-left: auto; }
-
-  .sticky-cta {
-    position: sticky; bottom: 0; background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid var(--border); padding: 16px 20px max(16px, env(safe-area-inset-bottom));
-    z-index: 10; box-shadow: 0 -4px 20px rgba(16, 17, 19, 0.06);
+  .profile-rating .icon{
+    width:14px;
+    height:14px;
+    fill:currentColor;
+    stroke:none;
+    color:var(--color-brand-blue);
   }
 
-  /* Ajuste para mobile real: remove a aparência de "mockup" e ocupa a tela toda */
-  @media (max-width: 768px) {
-    .preview-device { border: none; border-radius: 0; box-shadow: none; max-width: 100%; }
-    .preview-wrapper { padding: 0; }
-    .preview-banner { margin: 16px 16px 0; border-radius: var(--radius-sm); }
+  .specialties-wrap{
+    display:flex;
+    gap:var(--space-2);
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:var(--space-5);
+  }
+  .specialties-wrap .chip{
+    background:rgba(255,255,255,.08);
+    color:var(--color-white);
+    border:1px solid rgba(255,255,255,.15);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-semibold);
+    padding:6px 12px;
+    border-radius:var(--radius-full);
+    cursor:default;
+  }
+
+  /* ---------- STATS ---------- */
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--border-default);
+    border-radius:0;
+    overflow:hidden;
+    margin:var(--space-4) var(--space-5) 0;
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+  }
+  .stat-item{
+    background:var(--surface-default);
+    padding:var(--space-3) var(--space-2);
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .stat-item b{
+    font-weight:var(--font-weight-extrabold);
+    font-size:var(--font-size-base);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tighter);
+    line-height:1.1;
+    font-variant-numeric:tabular-nums;
+  }
+  .stat-item span{
+    font-size:10px;
+    color:var(--text-secondary);
+    font-weight:var(--font-weight-bold);
+    text-transform:uppercase;
+    letter-spacing:var(--tracking-wider);
+    line-height:1.3;
+  }
+
+  /* ---------- CONTENT ---------- */
+  .content-wrap{
+    padding:var(--space-5) var(--space-5) calc(100px + env(safe-area-inset-bottom));
+  }
+
+  .content-wrap .card{
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+    padding:var(--space-4);
+  }
+  .content-wrap .card + .card{ margin-top:var(--space-3); }
+
+  .content-wrap .card-label{
+    display:flex;
+    align-items:center;
+    gap:var(--space-2);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tight);
+    margin-bottom:var(--space-3);
+  }
+  .content-wrap .card-label .dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--color-black);
+    flex-shrink:0;
+  }
+  .content-wrap .card-label .count{
+    margin-left:auto;
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    font-weight:var(--font-weight-medium);
+  }
+
+  /* ---------- REVIEWS ---------- */
+  .review-item{
+    padding:var(--space-3) 0;
+    border-bottom:1px solid var(--border-subtle);
+  }
+  .review-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .review-item:first-child{ padding-top:0; }
+
+  .review-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:var(--space-2);
+    margin-bottom:var(--space-2);
+  }
+  .review-name{
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-sm);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tight);
+  }
+  .review-stars{
+    display:inline-flex;
+    align-items:center;
+    gap:1px;
+  }
+  .review-stars .icon{
+    width:12px; height:12px;
+    stroke:none;
+    fill:currentColor;
+  }
+  .review-stars .filled{ color:var(--color-brand-blue-deep); }
+  .review-stars .empty { color:var(--color-gray-200); }
+
+  .review-text{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+    margin:0 0 var(--space-2);
+  }
+  .review-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:var(--space-2);
+    align-items:center;
+    font-size:11px;
+    color:var(--text-secondary);
+  }
+  .review-date{
+    margin-left:auto;
+    font-size:11px;
+    color:var(--text-secondary);
+  }
+
+  /* ---------- STICKY CTA ---------- */
+  .sticky-cta{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-top:1px solid var(--border-default);
+    padding:var(--space-3) var(--space-5) max(var(--space-3), env(safe-area-inset-bottom));
+    box-shadow:0 -4px 20px rgba(10,10,10,.04);
+  }
+  .sticky-cta .btn{
+    width:100%;
+    padding:14px 20px;
+    font-size:var(--font-size-sm);
+    background:var(--color-black);
+    color:var(--color-white);
+    cursor:default;
+    pointer-events:none;
+  }
+  .sticky-cta .btn .icon{ width:14px; height:14px; stroke-width:2; }
+
+  /* ---------- EMPTY ---------- */
+  .preview-empty{
+    text-align:center;
+    padding:var(--space-5) var(--space-4);
+    color:var(--text-secondary);
+    font-size:var(--font-size-sm);
+  }
+
+  /* ---------- MOBILE NAV ---------- */
+  .mobile-nav{ display:none; }
+
+  @media (max-width:1023px){
+    .mobile-nav{
+      display:grid !important;
+      grid-template-columns:repeat(5, 1fr);
+      position:fixed;
+      bottom:0; left:0; right:0;
+      height:var(--app-mobile-nav-height);
+      background:var(--surface-default);
+      border-top:1px solid var(--border-default);
+      align-items:stretch;
+      z-index:var(--z-sticky);
+      padding-bottom:env(safe-area-inset-bottom);
+      box-shadow:0 -4px 20px rgba(10,10,10,.05);
+      isolation:isolate;
+    }
+    .mobile-nav-item{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:3px;
+      text-decoration:none;
+      color:var(--color-gray-400);
+      font-size:11px;
+      font-weight:var(--font-weight-semibold);
+      height:100%;
+      position:relative;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      user-select:none;
+      transition:color var(--duration-base) var(--ease-out),
+                 transform var(--duration-fast) var(--ease-out);
+    }
+    .mobile-nav-item:active{ transform:scale(0.88); }
+    .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
+    .mobile-nav-item.active::before{
+      content:'';
+      position:absolute;
+      top:6px; left:50%;
+      transform:translateX(-50%);
+      width:5px; height:5px;
+      background:var(--color-brand-blue);
+      border-radius:50%;
+    }
+  }
+
+  /* ---------- TABLET (≥ 640px) ---------- */
+  @media (min-width:640px){
+    .main-content{
+      padding:var(--space-5) var(--space-6) var(--space-8);
+    }
+    .page-topbar{
+      flex-direction:row;
+      justify-content:space-between;
+      align-items:flex-end;
+    }
+    .page-topbar .btn{ width:auto; }
+  }
+
+  /* ---------- DESKTOP (≥ 1024px) ---------- */
+  @media (min-width:1024px){
+    .main-content{
+      padding:var(--space-6) var(--space-8) var(--space-12);
+    }
+    .nav-item.active{
+      background:rgba(0,87,255,.14);
+      border-left:2px solid var(--color-brand-blue);
+    }
   }
 </style>
 </head>
 <body>
 
 <div class="app-shell">
-  <!-- Sidebar do Prestador (Mantida para contexto de navegação) -->
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand alert" style="margin-bottom: 8px;">Bizu<span>xo</span></div>
+    <div class="brand" style="margin-bottom:8px;">WENEED<span>.</span></div>
+
     <nav class="sidebar-nav">
-      <a class="nav-item" href="dashboard-prestador.html"><span class="nav-icon">▤</span> Visão Geral</a>
-      <a class="nav-item" href="demandas-disponiveis.html"><span class="nav-icon">🔍</span> Demandas Disponíveis</a>
-      <a class="nav-item" href="minhas-propostas.html"><span class="nav-icon">📨</span> Minhas Propostas</a>
-      <a class="nav-item" href="ordens-servico.html"><span class="nav-icon">🛠️</span> Ordens de Serviço</a>
-      <a class="nav-item" href="historico-financeiro.html"><span class="nav-icon">💳</span> Histórico Financeiro</a>
-      <a class="nav-item active" href="meu-perfil-prestador.html"><span class="nav-icon">⚙️</span> Meus Dados</a>
-      <a class="nav-item" href="meus-trabalhos.html"><span class="nav-icon">💼</span> Meus Trabalhos</a>
+      <a class="nav-item" href="dashboard-prestador.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="7" height="9" x="3" y="3" rx="1"/>
+            <rect width="7" height="5" x="14" y="3" rx="1"/>
+            <rect width="7" height="9" x="14" y="12" rx="1"/>
+            <rect width="7" height="5" x="3" y="16" rx="1"/>
+          </svg>
+        </span>
+        Visão Geral
+      </a>
+
+      <a class="nav-item" href="demandas-disponiveis.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+        </span>
+        Demandas Disponíveis
+      </a>
+
+      <a class="nav-item" href="minhas-propostas.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" x2="8" y1="13" y2="13"/>
+            <line x1="16" x2="8" y1="17" y2="17"/>
+          </svg>
+        </span>
+        Minhas Propostas
+      </a>
+
+      <a class="nav-item" href="ordens-servico.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <path d="m9 14 2 2 4-4"/>
+          </svg>
+        </span>
+        Ordens de Serviço
+      </a>
+
+      <a class="nav-item" href="historico-financeiro.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="20" height="14" x="2" y="5" rx="2"/>
+            <line x1="2" x2="22" y1="10" y2="10"/>
+          </svg>
+        </span>
+        Histórico Financeiro
+      </a>
+
+      <a class="nav-item active" href="meu-perfil-prestador.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        Meus Dados
+      </a>
+
+      <a class="nav-item" href="meus-trabalhos.html">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <rect width="20" height="14" x="2" y="7" rx="2"/>
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          </svg>
+        </span>
+        Meus Trabalhos
+      </a>
+
       <div style="flex:1"></div>
-      <a class="nav-item" href="../index.html" style="color: var(--alert); margin-top: auto;"><span class="nav-icon">🚪</span> Sair</a>
+
+      <a class="nav-item" href="#" id="logoutBtn" style="margin-top:auto;">
+        <span class="nav-icon">
+          <svg class="icon icon-md" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" x2="9" y1="12" y2="12"/>
+          </svg>
+        </span>
+        Sair
+      </a>
     </nav>
+
     <div class="sidebar-foot">
-      <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">Olá, Carlos</div>
-      <div style="color: #8B8E96; font-size: 0.75rem; margin-bottom: 10px;">Águas Claras, DF</div>
-      <div class="role-tag">conta prestador</div>
+      <div id="userName" style="font-weight:600; color:#fff; margin-bottom:4px;">Carregando...</div>
+      <div id="userLoc" style="color:var(--color-gray-500); font-size:var(--font-size-xs); margin-bottom:10px;">...</div>
+      <div class="role-tag prestador">conta prestador</div>
     </div>
   </aside>
 
-  <!-- Área Principal de Visualização -->
-  <main class="main-content" style="max-width: 900px;">
+  <!-- MAIN -->
+  <main class="main-content">
     <div class="page-topbar">
       <div>
         <h1>Visualização do Perfil</h1>
-        <div class="sub">É exatamente assim que os clientes veem suas informações públicas.</div>
+        <div class="sub">É assim que os clientes veem suas informações públicas.</div>
       </div>
-      <a class="btn btn-outline" href="meu-perfil-prestador.html" style="width: auto; display: inline-flex; align-items: center; gap: 6px;">
-        ← Voltar para edição
+      <a class="btn btn-outline" href="meu-perfil-prestador.html">
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+        </svg>
+        Voltar para edição
       </a>
     </div>
 
     <div class="preview-wrapper">
-      <!-- Banner de Aviso -->
+
+      <!-- BANNER MODO VISUALIZAÇÃO -->
       <div class="preview-banner">
-        <span>👁️</span> MODO VISUALIZAÇÃO (Somente leitura)
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        Modo visualização
       </div>
 
-      <!-- O "Dispositivo" Simulado -->
+      <!-- MOCKUP -->
       <div class="preview-device">
-        
-        <!-- Cabeçalho do Perfil (Simulando a visão do cliente) -->
+
+        <!-- HERO · visão do cliente -->
         <div class="profile-hero">
-          <div style="text-align: left; margin-bottom: 16px;">
-            <span style="font-size: 0.85rem; color: #B6B8BE; cursor: default;">← Voltar</span>
+          <div class="profile-back">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+            </svg>
+            Voltar
           </div>
-          <div class="profile-avatar">👨‍🔧</div>
-          <h1 class="profile-name">Carlos Elétrica</h1>
-          
+
+          <div class="profile-avatar" id="profileAvatar">
+            <svg class="icon icon-xl" viewBox="0 0 24 24">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+
+          <h1 class="profile-name" id="profileName">Carregando...</h1>
+
           <div class="verified-badge">
-            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M20 6 9 17l-5-5"/>
+            </svg>
             Identidade verificada
           </div>
-          
-          <div class="profile-rating">
-            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            4,9 · 127 serviços concluídos
+
+          <div class="profile-rating" id="profileRating">
+            <svg class="icon" viewBox="0 0 24 24">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span id="ratingText">— serviços concluídos</span>
           </div>
 
-          <div class="specialties-wrap">
-            <span class="chip">⚡ Elétrica</span>
-            <span class="chip">🔌 Instalações</span>
-            <span class="chip">🛠️ Manutenção</span>
+          <div class="specialties-wrap" id="specialtiesWrap">
+            <!-- chips de categorias carregadas via JS -->
           </div>
         </div>
 
-        <!-- Estatísticas -->
+        <!-- STATS -->
         <div class="stats-grid">
           <div class="stat-item">
-            <b>3 anos</b>
-            <span>Na plataforma</span>
-          </div>
-          <div class="stat-item">
-            <b>98%</b>
-            <span>Taxa de aceitação</span>
-          </div>
-          <div class="stat-item">
-            <b>~1h</b>
+            <b id="statTempo">—</b>
             <span>Tempo de resposta</span>
+          </div>
+          <div class="stat-item">
+            <b id="statServicos">0</b>
+            <span>Serviços concluídos</span>
+          </div>
+          <div class="stat-item">
+            <b id="statAvaliacoes">0</b>
+            <span>Avaliações</span>
           </div>
         </div>
 
-        <!-- Conteúdo do Perfil -->
-        <div class="content-wrap" style="margin-top: 24px;">
-          
-          <!-- Sobre -->
+        <!-- CONTEÚDO -->
+        <div class="content-wrap">
+
           <div class="card">
-            <div class="card-label"><span class="dot"></span>Sobre o profissional</div>
-            <p style="font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; margin: 0;">
-              Eletricista profissional com 8 anos de experiência. Ofereço atendimento rápido, transparente e com <strong>garantia de 90 dias</strong> em todos os serviços realizados. Especialista em instalações residenciais, quadros de distribuição e pequenos reparos emergenciais.
+            <div class="card-label">
+              <div class="dot"></div>
+              Sobre o profissional
+            </div>
+            <p id="profileBio" style="font-size:var(--font-size-sm); color:var(--text-secondary); line-height:var(--line-height-normal); margin:0;">
+              Carregando...
             </p>
           </div>
 
-          <!-- Avaliações -->
-          <div class="card" style="margin-top: 14px;">
+          <div class="card">
             <div class="card-label">
-              <span class="dot"></span>Avaliações recentes
-              <span style="margin-left: auto; font-size: 0.75rem; color: var(--ink-faint); font-weight: 500;">(127)</span>
+              <div class="dot"></div>
+              Avaliações recentes
+              <span class="count" id="reviewsCount">(0)</span>
             </div>
-
-            <div class="review-item">
-              <div class="review-head">
-                <span class="review-name">Maria Oliveira</span>
-                <div class="review-stars">
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-              </div>
-              <p class="review-text">Pontual e resolveu tudo rapidinho. Deixou o local super limpo após o serviço, super recomendo!</p>
-              <div class="review-tags">
-                <span class="review-tag">Pontual</span>
-                <span class="review-tag">Serviço limpo</span>
-                <span class="review-date">26/08</span>
-              </div>
+            <div id="reviewsList">
+              <div class="preview-empty">Nenhuma avaliação ainda.</div>
             </div>
-
-            <div class="review-item">
-              <div class="review-head">
-                <span class="review-name">João Pedro</span>
-                <div class="review-stars">
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  <svg class="filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                </div>
-              </div>
-              <p class="review-text">Preço justo e explicou tudo que estava fazendo antes de começar. Show de profissional.</p>
-              <div class="review-tags">
-                <span class="review-tag">Educado</span>
-                <span class="review-tag">Preço justo</span>
-                <span class="review-date">20/08</span>
-              </div>
-            </div>
-
           </div>
+
         </div>
 
-        <!-- Sticky CTA (Simulando a visão do cliente) -->
+        <!-- STICKY CTA -->
         <div class="sticky-cta">
-          <button class="btn btn-accent" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; font-weight: 700; cursor: default; opacity: 0.9;">
-            <span>💬</span> Solicitar orçamento com Carlos
+          <button class="btn" type="button">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Solicitar orçamento
           </button>
         </div>
 
-      </div> <!-- Fim do preview-device -->
-    </div> <!-- Fim do preview-wrapper -->
+      </div>
+    </div>
   </main>
 </div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" aria-label="Navegação principal">
+  <a href="dashboard-prestador.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </span>
+    <span>Início</span>
+  </a>
+
+  <a href="demandas-disponiveis.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.3-4.3"/>
+      </svg>
+    </span>
+    <span>Demandas</span>
+  </a>
+
+  <a href="minhas-propostas.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" x2="8" y1="13" y2="13"/>
+        <line x1="16" x2="8" y1="17" y2="17"/>
+      </svg>
+    </span>
+    <span>Propostas</span>
+  </a>
+
+  <a href="ordens-servico.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <path d="m9 14 2 2 4-4"/>
+      </svg>
+    </span>
+    <span>Ordens</span>
+  </a>
+
+  <a href="meu-perfil-prestador.html" class="mobile-nav-item active">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </span>
+    <span>Perfil</span>
+  </a>
+</nav>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-cliente.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../app.js"></script>
+
+<script>
+  /* ============================================
+     ESTADO
+     ============================================ */
+  let currentUserId = null;
+  let providerProfileId = null;
+
+  /* ============================================
+     INIT
+     ============================================ */
+  async function init() {
+    const supabase = window.supabaseClient;
+
+    if (!supabase) {
+      window.location.href = '../index.html';
+      return;
+    }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = '../index.html';
+      return;
+    }
+
+    currentUserId = session.user.id;
+
+    await carregarPerfil(supabase, currentUserId);
+    await carregarCategorias(supabase);
+    await carregarEstatisticas(supabase);
+    await carregarAvaliacoes(supabase);
+  }
+
+  /* ============================================
+     PERFIL
+     ============================================ */
+  async function carregarPerfil(supabase, userId) {
+    try {
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, city, uf, bio, avatar_url')
+        .eq('user_id', userId)
+        .single();
+
+      if (error) throw error;
+
+      if (!profile) return;
+
+      providerProfileId = profile.id;
+
+      // Sidebar
+      const nomeEl = document.getElementById('userName');
+      const locEl = document.getElementById('userLoc');
+      if (nomeEl) nomeEl.textContent = `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
+      if (locEl) locEl.textContent = profile.city
+        ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
+        : 'Local não definido';
+
+      // Hero do mockup
+      document.getElementById('profileName').textContent =
+        profile.full_name || 'Profissional';
+
+      if (profile.avatar_url) {
+        document.getElementById('profileAvatar').innerHTML =
+          `<img src="${escapeHTML(profile.avatar_url)}" alt="">`;
+      }
+
+      // Bio
+      document.getElementById('profileBio').textContent =
+        profile.bio || 'Este profissional ainda não adicionou uma descrição.';
+    } catch (error) {
+      console.error('Erro ao carregar perfil:', error);
+    }
+  }
+
+  /* ============================================
+     CATEGORIAS (chips de especialidade)
+     ============================================ */
+  async function carregarCategorias(supabase) {
+    if (!providerProfileId) return;
+
+    try {
+      const { data: cats, error } = await supabase
+        .from('provider_categories')
+        .select('category_id, categories(name)')
+        .eq('provider_id', providerProfileId);
+
+      if (error) throw error;
+
+      const wrap = document.getElementById('specialtiesWrap');
+      if (!cats || cats.length === 0) {
+        wrap.innerHTML = `<span class="chip">Sem especialidades cadastradas</span>`;
+        return;
+      }
+
+      wrap.innerHTML = cats
+        .filter(c => c.categories?.name)
+        .map(c => `<span class="chip">${escapeHTML(c.categories.name)}</span>`)
+        .join('');
+    } catch (error) {
+      console.error('Erro ao carregar categorias:', error);
+    }
+  }
+
+  /* ============================================
+     ESTATÍSTICAS
+     ============================================ */
+  async function carregarEstatisticas(supabase) {
+    if (!providerProfileId) return;
+
+    // Serviços concluídos
+    try {
+      const { data: contratos } = await supabase
+        .from('contracts')
+        .select('id, proposals(provider_id)')
+        .in('status', ['finalizado', 'concluido']);
+
+      if (contratos) {
+        const total = contratos.filter(c => c.proposals?.provider_id === providerProfileId).length;
+        document.getElementById('statServicos').textContent = total;
+      }
+    } catch (e) { /* tabela opcional */ }
+
+    // Avaliações
+    try {
+      const { data: reviews, error } = await supabase
+        .from('reviews')
+        .select('rating')
+        .eq('provider_id', providerProfileId);
+
+      if (error && error.code === 'PGRST205') {
+        document.getElementById('statAvaliacoes').textContent = '0';
+        document.getElementById('ratingText').textContent = '— serviços concluídos';
+        return;
+      }
+
+      if (reviews && reviews.length > 0) {
+        const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+        document.getElementById('statAvaliacoes').textContent = reviews.length;
+
+        const servicosEl = document.getElementById('statServicos').textContent;
+        document.getElementById('ratingText').textContent =
+          `${avg.toFixed(1)} · ${servicosEl} serviços concluídos`;
+      } else {
+        document.getElementById('statAvaliacoes').textContent = '0';
+        document.getElementById('ratingText').textContent = '— serviços concluídos';
+      }
+    } catch (e) { /* tabela opcional */ }
+
+    // Tempo de resposta — sem fonte no banco ainda
+    document.getElementById('statTempo').textContent = '—';
+  }
+
+  /* ============================================
+     AVALIAÇÕES
+     ============================================ */
+  async function carregarAvaliacoes(supabase) {
+    if (!providerProfileId) return;
+
+    const list = document.getElementById('reviewsList');
+    const countEl = document.getElementById('reviewsCount');
+
+    try {
+      const { data: reviews, error } = await supabase
+        .from('reviews')
+        .select(`
+          id,
+          rating,
+          comment,
+          created_at,
+          client:profiles!reviews_client_id_fkey ( full_name )
+        `)
+        .eq('provider_id', providerProfileId)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      if (error && error.code === 'PGRST205') {
+        list.innerHTML = `<div class="preview-empty">Nenhuma avaliação ainda.</div>`;
+        countEl.textContent = '(0)';
+        return;
+      }
+
+      if (error) throw error;
+
+      countEl.textContent = `(${reviews?.length || 0})`;
+
+      if (!reviews || reviews.length === 0) {
+        list.innerHTML = `<div class="preview-empty">Nenhuma avaliação ainda.</div>`;
+        return;
+      }
+
+      list.innerHTML = reviews.map(r => {
+        const rating = Math.round(r.rating || 0);
+        const stars = Array(5).fill(0).map((_, i) => `
+          <svg class="icon ${i < rating ? 'filled' : 'empty'}" viewBox="0 0 24 24">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        `).join('');
+
+        const name = r.client?.full_name || 'Cliente';
+        const date = r.created_at
+          ? new Date(r.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+          : '';
+
+        return `
+          <div class="review-item">
+            <div class="review-head">
+              <span class="review-name">${escapeHTML(name)}</span>
+              <div class="review-stars">${stars}</div>
+            </div>
+            <p class="review-text">${escapeHTML(r.comment || '')}</p>
+            <div class="review-meta">
+              <span class="review-date">${date}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+    } catch (error) {
+      console.error('Erro ao carregar avaliações:', error);
+      list.innerHTML = `<div class="preview-empty">Erro ao carregar avaliações.</div>`;
+    }
+  }
+
+  /* ============================================
+     AUXILIARES
+     ============================================ */
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag]));
+  }
+
+  /* ============================================
+     LOGOUT
+     ============================================ */
+  document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const supabase = window.supabaseClient;
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
+    window.location.href = '../index.html';
+  });
+
+  init();
+</script>
 </body>
 </html>

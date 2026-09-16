@@ -14,21 +14,45 @@
 <link rel="stylesheet" href="../style.css">
 
 <style>
-  /* ============================================================
-     Demandas Disponíveis — tokens do style.css
-     Acento: azul WENEED (#0044CC)
-     ============================================================ */
+  /* ---------- BLINDAGEM LOCAL ---------- */
+  @media (max-width:1023px){
+    .sidebar{ display:none !important; }
+    .app-shell{ display:block !important; }
+  }
+  @media (min-width:1024px){
+    .mobile-nav{ display:none !important; }
+  }
 
-  /* ---------- INTRO ---------- */
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{
+    width:16px; height:16px;
+    stroke:currentColor;
+    stroke-width:1.75;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    fill:none;
+    flex-shrink:0;
+    display:block;
+  }
+  .icon-sm{ width:14px; height:14px; stroke-width:2; }
+  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
+  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+
+  /* ---------- CONTEÚDO TIGHT ---------- */
+  .main-content{
+    padding:var(--space-4) var(--space-4) var(--space-6);
+  }
+
+  /* ---------- PAGE INTRO ---------- */
   .intro{
-    margin-bottom:var(--space-5);
+    margin-bottom:var(--space-4);
   }
   .intro h1{
-    font-size:var(--font-size-2xl);
+    font-size:var(--font-size-xl);
     font-weight:var(--font-weight-extrabold);
     letter-spacing:var(--tracking-tighter);
     line-height:var(--line-height-snug);
-    margin:0 0 var(--space-1);
+    margin:0 0 2px;
   }
   .intro p{
     font-size:var(--font-size-sm);
@@ -41,14 +65,18 @@
   .filter-bar{
     display:flex;
     gap:var(--space-2);
-    margin-bottom:var(--space-5);
+    margin-bottom:var(--space-4);
     flex-wrap:wrap;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
   }
+  .filter-bar::-webkit-scrollbar{ display:none; }
   .filter-chip{
     display:inline-flex;
     align-items:center;
     gap:6px;
-    padding:9px 15px;
+    padding:8px 14px;
     font-size:var(--font-size-sm);
     font-weight:var(--font-weight-semibold);
     color:var(--text-secondary);
@@ -58,6 +86,8 @@
     cursor:pointer;
     user-select:none;
     line-height:1.2;
+    white-space:nowrap;
+    flex-shrink:0;
     transition:background   var(--duration-fast) var(--ease-out),
                border-color var(--duration-fast) var(--ease-out),
                color        var(--duration-fast) var(--ease-out);
@@ -113,7 +143,6 @@
     word-break:break-word;
   }
 
-  /* Badge de tipo (Presencial / Online) */
   .demand-card-badge{
     display:inline-flex;
     align-items:center;
@@ -129,13 +158,16 @@
     background:var(--color-gray-100);
     color:var(--color-gray-700);
   }
-  /* Online / Freelance = azul (acento do prestador) */
+  .demand-card-badge .icon{
+    width:12px;
+    height:12px;
+    stroke-width:2;
+  }
   .demand-card-badge.freelance{
     background:rgba(0,87,255,.10);
     color:var(--color-brand-blue-deep);
   }
 
-  /* Imagens de preview */
   .demand-card-images{
     display:flex;
     gap:var(--space-2);
@@ -146,27 +178,25 @@
   }
   .demand-card-images::-webkit-scrollbar{ display:none; }
   .demand-card-images img{
-    width:60px;
-    height:60px;
+    width:56px;
+    height:56px;
     object-fit:cover;
     border-radius:var(--radius-sm);
     border:1px solid var(--border-default);
     flex-shrink:0;
   }
 
-  /* Descrição */
   .demand-card-desc{
     font-size:var(--font-size-sm);
     color:var(--text-secondary);
     line-height:var(--line-height-normal);
-    margin:0 0 var(--space-4);
+    margin:0 0 var(--space-3);
     display:-webkit-box;
     -webkit-line-clamp:2;
     -webkit-box-orient:vertical;
     overflow:hidden;
   }
 
-  /* Footer */
   .demand-card-footer{
     display:flex;
     flex-direction:column;
@@ -195,32 +225,86 @@
     font-size:var(--font-size-base);
     color:var(--color-brand-blue-deep);
     letter-spacing:var(--tracking-tight);
+    font-variant-numeric:tabular-nums;
   }
 
-  /* ---------- EMPTY STATE ---------- */
+  /* ---------- EMPTY STATE COMPACTO ---------- */
   .empty-state{
     text-align:center;
-    padding:var(--space-12) var(--space-5);
+    padding:var(--space-6) var(--space-4);
+    background:var(--surface-default);
+    border:1px dashed var(--border-default);
+    border-radius:var(--radius-md);
     color:var(--text-secondary);
   }
   .empty-state h3{
-    font-size:var(--font-size-lg);
-    color:var(--text-primary);
+    font-size:var(--font-size-sm);
     font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    margin:0 0 4px;
     letter-spacing:var(--tracking-tight);
-    margin:0 0 var(--space-2);
   }
   .empty-state p{
-    font-size:var(--font-size-sm);
+    font-size:var(--font-size-xs);
     line-height:var(--line-height-normal);
-    max-width:36ch;
     margin:0 auto;
+    max-width:34ch;
   }
 
-  /* ============================================================
-     TABLET (≥ 640px)
-     ============================================================ */
+  /* ---------- MOBILE NAV ---------- */
+  .mobile-nav{ display:none; }
+
+  @media (max-width:1023px){
+    .mobile-nav{
+      display:grid !important;
+      grid-template-columns:repeat(5, 1fr);
+      position:fixed;
+      bottom:0; left:0; right:0;
+      height:var(--app-mobile-nav-height);
+      background:var(--surface-default);
+      border-top:1px solid var(--border-default);
+      align-items:stretch;
+      z-index:var(--z-sticky);
+      padding-bottom:env(safe-area-inset-bottom);
+      box-shadow:0 -4px 20px rgba(10,10,10,.05);
+      isolation:isolate;
+    }
+    .mobile-nav-item{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:3px;
+      text-decoration:none;
+      color:var(--color-gray-400);
+      font-size:11px;
+      font-weight:var(--font-weight-semibold);
+      height:100%;
+      position:relative;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      user-select:none;
+      transition:color var(--duration-base) var(--ease-out),
+                 transform var(--duration-fast) var(--ease-out);
+    }
+    .mobile-nav-item:active{ transform:scale(0.88); }
+    .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
+    .mobile-nav-item.active::before{
+      content:'';
+      position:absolute;
+      top:6px; left:50%;
+      transform:translateX(-50%);
+      width:5px; height:5px;
+      background:var(--color-brand-blue);
+      border-radius:50%;
+    }
+  }
+
+  /* ---------- TABLET (≥ 640px) ---------- */
   @media (min-width:640px){
+    .main-content{
+      padding:var(--space-5) var(--space-6) var(--space-8);
+    }
     .demand-card-footer{
       flex-direction:row;
       justify-content:space-between;
@@ -229,13 +313,12 @@
     .demand-card-meta{ flex:1; }
   }
 
-  /* ============================================================
-     DESKTOP (≥ 1024px)
-     ============================================================ */
+  /* ---------- DESKTOP (≥ 1024px) ---------- */
   @media (min-width:1024px){
-    .intro h1{ font-size:var(--font-size-3xl); }
-
-    /* Nav ativo do sidebar = azul (prestador) */
+    .main-content{
+      padding:var(--space-6) var(--space-8) var(--space-12);
+    }
+    .intro h1{ font-size:var(--font-size-2xl); }
     .nav-item.active{
       background:rgba(0,87,255,.14);
       border-left:2px solid var(--color-brand-blue);
@@ -454,7 +537,6 @@
       return;
     }
 
-    // 1. Perfil do prestador
     const { data: profile } = await window.supabaseClient
       .from('profiles')
       .select('id, full_name, city, uf')
@@ -474,7 +556,6 @@
       ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
       : 'Local não definido';
 
-    // 2. Categorias do prestador
     const { data: cats } = await window.supabaseClient
       .from('provider_categories')
       .select('category_id, categories(name, icon)')
@@ -485,10 +566,7 @@
       renderizarFiltros(cats);
     }
 
-    // 3. Demandas
     await carregarDemandas();
-
-    // 4. Realtime
     configurarRealtime();
   }
 
@@ -561,7 +639,7 @@
   }
 
   /* ==========================================
-     RENDER
+     AUXILIARES
      ========================================== */
   function escapeHTML(str) {
     if (str === null || str === undefined) return '';
@@ -582,6 +660,9 @@
     }).format(v);
   }
 
+  /* ==========================================
+     RENDER
+     ========================================== */
   function renderizarDemandas() {
     const container = document.getElementById('demandasList');
 
@@ -603,14 +684,13 @@
       const isFreelance = d.categories?.service_type === 'FREELANCE';
       const badgeClass = isFreelance ? 'demand-card-badge freelance' : 'demand-card-badge';
 
-      // Badge com ícone SVG
       const badgeIcon = isFreelance
-        ? `<svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2;">
+        ? `<svg class="icon" viewBox="0 0 24 24">
              <rect width="20" height="14" x="2" y="3" rx="2"/>
              <line x1="8" x2="16" y1="21" y2="21"/>
              <line x1="12" x2="12" y1="17" y2="21"/>
            </svg>`
-        : `<svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2;">
+        : `<svg class="icon" viewBox="0 0 24 24">
              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
            </svg>`;
       const badgeText = isFreelance ? 'Online' : 'Presencial';
