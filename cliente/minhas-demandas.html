@@ -9,14 +9,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="../manifest.json">
 <meta name="theme-color" content="#0A0A0A">
 <link rel="stylesheet" href="../style.css">
 
 <style>
-  /* ============================================================
-     Minhas Demandas — tokens do style.css
-     ============================================================ */
+  /* ---------- BLINDAGEM LOCAL ---------- */
+  @media (max-width:1023px){
+    .sidebar{ display:none !important; }
+    .app-shell{ display:block !important; }
+  }
+  @media (min-width:1024px){
+    .mobile-nav{ display:none !important; }
+  }
 
   /* ---------- ICON SYSTEM ---------- */
   .icon{
@@ -34,65 +39,67 @@
   .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
   .icon-xl{ width:28px; height:28px; stroke-width:1.5; }
 
-  /* ---------- PAGE TOPBAR BUTTON ---------- */
-  .new-btn{
-    width:auto;
-    padding:12px 20px;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    text-decoration:none;
-  }
+  /* ---------- CONTEÚDO TIGHT ---------- */
+  .main-content{ padding:var(--space-4) var(--space-4) var(--space-6); }
 
-  /* ---------- SEARCH TOOLBAR ---------- */
-  .toolbar{
+  /* ---------- PAGE TOPBAR ---------- */
+  .page-topbar{
     display:flex;
-    gap:var(--space-3);
-    margin:var(--space-6) 0 var(--space-4);
-    flex-wrap:wrap;
-    align-items:center;
+    flex-direction:column;
+    gap:var(--space-2);
+    margin-bottom:var(--space-3);
   }
-
-  /* ---------- LIST ROW EXTRAS ---------- */
-  .list-row-desc{
+  .page-topbar h1{
+    font-size:var(--font-size-xl);
+    font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tighter);
+    margin:0 0 2px;
+    line-height:var(--line-height-snug);
+  }
+  .page-topbar .sub{
     font-size:var(--font-size-sm);
     color:var(--text-secondary);
-    margin-top:var(--space-1);
-    max-width:44ch;
     line-height:var(--line-height-normal);
-    display:-webkit-box;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
   }
-  .list-row-date{
-    font-size:var(--font-size-xs);
-    color:var(--text-secondary);
-    display:block;
+  .page-topbar .btn{
+    width:100%;
+    padding:13px 18px;
+    font-size:var(--font-size-sm);
   }
+
+  /* ---------- TOOLBAR ---------- */
+  .toolbar{ margin:0 0 var(--space-3); }
+  .search-input{ background:var(--surface-default); }
 
   /* ---------- FILTER CHIPS ---------- */
   .chip-select{
     display:flex;
     gap:var(--space-2);
     flex-wrap:wrap;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding-bottom:2px;
   }
+  .chip-select::-webkit-scrollbar{ display:none; }
   .chip{
     display:inline-flex;
     align-items:center;
     font-size:var(--font-size-sm);
     font-weight:var(--font-weight-semibold);
-    padding:9px 15px;
+    padding:8px 14px;
     border:1.5px solid var(--border-default);
-    background:var(--surface-subtle);
+    background:var(--surface-default);
     border-radius:var(--radius-full);
     color:var(--text-secondary);
     cursor:pointer;
-    transition:background   var(--duration-fast) var(--ease-out),
-               border-color var(--duration-fast) var(--ease-out),
-               color        var(--duration-fast) var(--ease-out);
+    white-space:nowrap;
+    flex-shrink:0;
     user-select:none;
     line-height:1.2;
+    transition:background var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out),
+               color var(--duration-fast) var(--ease-out);
   }
   .chip:hover{
     border-color:var(--color-black);
@@ -104,7 +111,123 @@
     border-color:var(--color-black);
   }
 
+  /* ---------- DEMAND CARD ---------- */
+  .demand-card{
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+    padding:var(--space-4);
+    margin-bottom:var(--space-3);
+    text-decoration:none;
+    color:inherit;
+    display:block;
+    transition:border-color var(--duration-base) var(--ease-out),
+               box-shadow var(--duration-base) var(--ease-out);
+  }
+  .demand-card:hover{
+    border-color:var(--color-gray-300);
+    box-shadow:var(--shadow-sm);
+  }
+  .demand-card.has-proposals{
+    border-left:3px solid var(--color-black);
+  }
+
+  .demand-head{
+    display:flex;
+    align-items:flex-start;
+    gap:var(--space-3);
+    margin-bottom:var(--space-3);
+  }
+  .demand-info{
+    flex:1;
+    min-width:0;
+  }
+  .demand-title{
+    font-size:var(--font-size-base);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tight);
+    line-height:var(--line-height-snug);
+    margin:0 0 var(--space-2);
+    word-break:break-word;
+  }
+  .demand-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:var(--space-2);
+  }
+  .demand-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:11px;
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-secondary);
+    background:var(--surface-subtle);
+    padding:4px 8px;
+    border-radius:var(--radius-sm);
+    line-height:1.2;
+  }
+  .demand-tag .icon{ width:10px; height:10px; stroke-width:2; }
+  .demand-tag.brand{
+    background:rgba(0,68,204,.08);
+    color:var(--color-brand-blue-deep);
+  }
+
+  .demand-desc{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+    margin:0 0 var(--space-3);
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+
+  .demand-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:var(--space-3);
+    padding-top:var(--space-3);
+    border-top:1px solid var(--border-subtle);
+    flex-wrap:wrap;
+  }
+
+  /* ---------- PROPOSALS COUNT ---------- */
+  .proposals-count{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-bold);
+    color:var(--color-brand-blue-deep);
+    background:rgba(0,68,204,.08);
+    padding:6px 10px;
+    border-radius:var(--radius-full);
+    line-height:1.2;
+  }
+  .proposals-count .icon{ width:12px; height:12px; stroke-width:2.25; }
+  .proposals-count.muted{
+    background:var(--surface-subtle);
+    color:var(--text-secondary);
+  }
+  .proposals-count.muted .icon{ stroke-width:2; }
+
   /* ---------- STATUS BADGES ---------- */
+  .status-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:11px;
+    font-weight:var(--font-weight-bold);
+    letter-spacing:var(--tracking-wider);
+    text-transform:uppercase;
+    padding:5px 11px;
+    border-radius:var(--radius-full);
+    white-space:nowrap;
+  }
   .status-receiving{
     background:var(--color-gray-100);
     color:var(--color-gray-700);
@@ -123,19 +246,55 @@
     border:1px solid var(--color-gray-200);
   }
 
+  /* ---------- EMPTY STATE ---------- */
+  .empty-state{
+    text-align:center;
+    padding:var(--space-6) var(--space-4);
+    background:var(--surface-default);
+    border:1px dashed var(--border-default);
+    border-radius:var(--radius-md);
+    color:var(--text-secondary);
+  }
+  .empty-state .empty-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:56px; height:56px;
+    border-radius:50%;
+    background:var(--surface-subtle);
+    color:var(--color-gray-400);
+    margin:0 auto var(--space-3);
+  }
+  .empty-state .empty-icon .icon{ width:26px; height:26px; stroke-width:1.5; }
+  .empty-state h3{
+    font-size:var(--font-size-base);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    margin:0 0 var(--space-2);
+    letter-spacing:var(--tracking-tight);
+  }
+  .empty-state p{
+    font-size:var(--font-size-sm);
+    line-height:var(--line-height-normal);
+    margin:0 auto var(--space-4);
+    max-width:42ch;
+  }
+  .empty-state .btn{
+    width:auto;
+    display:inline-flex;
+    padding:12px 20px;
+  }
+
   /* ---------- MOBILE NAV ---------- */
   .mobile-nav{ display:none; }
 
-  @media (max-width:768px){
-    .sidebar{ display:none; }
-    .app-shell{ grid-template-columns:1fr; }
-    .main-content{ padding:20px 16px 100px 16px !important; }
-
+  @media (max-width:1023px){
     .mobile-nav{
-      display:grid;
+      display:grid !important;
       grid-template-columns:1fr 1fr 72px 1fr 1fr;
-      position:fixed; bottom:0; left:0; width:100%;
-      height:64px;
+      position:fixed;
+      bottom:0; left:0; right:0;
+      height:var(--app-mobile-nav-height);
       background:var(--surface-default);
       border-top:1px solid var(--border-default);
       align-items:stretch;
@@ -145,56 +304,69 @@
       isolation:isolate;
     }
     .mobile-nav-item{
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:3px;
       text-decoration:none;
       color:var(--color-gray-400);
       font-size:11px;
       font-weight:var(--font-weight-semibold);
-      gap:3px;
       height:100%;
       position:relative;
-      transition:color var(--duration-base) var(--ease-out), transform var(--duration-fast) var(--ease-out);
       -webkit-tap-highlight-color:transparent;
       touch-action:manipulation;
       user-select:none;
+      transition:color var(--duration-base) var(--ease-out),
+                 transform var(--duration-fast) var(--ease-out);
     }
-    .mobile-nav-item .nav-icon{ transition:transform var(--duration-base) var(--ease-out); }
     .mobile-nav-item:active{ transform:scale(0.88); }
-    .mobile-nav-item:active .nav-icon{ transform:scale(0.9); }
     .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
     .mobile-nav-item.active::before{
       content:'';
-      position:absolute; top:6px; left:50%;
+      position:absolute;
+      top:6px; left:50%;
       transform:translateX(-50%);
       width:5px; height:5px;
       background:var(--color-brand-blue);
       border-radius:50%;
     }
     .nav-badge{
-      position:absolute; top:8px; right:50%; margin-right:-22px;
+      position:absolute;
+      top:8px;
+      right:50%;
+      margin-right:-22px;
       background:var(--color-black);
       color:var(--color-white);
       font-size:10px;
       font-weight:var(--font-weight-bold);
-      min-width:16px; height:16px;
+      min-width:16px;
+      height:16px;
       border-radius:8px;
-      display:flex; align-items:center; justify-content:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       padding:0 4px;
       line-height:1;
     }
     .mobile-nav-fab-wrapper{
-      display:flex; align-items:flex-start; justify-content:center;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
       position:relative;
     }
     .mobile-nav-fab{
-      width:54px; height:54px;
+      width:54px;
+      height:54px;
       background:var(--color-black);
       color:var(--color-white);
       border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       text-decoration:none;
       box-shadow:0 4px 15px rgba(10,10,10,.25);
-      transition:transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base);
       margin-top:-22px;
       border:3px solid var(--surface-default);
       touch-action:manipulation;
@@ -203,13 +375,11 @@
       position:relative;
       z-index:10;
     }
-    .mobile-nav-fab:active{
-      transform:scale(0.9);
-      box-shadow:0 2px 8px rgba(10,10,10,.20);
-    }
+    .mobile-nav-fab:active{ transform:scale(0.9); }
     .mobile-nav-fab::after{
       content:'';
-      position:absolute; top:-6px; left:-6px; right:-6px; bottom:-6px;
+      position:absolute;
+      top:-6px; left:-6px; right:-6px; bottom:-6px;
       border-radius:50%;
       background:rgba(0,87,255,.15);
       z-index:-1;
@@ -220,21 +390,26 @@
       70%{ transform:scale(1.2); opacity:0; }
       100%{ transform:scale(1.2); opacity:0; }
     }
-
-    .list-row{ flex-wrap:wrap; }
-    .list-row-side{
-      align-items:flex-start;
-      flex-direction:row;
-      gap:var(--space-3);
-      width:100%;
-      margin-top:var(--space-2);
-      justify-content:space-between;
-    }
   }
 
-  @media (max-width:480px){
-    .mobile-nav-item{ font-size:10px; }
-    .mobile-nav-fab{ width:48px; height:48px; margin-top:-18px; }
+  /* ---------- TABLET (≥ 640px) ---------- */
+  @media (min-width:640px){
+    .main-content{ padding:var(--space-5) var(--space-6) var(--space-8); }
+    .page-topbar{
+      flex-direction:row;
+      justify-content:space-between;
+      align-items:flex-end;
+    }
+    .page-topbar .btn{ width:auto; }
+  }
+
+  /* ---------- DESKTOP (≥ 1024px) ---------- */
+  @media (min-width:1024px){
+    .main-content{ padding:var(--space-6) var(--space-8) var(--space-12); }
+    .nav-item.active{
+      background:rgba(0,87,255,.14);
+      border-left:2px solid var(--color-brand-blue);
+    }
   }
 </style>
 </head>
@@ -306,7 +481,7 @@
     <div class="sidebar-foot">
       <div id="userName" style="font-weight:600; color:#fff; margin-bottom:4px;">Carregando...</div>
       <div id="userLoc" style="color:var(--color-gray-500); font-size:var(--font-size-xs); margin-bottom:10px;">...</div>
-      <div class="role-tag">conta cliente</div>
+      <div class="role-tag cliente">conta cliente</div>
     </div>
   </aside>
 
@@ -317,7 +492,7 @@
         <h1>Minhas demandas</h1>
         <div class="sub" id="results-count">Carregando...</div>
       </div>
-      <a class="btn btn-primary new-btn" href="nova-demanda.html">
+      <a class="btn btn-primary" href="nova-demanda.html">
         <svg class="icon icon-sm" viewBox="0 0 24 24">
           <path d="M5 12h14"/><path d="M12 5v14"/>
         </svg>
@@ -333,16 +508,30 @@
       <span class="chip selected" data-filter="all">Todas</span>
       <span class="chip" data-filter="open">Aguardando propostas</span>
       <span class="chip" data-filter="receiving">Com propostas</span>
-      <span class="chip" data-filter="selected">Em andamento</span>
-      <span class="chip" data-filter="pending_conf">Aguardando confirmação</span>
+      <span class="chip" data-filter="in_progress">Em andamento</span>
       <span class="chip" data-filter="done">Concluídas</span>
+      <span class="chip" data-filter="canceled">Canceladas</span>
     </div>
 
-    <div id="list" style="margin-top:22px;"></div>
+    <div id="list" style="margin-top:var(--space-3);"></div>
 
     <div class="empty-state" id="empty" style="display:none;">
-      <h3>Nenhuma demanda encontrada</h3>
-      <p>Tente outro filtro, altere sua busca ou publique uma nova demanda.</p>
+      <div class="empty-icon">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" x2="8" y1="13" y2="13"/>
+          <line x1="16" x2="8" y1="17" y2="17"/>
+        </svg>
+      </div>
+      <h3 id="emptyTitle">Nenhuma demanda encontrada</h3>
+      <p id="emptyText">Tente outro filtro, altere sua busca ou publique uma nova demanda.</p>
+      <a class="btn btn-primary" href="nova-demanda.html">
+        <svg class="icon icon-sm" viewBox="0 0 24 24">
+          <path d="M5 12h14"/><path d="M12 5v14"/>
+        </svg>
+        Publicar demanda
+      </a>
     </div>
   </main>
 </div>
@@ -405,37 +594,62 @@
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../app.js"></script>
+<script src="../js/mobile-nav.js"></script>
 
 <script>
   /* ==========================================
-     CONFIGURAÇÃO E ESTADO
+     ESTADO
      ========================================== */
   let allDemands = [];
   let activeFilter = 'all';
   let searchTerm = '';
   let currentProfileId = null;
 
+  /* ==========================================
+     STATUS MAP
+     ========================================== */
   const STATUS_MAP = {
-    'OPEN':         { class: 'receiving', label: 'Aberta' },
-    'ABERTA':       { class: 'receiving', label: 'Aberta' },
+    'OPEN':         { class: 'receiving', label: 'Aguardando propostas' },
+    'ABERTA':       { class: 'receiving', label: 'Aguardando propostas' },
     'EM_PROPOSTAS': { class: 'receiving', label: 'Com propostas' },
     'EM_ANDAMENTO': { class: 'selected',  label: 'Em andamento' },
+    'ANDAMENTO':    { class: 'selected',  label: 'Em andamento' },
     'CONCLUIDO':    { class: 'done',      label: 'Concluída' },
     'CONCLUIDA':    { class: 'done',      label: 'Concluída' },
-    'CANCELADO':    { class: 'canceled',  label: 'Cancelada' }
+    'CANCELADO':    { class: 'canceled',  label: 'Cancelada' },
+    'CANCELADA':    { class: 'canceled',  label: 'Cancelada' }
   };
 
   const FILTER_TO_DB_STATUS = {
-    all: null,
-    open: ['OPEN', 'ABERTA'],
-    receiving: ['EM_PROPOSTAS'],
-    selected: ['EM_ANDAMENTO'],
-    pending_conf: ['PENDING_CONF', 'AGUARDANDO_CONFIRMACAO'],
-    done: ['CONCLUIDO', 'CONCLUIDA', 'CANCELADO']
+    all:         null,
+    open:        ['OPEN', 'ABERTA'],
+    receiving:   ['EM_PROPOSTAS'],
+    in_progress: ['EM_ANDAMENTO', 'ANDAMENTO'],
+    done:        ['CONCLUIDO', 'CONCLUIDA'],
+    canceled:    ['CANCELADO', 'CANCELADA']
   };
 
   /* ==========================================
-     INICIALIZAÇÃO
+     AUXILIARES
+     ========================================== */
+  function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag]));
+  }
+
+  function formatarData(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+  }
+
+  /* ==========================================
+     INIT
      ========================================== */
   async function init() {
     const supabaseClient = window.supabaseClient;
@@ -465,10 +679,13 @@
 
     currentProfileId = profile.id;
     document.getElementById('userName').textContent = `Olá, ${(profile.full_name || 'Usuário').split(' ')[0]}`;
-    const local = profile.city ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}` : 'Local não definido';
+    const local = profile.city
+      ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
+      : 'Local não definido';
     document.getElementById('userLoc').textContent = local;
 
     await carregarDemandas();
+    configurarEventListeners();
     configurarRealtime();
   }
 
@@ -481,7 +698,18 @@
 
     const { data: demandas, error } = await supabaseClient
       .from('demands')
-      .select('id, title, description, city, neighborhood, status, created_at, category_id')
+      .select(`
+        id,
+        title,
+        description,
+        city,
+        neighborhood,
+        status,
+        created_at,
+        category_id,
+        categories ( name ),
+        proposals ( id )
+      `)
       .eq('client_id', currentProfileId)
       .order('created_at', { ascending: false });
 
@@ -492,27 +720,49 @@
     }
 
     allDemands = (demandas || []).map(d => {
-      const statusInfo = STATUS_MAP[d.status] || { class: 'receiving', label: d.status || 'Aberta' };
+      const statusInfo = STATUS_MAP[d.status] || {
+        class: 'receiving',
+        label: d.status || 'Aberta'
+      };
+
+      const proposalCount = Array.isArray(d.proposals) ? d.proposals.length : 0;
+
       return {
         id: d.id,
         title: d.title,
         desc: d.description || '',
-        loc: d.city || d.neighborhood || 'Local não definido',
-        date: d.created_at
-          ? new Date(d.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
-          : '',
+        loc: [d.neighborhood, d.city].filter(Boolean).join(', ') || 'Local não definido',
+        date: formatarData(d.created_at),
         statusKey: d.status,
         statusClass: statusInfo.class,
         statusLabel: statusInfo.label,
-        category: d.category_id || 'Geral'
+        category: d.categories?.name || 'Serviço',
+        proposalCount
       };
     });
 
+    atualizarBadgePropostas();
     render();
   }
 
   /* ==========================================
-     RENDERIZAÇÃO
+     BADGE MOBILE
+     ========================================== */
+  function atualizarBadgePropostas() {
+    const total = allDemands.reduce((sum, d) => sum + d.proposalCount, 0);
+    const badge = document.getElementById('badgeDemandas');
+    if (!badge) return;
+
+    if (total > 0) {
+      badge.textContent = total;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  /* ==========================================
+     RENDER
      ========================================== */
   function render() {
     const list = document.getElementById('list');
@@ -536,55 +786,103 @@
 
     list.innerHTML = '';
     empty.style.display = count ? 'none' : 'block';
+    list.style.display = count ? 'block' : 'none';
+
+    if (count === 0) {
+      const titleEl = document.getElementById('emptyTitle');
+      const textEl = document.getElementById('emptyText');
+      if (allDemands.length === 0) {
+        titleEl.textContent = 'Nenhuma demanda ainda';
+        textEl.textContent = 'Publique sua primeira demanda e receba propostas de profissionais verificados.';
+      } else {
+        titleEl.textContent = 'Nenhuma demanda encontrada';
+        textEl.textContent = 'Tente outro filtro ou altere sua busca.';
+      }
+      return;
+    }
 
     filtered.forEach(d => {
-      const el = document.createElement('a');
-      el.href = `detalhe-demanda-cliente.html?id=${d.id}`;
-      el.className = 'list-row';
-      el.innerHTML = `
-        <div class="avatar avatar-md">
-          <svg class="icon icon-md" viewBox="0 0 24 24" style="color:var(--color-gray-700);">
-            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" x2="8" y1="13" y2="13"/>
-            <line x1="16" x2="8" y1="17" y2="17"/>
-          </svg>
-        </div>
-        <div class="list-row-main">
-          <div class="list-row-title">${escapeHTML(d.title)}</div>
-          <div class="list-row-sub">
-            <span style="display:inline-flex;align-items:center;gap:4px;">
-              <svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              ${escapeHTML(d.loc)}
-            </span>
-            <span class="sep">·</span>
-            <span>${escapeHTML(String(d.category))}</span>
+      const card = document.createElement('a');
+      card.href = `detalhe-demanda-cliente.html?id=${d.id}`;
+      card.className = `demand-card ${d.proposalCount > 0 ? 'has-proposals' : ''}`;
+
+      const proposalBadge = d.proposalCount > 0
+        ? `<span class="proposals-count">
+             <svg class="icon" viewBox="0 0 24 24">
+               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+             </svg>
+             ${d.proposalCount} proposta${d.proposalCount !== 1 ? 's' : ''}
+           </span>`
+        : `<span class="proposals-count muted">
+             <svg class="icon" viewBox="0 0 24 24">
+               <circle cx="12" cy="12" r="10"/>
+               <polyline points="12 6 12 12 16 14"/>
+             </svg>
+             Aguardando
+           </span>`;
+
+      card.innerHTML = `
+        <div class="demand-head">
+          <div class="demand-info">
+            <h3 class="demand-title">${escapeHTML(d.title)}</h3>
+            <div class="demand-tags">
+              <span class="demand-tag">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+                </svg>
+                ${escapeHTML(d.category)}
+              </span>
+              <span class="demand-tag">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                ${escapeHTML(d.loc)}
+              </span>
+            </div>
           </div>
-          ${d.desc ? `<div class="list-row-desc">${escapeHTML(d.desc)}</div>` : ''}
         </div>
-        <div class="list-row-side">
+
+        ${d.desc ? `<p class="demand-desc">${escapeHTML(d.desc)}</p>` : ''}
+
+        <div class="demand-footer">
           <span class="status-badge status-${d.statusClass}">${d.statusLabel}</span>
-          <span class="list-row-date">${d.date}</span>
-        </div>`;
-      list.appendChild(el);
+          ${proposalBadge}
+        </div>
+      `;
+
+      list.appendChild(card);
     });
   }
 
   /* ==========================================
-     ESCAPE HTML
+     EVENT LISTENERS
      ========================================== */
-  function escapeHTML(str) {
-    if (!str) return '';
-    return String(str).replace(/[&<>'"]/g, tag => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag]));
+  function configurarEventListeners() {
+    document.getElementById('filters').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+
+      document.querySelectorAll('#filters .chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      activeFilter = chip.dataset.filter;
+      render();
+    });
+
+    document.getElementById('search').addEventListener('input', (e) => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      render();
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      const supabaseClient = window.supabaseClient;
+      if (supabaseClient) {
+        await supabaseClient.auth.signOut();
+      }
+      window.location.href = '../index.html';
+    });
   }
 
   /* ==========================================
@@ -592,44 +890,22 @@
      ========================================== */
   function configurarRealtime() {
     const supabaseClient = window.supabaseClient;
+    if (!supabaseClient) return;
+
     supabaseClient
       .channel('minhas-demandas-realtime')
-      .on(
-        'postgres_changes',
+      .on('postgres_changes',
         { event: '*', schema: 'public', table: 'demands', filter: `client_id=eq.${currentProfileId}` },
+        () => carregarDemandas()
+      )
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'proposals' },
         () => carregarDemandas()
       )
       .subscribe();
   }
 
-  /* ==========================================
-     EVENT LISTENERS
-     ========================================== */
-  document.getElementById('filters').addEventListener('click', (e) => {
-    const chip = e.target.closest('.chip');
-    if (!chip) return;
-
-    document.querySelectorAll('#filters .chip').forEach(c => c.classList.remove('selected'));
-    chip.classList.add('selected');
-    activeFilter = chip.dataset.filter;
-    render();
-  });
-
-  document.getElementById('search').addEventListener('input', (e) => {
-    searchTerm = e.target.value.trim().toLowerCase();
-    render();
-  });
-
-  document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    const supabaseClient = window.supabaseClient;
-    await supabaseClient.auth.signOut();
-    window.location.href = '../index.html';
-  });
-
   init();
 </script>
-
-<script src="../js/mobile-nav.js"></script>
 </body>
 </html>
