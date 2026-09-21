@@ -39,9 +39,7 @@
   .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
 
   /* ---------- CONTEÚDO TIGHT ---------- */
-  .main-content{
-    padding:var(--space-4) var(--space-4) var(--space-6);
-  }
+  .main-content{ padding:var(--space-4) var(--space-4) var(--space-6); }
 
   /* ---------- PAGE TOPBAR ---------- */
   .page-topbar{
@@ -64,14 +62,10 @@
   }
 
   /* ---------- TOOLBAR ---------- */
-  .toolbar{
-    margin:0 0 var(--space-3);
-  }
-  .search-input{
-    background:var(--surface-default);
-  }
+  .toolbar{ margin:0 0 var(--space-3); }
+  .search-input{ background:var(--surface-default); }
 
-  /* ---------- CHIPS · acento azul (prestador) ---------- */
+  /* ---------- CHIPS ---------- */
   .chip{
     padding:8px 14px;
     background:var(--surface-default);
@@ -99,7 +93,7 @@
     font-variant-numeric:tabular-nums;
   }
 
-  /* ---------- STATUS BADGES ESPECÍFICOS ---------- */
+  /* ---------- STATUS BADGES ---------- */
   .status-receiving{
     background:var(--color-gray-100);
     color:var(--color-gray-700);
@@ -149,7 +143,7 @@
     background:rgba(0,68,204,.06);
   }
 
-  /* Estados passivos (sem botão) */
+  /* Estados passivos */
   .row-status-inline{
     display:inline-flex;
     align-items:center;
@@ -159,11 +153,9 @@
     color:var(--text-secondary);
   }
   .row-status-inline .icon{ width:12px; height:12px; stroke-width:2; }
-  .row-status-inline.done{
-    color:var(--color-gray-700);
-  }
+  .row-status-inline.done{ color:var(--color-gray-700); }
 
-  /* ---------- EMPTY STATE COMPACTO ---------- */
+  /* ---------- EMPTY STATE ---------- */
   .empty-state{
     text-align:center;
     padding:var(--space-6) var(--space-4);
@@ -258,20 +250,6 @@
     font-size:var(--font-size-sm);
   }
 
-  /* ---------- CÓDIGO GERADO ---------- */
-  .code-display{
-    background:rgba(0,68,204,.08);
-    color:var(--color-brand-blue-deep);
-    font-size:var(--font-size-4xl);
-    font-weight:var(--font-weight-extrabold);
-    letter-spacing:0.18em;
-    padding:var(--space-5);
-    border-radius:var(--radius-md);
-    margin:var(--space-4) 0;
-    font-variant-numeric:tabular-nums;
-    border:1px solid rgba(0,68,204,.20);
-  }
-
   /* ---------- MOBILE NAV ---------- */
   .mobile-nav{ display:none; }
 
@@ -321,18 +299,14 @@
     }
   }
 
-  /* ---------- TABLET (≥ 640px) ---------- */
+  /* ---------- TABLET ---------- */
   @media (min-width:640px){
-    .main-content{
-      padding:var(--space-5) var(--space-6) var(--space-8);
-    }
+    .main-content{ padding:var(--space-5) var(--space-6) var(--space-8); }
   }
 
-  /* ---------- DESKTOP (≥ 1024px) ---------- */
+  /* ---------- DESKTOP ---------- */
   @media (min-width:1024px){
-    .main-content{
-      padding:var(--space-6) var(--space-8) var(--space-12);
-    }
+    .main-content{ padding:var(--space-6) var(--space-8) var(--space-12); }
     .nav-item.active{
       background:rgba(0,87,255,.14);
       border-left:2px solid var(--color-brand-blue);
@@ -461,6 +435,7 @@
       <span class="chip selected" data-filter="all">Todas</span>
       <span class="chip" data-filter="pago_aguardando_inicio">Aguardando início</span>
       <span class="chip" data-filter="em_andamento">Em andamento</span>
+      <span class="chip" data-filter="aguardando_confirmacao_fim">Aguardando cliente</span>
       <span class="chip" data-filter="finalizado">Concluídas</span>
     </div>
 
@@ -551,17 +526,25 @@
   </div>
 </div>
 
-<!-- MODAL · CÓDIGO DE FINALIZAÇÃO -->
+<!-- MODAL · FINALIZAR SERVIÇO -->
 <div class="code-modal" id="finishModal">
   <div class="code-modal-content">
-    <h3>Solicitação enviada</h3>
-    <p>Informe este código ao cliente para que ele libere seu pagamento:</p>
+    <h3>Finalizar serviço</h3>
+    <p>Peça ao cliente o <b>Código de Finalização</b> de 4 dígitos que ele recebeu no app.</p>
 
-    <div class="code-display" id="generatedFinishCode">----</div>
+    <input type="text"
+           id="finishCodeInput"
+           class="code-modal-input"
+           maxlength="4"
+           inputmode="numeric"
+           pattern="[0-9]*"
+           placeholder="0000"
+           autocomplete="one-time-code">
 
-    <button class="btn btn-primary" style="width:100%;" onclick="fecharModal('finishModal')">
-      Entendido
-    </button>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="fecharModal('finishModal')">Cancelar</button>
+      <button class="btn btn-brand" onclick="confirmarFinalizacao()">Confirmar</button>
+    </div>
   </div>
 </div>
 
@@ -580,6 +563,7 @@
   let activeFilter = "all";
   let searchTerm = "";
   let currentOrderIdForAction = null;
+  let providerProfileId = null;
 
   /* ==========================================
      INIT
@@ -598,41 +582,40 @@
       return;
     }
 
-    await carregarDadosUsuario(supabase, session.user.id);
-    await carregarOrdens(supabase, session.user.id);
+    /* Buscar o profile.id (não o auth.id) */
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('id, full_name, city, uf')
+      .eq('user_id', session.user.id)
+      .single();
+
+    if (profileError || !profile) {
+      console.error('Erro ao carregar perfil:', profileError);
+      return;
+    }
+
+    providerProfileId = profile.id;
+
+    /* Sidebar */
+    document.getElementById('userName').textContent =
+      `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
+    document.getElementById('userLoc').textContent = profile.city
+      ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
+      : 'Local não definido';
+
+    await carregarOrdens(supabase);
     configurarEventListeners();
     configurarRealtime(supabase);
   }
 
   /* ==========================================
-     DADOS DO USUÁRIO
-     ========================================== */
-  async function carregarDadosUsuario(supabase, userId) {
-    try {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('full_name, city, uf')
-        .eq('user_id', userId)
-        .single();
-
-      if (profile) {
-        document.getElementById('userName').textContent =
-          `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
-        document.getElementById('userLoc').textContent = profile.city
-          ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
-          : 'Local não definido';
-      }
-    } catch (error) {
-      console.error('Erro ao carregar dados do usuário:', error);
-    }
-  }
-
-  /* ==========================================
      CARREGAR ORDENS
      ========================================== */
-  async function carregarOrdens(supabase, userId) {
+  async function carregarOrdens(supabase) {
+    if (!providerProfileId) return;
+
     try {
-      const { data: orders, error } = await supabase
+      const { data: contracts, error } = await supabase
         .from('contracts')
         .select(`
           id,
@@ -650,15 +633,25 @@
             client:profiles (
               full_name
             )
+          ),
+          proposal:proposals (
+            provider_id
           )
         `)
-        .filter('proposals.provider_id', 'eq', userId)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      allOrders = orders || [];
+      /* Filtrar no client: só contratos cujo proposal.provider_id é o prestador logado
+         E status diferente de 'aguardando_pagamento' (que é fase do cliente pagar) */
+      allOrders = (contracts || []).filter(c => {
+        const isMine = c.proposal?.provider_id === providerProfileId;
+        const isVisible = c.status !== 'aguardando_pagamento';
+        return isMine && isVisible;
+      });
+
       render();
+
     } catch (error) {
       console.error('Erro ao carregar ordens:', error);
       document.getElementById('list').innerHTML = `
@@ -708,14 +701,14 @@
       };
 
       const statusLabel = statusLabels[o.status] ||
-        (o.status ? o.status.replace('_', ' ').toUpperCase() : 'Pendente');
+        (o.status ? o.status.replace(/_/g, ' ').toUpperCase() : 'Pendente');
 
       const statusClass =
         o.status === 'pago_aguardando_inicio' ? 'receiving'
         : (o.status === 'finalizado' || o.status === 'concluido') ? 'done'
         : 'selected';
 
-      // ---------- AÇÃO ----------
+      /* ---------- AÇÃO ---------- */
       let actionHtml = '';
 
       if (o.status === 'pago_aguardando_inicio') {
@@ -736,13 +729,12 @@
           </button>`;
       } else if (o.status === 'aguardando_confirmacao_fim') {
         actionHtml = `
-          <span class="row-status-inline">
+          <button class="row-action-btn btn-finish" onclick="abrirModalFim('${o.id}')">
             <svg class="icon" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
+              <polyline points="20 6 9 17 4 12"/>
             </svg>
-            Aguardando cliente
-          </span>`;
+            Confirmar finalização
+          </button>`;
       } else if (o.status === 'finalizado' || o.status === 'concluido') {
         actionHtml = `
           <span class="row-status-inline done">
@@ -803,6 +795,13 @@
     setTimeout(() => document.getElementById('startCodeInput').focus(), 100);
   };
 
+  window.abrirModalFim = function(orderId) {
+    currentOrderIdForAction = orderId;
+    document.getElementById('finishCodeInput').value = '';
+    document.getElementById('finishModal').classList.add('active');
+    setTimeout(() => document.getElementById('finishCodeInput').focus(), 100);
+  };
+
   window.fecharModal = function(modalId) {
     document.getElementById(modalId).classList.remove('active');
   };
@@ -822,7 +821,7 @@
   });
 
   /* ==========================================
-     INICIAR SERVIÇO
+     INICIAR SERVIÇO (validar start_code)
      ========================================== */
   window.enviarCodigoInicio = async function() {
     const codigo = document.getElementById('startCodeInput').value.trim();
@@ -859,9 +858,8 @@
 
       alert('Serviço iniciado com sucesso!');
       fecharModal('startModal');
+      await carregarOrdens(supabase);
 
-      const session = await supabase.auth.getSession();
-      carregarOrdens(supabase, session.data.session.user.id);
     } catch (err) {
       console.error('Erro ao iniciar serviço:', err);
       alert('Erro ao iniciar serviço: ' + err.message);
@@ -870,9 +868,11 @@
 
   /* ==========================================
      SOLICITAR FINALIZAÇÃO
+     Gera finish_code e marca como aguardando
+     confirmação. O cliente verá o código no app.
      ========================================== */
   window.solicitarFim = async function(orderId) {
-    if (!confirm('Tem certeza que o serviço foi concluído? O cliente receberá um código para liberar seu pagamento.')) return;
+    if (!confirm('Confirmar que o serviço foi concluído? O cliente receberá um código no app para liberar o pagamento.')) return;
 
     const supabase = window.supabaseClient;
     currentOrderIdForAction = orderId;
@@ -891,14 +891,62 @@
 
       if (error) throw error;
 
-      document.getElementById('generatedFinishCode').textContent = finishCode;
-      document.getElementById('finishModal').classList.add('active');
+      alert('Solicitação enviada. Peça o código de finalização ao cliente e insira no app.');
+      await carregarOrdens(supabase);
 
-      const session = await supabase.auth.getSession();
-      carregarOrdens(supabase, session.data.session.user.id);
+      /* Abre o modal para o prestador digitar o código */
+      abrirModalFim(orderId);
+
     } catch (err) {
       console.error('Erro ao solicitar finalização:', err);
       alert('Erro ao solicitar finalização: ' + err.message);
+    }
+  };
+
+  /* ==========================================
+     CONFIRMAR FINALIZAÇÃO (validar finish_code)
+     ========================================== */
+  window.confirmarFinalizacao = async function() {
+    const codigo = document.getElementById('finishCodeInput').value.trim();
+
+    if (codigo.length !== 4) {
+      alert('O código deve ter exatamente 4 dígitos.');
+      return;
+    }
+
+    const supabase = window.supabaseClient;
+
+    try {
+      const { data: contrato, error } = await supabase
+        .from('contracts')
+        .select('finish_code')
+        .eq('id', currentOrderIdForAction)
+        .single();
+
+      if (error) throw error;
+
+      if (contrato.finish_code !== codigo) {
+        alert('Código inválido. Confirme com o cliente.');
+        return;
+      }
+
+      const { error: updateError } = await supabase
+        .from('contracts')
+        .update({
+          status: 'finalizado',
+          finished_at: new Date().toISOString()
+        })
+        .eq('id', currentOrderIdForAction);
+
+      if (updateError) throw updateError;
+
+      alert('Serviço finalizado! O pagamento será liberado em até 1 dia útil.');
+      fecharModal('finishModal');
+      await carregarOrdens(supabase);
+
+    } catch (err) {
+      console.error('Erro ao finalizar serviço:', err);
+      alert('Erro ao finalizar serviço: ' + err.message);
     }
   };
 
@@ -938,12 +986,7 @@
       .channel('ordens-servico-realtime')
       .on('postgres_changes',
         { event: '*', schema: 'public', table: 'contracts' },
-        async () => {
-          const session = await supabase.auth.getSession();
-          if (session.data.session) {
-            carregarOrdens(supabase, session.data.session.user.id);
-          }
-        }
+        () => carregarOrdens(supabase)
       )
       .subscribe();
   }
