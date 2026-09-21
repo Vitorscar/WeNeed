@@ -9,14 +9,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="../manifest.json">
 <meta name="theme-color" content="#0A0A0A">
 <link rel="stylesheet" href="../style.css">
 
 <style>
-  /* ============================================================
-     Serviços Contratados — tokens do style.css
-     ============================================================ */
+  /* ---------- BLINDAGEM LOCAL ---------- */
+  @media (max-width:1023px){
+    .sidebar{ display:none !important; }
+    .app-shell{ display:block !important; }
+  }
+  @media (min-width:1024px){
+    .mobile-nav{ display:none !important; }
+  }
 
   /* ---------- ICON SYSTEM ---------- */
   .icon{
@@ -34,47 +39,68 @@
   .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
   .icon-xl{ width:28px; height:28px; stroke-width:1.5; }
 
-  /* ---------- PAGE TOPBAR BUTTON ---------- */
-  .new-btn{
-    width:auto;
-    padding:12px 20px;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    text-decoration:none;
+  /* ---------- CONTEÚDO TIGHT ---------- */
+  .main-content{ padding:var(--space-4) var(--space-4) var(--space-6); }
+
+  /* ---------- PAGE TOPBAR ---------- */
+  .page-topbar{
+    display:flex;
+    flex-direction:column;
+    gap:var(--space-2);
+    margin-bottom:var(--space-3);
+  }
+  .page-topbar h1{
+    font-size:var(--font-size-xl);
+    font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tighter);
+    margin:0 0 2px;
+    line-height:var(--line-height-snug);
+  }
+  .page-topbar .sub{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+  }
+  .page-topbar .btn{
+    width:100%;
+    padding:13px 18px;
+    font-size:var(--font-size-sm);
   }
 
   /* ---------- TOOLBAR ---------- */
-  .toolbar{
-    display:flex;
-    gap:var(--space-3);
-    margin:var(--space-6) 0 var(--space-4);
-    flex-wrap:wrap;
-    align-items:center;
-  }
+  .toolbar{ margin:0 0 var(--space-3); }
+  .search-input{ background:var(--surface-default); }
 
   /* ---------- FILTER CHIPS ---------- */
   .chip-select{
     display:flex;
     gap:var(--space-2);
     flex-wrap:wrap;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding-bottom:2px;
   }
+  .chip-select::-webkit-scrollbar{ display:none; }
+
   .chip{
     display:inline-flex;
     align-items:center;
     font-size:var(--font-size-sm);
     font-weight:var(--font-weight-semibold);
-    padding:9px 15px;
+    padding:8px 14px;
     border:1.5px solid var(--border-default);
-    background:var(--surface-subtle);
+    background:var(--surface-default);
     border-radius:var(--radius-full);
     color:var(--text-secondary);
     cursor:pointer;
-    transition:background   var(--duration-fast) var(--ease-out),
-               border-color var(--duration-fast) var(--ease-out),
-               color        var(--duration-fast) var(--ease-out);
     user-select:none;
+    white-space:nowrap;
+    flex-shrink:0;
     line-height:1.2;
+    transition:background var(--duration-fast) var(--ease-out),
+               border-color var(--duration-fast) var(--ease-out),
+               color var(--duration-fast) var(--ease-out);
   }
   .chip:hover{
     border-color:var(--color-black);
@@ -115,7 +141,7 @@
     color:var(--color-error);
     background:rgba(240,68,56,.08);
     border:1px solid rgba(240,68,56,.24);
-    border-radius:var(--radius-lg);
+    border-radius:var(--radius-md);
     margin:var(--space-5) 0;
     font-size:var(--font-size-sm);
     font-weight:var(--font-weight-medium);
@@ -135,32 +161,127 @@
     font-size:var(--font-size-sm);
     letter-spacing:var(--tracking-wide);
     text-transform:uppercase;
-    transition:background var(--duration-fast) var(--ease-out);
   }
-  .error-message button:hover{ background:var(--color-gray-900); }
 
-  /* ---------- LIST ROW EXTRAS ---------- */
-  .list-row-value{
-    font-weight:var(--font-weight-bold);
+  /* ---------- SERVICE CARD ---------- */
+  .service-card{
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+    padding:var(--space-4);
+    margin-bottom:var(--space-3);
+    text-decoration:none;
+    color:inherit;
+    display:block;
+    transition:border-color var(--duration-base) var(--ease-out),
+               box-shadow var(--duration-base) var(--ease-out);
+  }
+  .service-card:hover{
+    border-color:var(--color-gray-300);
+    box-shadow:var(--shadow-sm);
+  }
+  .service-card.is-action{
+    border-left:3px solid var(--color-brand-blue-deep);
+  }
+
+  .service-head{
+    display:flex;
+    align-items:center;
+    gap:var(--space-3);
+    margin-bottom:var(--space-3);
+  }
+
+  .service-avatar{
+    width:44px; height:44px;
+    border-radius:50%;
+    background:var(--color-gray-50);
+    border:1px solid var(--border-default);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--color-gray-700);
+    flex-shrink:0;
+    overflow:hidden;
+  }
+  .service-avatar img{ width:100%; height:100%; object-fit:cover; }
+  .service-avatar .icon{ width:20px; height:20px; }
+
+  .service-info{
+    flex:1;
+    min-width:0;
+  }
+  .service-title{
     font-size:var(--font-size-base);
+    font-weight:var(--font-weight-bold);
     color:var(--text-primary);
     letter-spacing:var(--tracking-tight);
+    margin:0 0 2px;
+    line-height:var(--line-height-snug);
+    word-break:break-word;
   }
-  .list-row-date{
+  .service-provider{
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
     display:inline-flex;
     align-items:center;
     gap:4px;
+  }
+  .service-provider .icon{ width:12px; height:12px; stroke-width:2; }
+
+  .service-value{
+    font-size:var(--font-size-base);
+    font-weight:var(--font-weight-extrabold);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tighter);
+    white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+    flex-shrink:0;
+  }
+
+  .service-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:var(--space-3);
     font-size:var(--font-size-xs);
-    color:var(--text-link);
-    font-weight:var(--font-weight-semibold);
+    color:var(--text-secondary);
+    margin-bottom:var(--space-3);
+    line-height:var(--line-height-normal);
+  }
+  .service-meta span{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+  }
+  .service-meta .icon{ width:12px; height:12px; stroke-width:2; }
+
+  .service-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:var(--space-3);
+    padding-top:var(--space-3);
+    border-top:1px solid var(--border-subtle);
+    flex-wrap:wrap;
   }
 
   /* ---------- STATUS BADGES ---------- */
+  .status-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:11px;
+    font-weight:var(--font-weight-bold);
+    letter-spacing:var(--tracking-wider);
+    text-transform:uppercase;
+    padding:5px 11px;
+    border-radius:var(--radius-full);
+    white-space:nowrap;
+  }
   .status-pendente{
     background:var(--color-gray-100);
     color:var(--color-gray-700);
   }
-  .status-agendado{
+  .status-recebendo{
     background:var(--color-gray-100);
     color:var(--color-gray-700);
   }
@@ -178,35 +299,97 @@
     border:1px solid var(--color-gray-200);
   }
 
+  /* ---------- SERVICE ACTION ---------- */
+  .service-action{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-bold);
+    padding:9px 14px;
+    border-radius:var(--radius-full);
+    text-decoration:none;
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    transition:background var(--duration-fast),
+               border-color var(--duration-fast),
+               color var(--duration-fast);
+    cursor:pointer;
+    border:none;
+    font-family:var(--font-family-base);
+  }
+  .service-action .icon{ width:12px; height:12px; stroke-width:2.5; }
+
+  .service-action.primary{
+    background:var(--color-black);
+    color:var(--color-white);
+  }
+  .service-action.primary:hover{ background:var(--color-gray-900); }
+
+  .service-action.brand{
+    background:var(--color-brand-blue-deep);
+    color:var(--color-white);
+  }
+  .service-action.brand:hover{ background:var(--color-brand-blue); }
+
+  .service-action.outline{
+    background:transparent;
+    border:1.5px solid var(--border-default);
+    color:var(--text-primary);
+  }
+  .service-action.outline:hover{
+    border-color:var(--color-black);
+  }
+
   /* ---------- EMPTY STATE ---------- */
+  .empty-state{
+    text-align:center;
+    padding:var(--space-6) var(--space-4);
+    background:var(--surface-default);
+    border:1px dashed var(--border-default);
+    border-radius:var(--radius-md);
+    color:var(--text-secondary);
+  }
+  .empty-state .empty-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:56px; height:56px;
+    border-radius:50%;
+    background:var(--surface-subtle);
+    color:var(--color-gray-400);
+    margin:0 auto var(--space-3);
+  }
+  .empty-state .empty-icon .icon{ width:26px; height:26px; stroke-width:1.5; }
+  .empty-state h3{
+    font-size:var(--font-size-base);
+    font-weight:var(--font-weight-bold);
+    color:var(--text-primary);
+    margin:0 0 var(--space-2);
+    letter-spacing:var(--tracking-tight);
+  }
+  .empty-state p{
+    font-size:var(--font-size-sm);
+    line-height:var(--line-height-normal);
+    margin:0 auto var(--space-4);
+    max-width:42ch;
+  }
   .empty-state .btn{
     width:auto;
     display:inline-flex;
-    margin-top:var(--space-4);
     padding:12px 20px;
-    text-decoration:none;
-  }
-
-  /* ---------- AVATAR FALLBACK ---------- */
-  .avatar img{
-    width:100%; height:100%;
-    border-radius:50%;
-    object-fit:cover;
   }
 
   /* ---------- MOBILE NAV ---------- */
   .mobile-nav{ display:none; }
 
-  @media (max-width:768px){
-    .sidebar{ display:none; }
-    .app-shell{ grid-template-columns:1fr; }
-    .main-content{ padding:20px 16px 100px 16px !important; }
-
+  @media (max-width:1023px){
     .mobile-nav{
-      display:grid;
+      display:grid !important;
       grid-template-columns:1fr 1fr 72px 1fr 1fr;
-      position:fixed; bottom:0; left:0; width:100%;
-      height:64px;
+      position:fixed;
+      bottom:0; left:0; right:0;
+      height:var(--app-mobile-nav-height);
       background:var(--surface-default);
       border-top:1px solid var(--border-default);
       align-items:stretch;
@@ -216,56 +399,51 @@
       isolation:isolate;
     }
     .mobile-nav-item{
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:3px;
       text-decoration:none;
       color:var(--color-gray-400);
       font-size:11px;
       font-weight:var(--font-weight-semibold);
-      gap:3px;
       height:100%;
       position:relative;
-      transition:color var(--duration-base) var(--ease-out), transform var(--duration-fast) var(--ease-out);
       -webkit-tap-highlight-color:transparent;
       touch-action:manipulation;
       user-select:none;
+      transition:color var(--duration-base) var(--ease-out),
+                 transform var(--duration-fast) var(--ease-out);
     }
-    .mobile-nav-item .nav-icon{ transition:transform var(--duration-base) var(--ease-out); }
     .mobile-nav-item:active{ transform:scale(0.88); }
-    .mobile-nav-item:active .nav-icon{ transform:scale(0.9); }
     .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
     .mobile-nav-item.active::before{
       content:'';
-      position:absolute; top:6px; left:50%;
+      position:absolute;
+      top:6px; left:50%;
       transform:translateX(-50%);
       width:5px; height:5px;
       background:var(--color-brand-blue);
       border-radius:50%;
     }
-    .nav-badge{
-      position:absolute; top:8px; right:50%; margin-right:-22px;
-      background:var(--color-black);
-      color:var(--color-white);
-      font-size:10px;
-      font-weight:var(--font-weight-bold);
-      min-width:16px; height:16px;
-      border-radius:8px;
-      display:flex; align-items:center; justify-content:center;
-      padding:0 4px;
-      line-height:1;
-    }
     .mobile-nav-fab-wrapper{
-      display:flex; align-items:flex-start; justify-content:center;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
       position:relative;
     }
     .mobile-nav-fab{
-      width:54px; height:54px;
+      width:54px;
+      height:54px;
       background:var(--color-black);
       color:var(--color-white);
       border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       text-decoration:none;
       box-shadow:0 4px 15px rgba(10,10,10,.25);
-      transition:transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base);
       margin-top:-22px;
       border:3px solid var(--surface-default);
       touch-action:manipulation;
@@ -274,13 +452,11 @@
       position:relative;
       z-index:10;
     }
-    .mobile-nav-fab:active{
-      transform:scale(0.9);
-      box-shadow:0 2px 8px rgba(10,10,10,.20);
-    }
+    .mobile-nav-fab:active{ transform:scale(0.9); }
     .mobile-nav-fab::after{
       content:'';
-      position:absolute; top:-6px; left:-6px; right:-6px; bottom:-6px;
+      position:absolute;
+      top:-6px; left:-6px; right:-6px; bottom:-6px;
       border-radius:50%;
       background:rgba(0,87,255,.15);
       z-index:-1;
@@ -291,28 +467,33 @@
       70%{ transform:scale(1.2); opacity:0; }
       100%{ transform:scale(1.2); opacity:0; }
     }
-
-    .list-row{ flex-wrap:wrap; }
-    .list-row-side{
-      align-items:flex-start;
-      flex-direction:row;
-      gap:var(--space-3);
-      width:100%;
-      margin-top:var(--space-2);
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
   }
 
-  @media (max-width:480px){
-    .mobile-nav-item{ font-size:10px; }
-    .mobile-nav-fab{ width:48px; height:48px; margin-top:-18px; }
+  /* ---------- TABLET ---------- */
+  @media (min-width:640px){
+    .main-content{ padding:var(--space-5) var(--space-6) var(--space-8); }
+    .page-topbar{
+      flex-direction:row;
+      justify-content:space-between;
+      align-items:flex-end;
+    }
+    .page-topbar .btn{ width:auto; }
+  }
+
+  /* ---------- DESKTOP ---------- */
+  @media (min-width:1024px){
+    .main-content{ padding:var(--space-6) var(--space-8) var(--space-12); }
+    .nav-item.active{
+      background:rgba(0,87,255,.14);
+      border-left:2px solid var(--color-brand-blue);
+    }
   }
 </style>
 </head>
 <body>
 
 <div class="app-shell">
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="brand" style="margin-bottom:8px;">WENEED<span>.</span></div>
 
@@ -375,17 +556,20 @@
     </nav>
 
     <div class="sidebar-foot" id="sidebarUserInfo">
-      Carregando...
+      <div id="sidebarName" style="font-weight:600; color:#fff; margin-bottom:4px;">Carregando...</div>
+      <div id="sidebarLoc" style="color:var(--color-gray-500); font-size:var(--font-size-xs); margin-bottom:10px;">...</div>
+      <div class="role-tag cliente">conta cliente</div>
     </div>
   </aside>
 
+  <!-- MAIN -->
   <main class="main-content">
     <div class="page-topbar">
       <div>
         <h1>Serviços Contratados</h1>
         <div class="sub">Acompanhe a execução e avalie os serviços que você contratou.</div>
       </div>
-      <a class="btn btn-primary new-btn" href="nova-demanda.html">
+      <a class="btn btn-primary" href="nova-demanda.html">
         <svg class="icon icon-sm" viewBox="0 0 24 24">
           <path d="M5 12h14"/><path d="M12 5v14"/>
         </svg>
@@ -399,16 +583,26 @@
 
     <div class="chip-select" id="filters">
       <span class="chip selected" data-filter="all">Todos</span>
-      <span class="chip" data-filter="agendado">Agendados</span>
+      <span class="chip" data-filter="aguardando_pagamento">Aguardando pagamento</span>
+      <span class="chip" data-filter="pago_aguardando_inicio">Aguardando início</span>
       <span class="chip" data-filter="em_andamento">Em andamento</span>
-      <span class="chip" data-filter="concluido">Concluídos</span>
+      <span class="chip" data-filter="aguardando_confirmacao_fim">Ação necessária</span>
+      <span class="chip" data-filter="finalizado">Concluídos</span>
     </div>
 
     <div id="loadingIndicator" class="loading-spinner">Carregando serviços contratados</div>
     <div id="errorContainer" class="error-message" style="display:none;"></div>
-    <div class="ticket-list" id="list" style="margin-top:22px; display:none;"></div>
+
+    <div id="list" style="margin-top:var(--space-3); display:none;"></div>
 
     <div class="empty-state" id="empty" style="display:none;">
+      <div class="empty-icon">
+        <svg class="icon" viewBox="0 0 24 24">
+          <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+          <path d="m9 14 2 2 4-4"/>
+        </svg>
+      </div>
       <h3>Nenhum serviço contratado ainda</h3>
       <p>Quando você aceitar uma proposta de um prestador, ela aparecerá aqui como uma ordem de serviço.</p>
       <a class="btn btn-primary" href="nova-demanda.html">
@@ -477,210 +671,36 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/utils.js"></script>
-<script src="../js/cadastro.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../app.js"></script>
+<script src="../js/mobile-nav.js"></script>
 
 <script>
   /* ============================================
-     CONFIGURAÇÃO
+     ESTADO
      ============================================ */
   let activeFilter = "all";
   let searchTerm = "";
   let allOrders = [];
-
-  /* ============================================
-     INICIALIZAÇÃO
-     ============================================ */
-  document.addEventListener('DOMContentLoaded', async function() {
-    await verificarAutenticacao();
-    await carregarDadosUsuario();
-    await carregarServicosContratados();
-    configurarEventListeners();
-  });
-
-  /* ============================================
-     AUTENTICAÇÃO
-     ============================================ */
-  async function verificarAutenticacao() {
-    const supabase = window.supabaseClient || window.supabase;
-
-    if (!supabase) {
-      window.location.href = '../index.html';
-      return;
-    }
-
-    try {
-      const { data: { user }, error } = await supabase.auth.getUser();
-
-      if (error || !user) {
-        window.location.href = '../index.html';
-        return;
-      }
-
-      window.currentUser = user;
-
-    } catch (error) {
-      console.error('Erro ao verificar autenticação:', error);
-      window.location.href = '../index.html';
-    }
-  }
-
-  /* ============================================
-     DADOS DO USUÁRIO
-     ============================================ */
-  async function carregarDadosUsuario() {
-    const supabase = window.supabaseClient || window.supabase;
-
-    if (!supabase || !window.currentUser) return;
-
-    try {
-      const { data: perfil, error } = await supabase
-        .from('profiles')
-        .select('full_name, city, uf, entity_type')
-        .eq('user_id', window.currentUser.id)
-        .single();
-
-      if (error) throw error;
-
-      if (perfil) {
-        const sidebarUserInfo = document.getElementById('sidebarUserInfo');
-        if (sidebarUserInfo) {
-          const nomeExibicao = perfil.full_name || perfil.company_name || 'Usuário';
-          const localizacao = perfil.city
-            ? `${perfil.city}${perfil.uf ? ', ' + perfil.uf : ''}`
-            : '';
-
-          sidebarUserInfo.innerHTML = `
-            <div style="font-weight:600; color:#fff; margin-bottom:4px;">Olá, ${nomeExibicao.split(' ')[0]}</div>
-            <div style="color:var(--color-gray-500); font-size:var(--font-size-xs); margin-bottom:10px;">${localizacao || 'Local não definido'}</div>
-            <div class="role-tag cliente">conta cliente</div>
-          `;
-        }
-      }
-    } catch (error) {
-      console.error('Erro ao carregar dados do usuário:', error);
-    }
-  }
-
-  /* ============================================
-     SERVIÇOS CONTRATADOS (tabela contracts)
-     ============================================ */
-  async function carregarServicosContratados() {
-    const supabase = window.supabaseClient || window.supabase;
-
-    if (!supabase || !window.currentUser) {
-      mostrarErro('Sistema não inicializado');
-      return;
-    }
-
-    const loadingIndicator = document.getElementById('loadingIndicator');
-    const errorContainer = document.getElementById('errorContainer');
-    const list = document.getElementById('list');
-    const empty = document.getElementById('empty');
-
-    if (loadingIndicator) loadingIndicator.style.display = 'flex';
-    if (errorContainer) errorContainer.style.display = 'none';
-    if (list) list.style.display = 'none';
-    if (empty) empty.style.display = 'none';
-
-    try {
-      const { data: ordens, error } = await supabase
-        .from('contracts')
-        .select(`
-          id,
-          status,
-          final_price,
-          started_at,
-          created_at,
-          demand:demand_id (
-            id,
-            title,
-            city,
-            neighborhood,
-            client_id
-          ),
-          proposal:proposal_id (
-            id,
-            provider_id,
-            provider:profiles (
-              full_name,
-              company_name,
-              avatar_url
-            )
-          )
-        `)
-        .eq('demand.client_id', window.currentUser.id)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      allOrders = (ordens || []).map(ordem => {
-        const demand = ordem.demand || {};
-        const proposal = ordem.proposal || {};
-        const providerProfile = proposal.provider || {};
-
-        const statusMap = {
-          'pending':      { label: 'Pendente',     class: 'pendente' },
-          'agendado':     { label: 'Agendado',     class: 'agendado' },
-          'em_andamento': { label: 'Em andamento', class: 'andamento' },
-          'andamento':    { label: 'Em andamento', class: 'andamento' },
-          'concluido':    { label: 'Concluído',    class: 'concluido' },
-          'concluida':    { label: 'Concluído',    class: 'concluido' },
-          'cancelado':    { label: 'Cancelado',    class: 'cancelado' },
-          'cancelada':    { label: 'Cancelado',    class: 'cancelado' }
-        };
-
-        const statusInfo = statusMap[ordem.status] || {
-          label: ordem.status || 'Pendente',
-          class: 'pendente'
-        };
-
-        const providerName = providerProfile.company_name ||
-                             providerProfile.full_name ||
-                             'Prestador não definido';
-
-        const avatarUrl = providerProfile.avatar_url || null;
-        const isCompany = !!providerProfile.company_name;
-
-        const localizacao = demand.city ||
-                            demand.neighborhood ||
-                            'Local não definido';
-
-        return {
-          id: ordem.id,
-          title: demand.title || 'Serviço contratado',
-          provider: providerName,
-          avatarUrl: avatarUrl,
-          isCompany: isCompany,
-          date: formatarData(ordem.started_at || ordem.created_at),
-          value: formatarValor(ordem.final_price),
-          loc: localizacao,
-          status: ordem.status,
-          statusLabel: statusInfo.label,
-          statusClass: statusInfo.class,
-          actionText: getActionText(ordem.status),
-          actionLink: `detalhe-ordem.html?id=${ordem.id}`
-        };
-      });
-
-      if (loadingIndicator) loadingIndicator.style.display = 'none';
-      render();
-
-    } catch (error) {
-      console.error('Erro ao carregar serviços:', error);
-      if (loadingIndicator) loadingIndicator.style.display = 'none';
-      mostrarErro('Erro ao carregar serviços contratados. ' + error.message);
-    }
-  }
+  let currentProfileId = null;
 
   /* ============================================
      AUXILIARES
      ============================================ */
-  function formatarData(dataString) {
-    if (!dataString) return '—';
-    const data = new Date(dataString);
-    return data.toLocaleDateString('pt-BR', {
+  function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag]));
+  }
+
+  function formatarData(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: '2-digit'
     });
@@ -694,38 +714,197 @@
     }).format(valor);
   }
 
-  function getActionText(status) {
-    switch (status) {
-      case 'agendado':        return 'Ver detalhes';
-      case 'em_andamento':
-      case 'andamento':       return 'Acompanhar';
-      case 'concluido':
-      case 'concluida':       return 'Ver avaliação';
-      case 'cancelado':
-      case 'cancelada':       return 'Ver motivo';
-      default:                return 'Ver detalhes';
+  function mostrarErro(mensagem) {
+    const errorContainer = document.getElementById('errorContainer');
+    if (!errorContainer) return;
+    errorContainer.style.display = 'block';
+    errorContainer.innerHTML = `
+      <div>${escapeHTML(mensagem)}</div>
+      <button onclick="window.location.reload()">Tentar novamente</button>
+    `;
+  }
+
+  /* ============================================
+     STATUS MAP
+     ============================================ */
+  const STATUS_MAP = {
+    'aguardando_pagamento':       { label: 'Aguardando pagamento', class: 'pendente',   isAction: true,  action: 'pagar' },
+    'pago_aguardando_inicio':     { label: 'Aguardando início',    class: 'recebendo',  isAction: false, action: 'acompanhar' },
+    'em_andamento':               { label: 'Em andamento',         class: 'andamento',  isAction: false, action: 'acompanhar' },
+    'aguardando_confirmacao_fim': { label: 'Ação necessária',      class: 'andamento',  isAction: true,  action: 'confirmar' },
+    'finalizado':                 { label: 'Concluído',            class: 'concluido',  isAction: false, action: 'avaliar' },
+    'cancelado':                  { label: 'Cancelado',            class: 'cancelado',  isAction: false, action: 'ver' }
+  };
+
+  const ACTION_LABELS = {
+    'pagar':     { label: 'Pagar',       cls: 'primary', icon: 'credit-card' },
+    'acompanhar':{ label: 'Acompanhar',  cls: 'outline', icon: 'eye' },
+    'confirmar': { label: 'Confirmar',   cls: 'brand',   icon: 'check' },
+    'avaliar':   { label: 'Avaliar',     cls: 'outline', icon: 'star' },
+    'ver':       { label: 'Ver detalhes',cls: 'outline', icon: 'eye' }
+  };
+
+  function actionIconSvg(name) {
+    switch (name) {
+      case 'credit-card':
+        return `<svg class="icon" viewBox="0 0 24 24">
+          <rect width="20" height="14" x="2" y="5" rx="2"/>
+          <line x1="2" x2="22" y1="10" y2="10"/>
+        </svg>`;
+      case 'check':
+        return `<svg class="icon" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>`;
+      case 'star':
+        return `<svg class="icon" viewBox="0 0 24 24">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>`;
+      case 'eye':
+      default:
+        return `<svg class="icon" viewBox="0 0 24 24">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>`;
     }
   }
 
-  function escapeHTML(str) {
-    if (!str) return '';
-    return String(str).replace(/[&<>'"]/g, tag => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag]));
+  /* ============================================
+     INIT
+     ============================================ */
+  async function init() {
+    const supabase = window.supabaseClient;
+    if (!supabase) {
+      window.location.href = '../index.html';
+      return;
+    }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = '../index.html';
+      return;
+    }
+
+    /* Buscar profile.id */
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('id, full_name, city, uf')
+      .eq('user_id', session.user.id)
+      .single();
+
+    if (profileError || !profile) {
+      console.error('Erro ao carregar perfil:', profileError);
+      mostrarErro('Não foi possível carregar seu perfil.');
+      return;
+    }
+
+    currentProfileId = profile.id;
+
+    /* Sidebar */
+    const sidebarName = document.getElementById('sidebarName');
+    const sidebarLoc = document.getElementById('sidebarLoc');
+    if (sidebarName) sidebarName.textContent = `Olá, ${(profile.full_name || 'Usuário').split(' ')[0]}`;
+    if (sidebarLoc) sidebarLoc.textContent = profile.city
+      ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
+      : 'Local não definido';
+
+    await carregarServicos(supabase);
+    configurarEventListeners(supabase);
+    configurarRealtime(supabase);
   }
 
-  function mostrarErro(mensagem) {
+  /* ============================================
+     CARREGAR SERVIÇOS
+     ============================================ */
+  async function carregarServicos(supabase) {
+    const loadingIndicator = document.getElementById('loadingIndicator');
     const errorContainer = document.getElementById('errorContainer');
-    if (errorContainer) {
-      errorContainer.style.display = 'block';
-      errorContainer.innerHTML = `
-        <div>${escapeHTML(mensagem)}</div>
-        <button onclick="window.location.reload()">Tentar novamente</button>
-      `;
+    const list = document.getElementById('list');
+    const empty = document.getElementById('empty');
+
+    if (loadingIndicator) loadingIndicator.style.display = 'flex';
+    if (errorContainer) errorContainer.style.display = 'none';
+    if (list) list.style.display = 'none';
+    if (empty) empty.style.display = 'none';
+
+    try {
+      const { data: contracts, error } = await supabase
+        .from('contracts')
+        .select(`
+          id,
+          status,
+          final_price,
+          started_at,
+          finished_at,
+          created_at,
+          demand:demands (
+            id,
+            title,
+            city,
+            neighborhood,
+            client_id
+          ),
+          proposal:proposals (
+            id,
+            provider_id,
+            provider:profiles (
+              full_name,
+              company_name,
+              avatar_url
+            )
+          )
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      /* Filtra no client: só contratos cujo demand.client_id é o cliente logado */
+      const meus = (contracts || []).filter(c => c.demand?.client_id === currentProfileId);
+
+      allOrders = meus.map(ordem => {
+        const demand = ordem.demand || {};
+        const proposal = ordem.proposal || {};
+        const providerProfile = proposal.provider || {};
+
+        const statusInfo = STATUS_MAP[ordem.status] || {
+          label: ordem.status || 'Pendente',
+          class: 'pendente',
+          isAction: false,
+          action: 'ver'
+        };
+
+        const providerName = providerProfile.company_name ||
+                             providerProfile.full_name ||
+                             'Prestador';
+
+        const localizacao = demand.city ||
+                            demand.neighborhood ||
+                            'Local não definido';
+
+        return {
+          id: ordem.id,
+          title: demand.title || 'Serviço contratado',
+          provider: providerName,
+          avatarUrl: providerProfile.avatar_url || null,
+          isCompany: !!providerProfile.company_name,
+          date: formatarData(ordem.created_at),
+          value: formatarValor(ordem.final_price),
+          loc: localizacao,
+          status: ordem.status,
+          statusLabel: statusInfo.label,
+          statusClass: statusInfo.class,
+          isAction: statusInfo.isAction,
+          action: statusInfo.action,
+          actionLink: `detalhe-ordem.html?id=${ordem.id}`
+        };
+      });
+
+      if (loadingIndicator) loadingIndicator.style.display = 'none';
+      render();
+
+    } catch (error) {
+      console.error('Erro ao carregar serviços:', error);
+      if (loadingIndicator) loadingIndicator.style.display = 'none';
+      mostrarErro('Erro ao carregar serviços contratados. ' + error.message);
     }
   }
 
@@ -751,14 +930,13 @@
     list.style.display = filtered.length ? 'block' : 'none';
 
     filtered.forEach(d => {
-      const el = document.createElement('a');
-      el.href = d.actionLink;
-      el.className = 'list-row';
+      const card = document.createElement('div');
+      card.className = `service-card ${d.isAction ? 'is-action' : ''}`;
 
       const avatarContent = d.avatarUrl
         ? `<img src="${escapeHTML(d.avatarUrl)}" alt="">`
         : d.isCompany
-          ? `<svg class="icon icon-md" viewBox="0 0 24 24" style="color:var(--color-gray-700);">
+          ? `<svg class="icon" viewBox="0 0 24 24">
                <rect width="16" height="20" x="4" y="2" rx="2"/>
                <path d="M9 22v-4h6v4"/>
                <path d="M8 6h.01"/><path d="M16 6h.01"/>
@@ -767,48 +945,71 @@
                <path d="M16 14h.01"/><path d="M8 10h.01"/>
                <path d="M8 14h.01"/>
              </svg>`
-          : `<svg class="icon icon-md" viewBox="0 0 24 24" style="color:var(--color-gray-700);">
+          : `<svg class="icon" viewBox="0 0 24 24">
                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
                <circle cx="12" cy="7" r="4"/>
              </svg>`;
 
-      el.innerHTML = `
-        <div class="avatar avatar-md">${avatarContent}</div>
-        <div class="list-row-main">
-          <div class="list-row-title">${escapeHTML(d.title)}</div>
-          <div class="list-row-sub">
-            <span>${escapeHTML(d.provider)}</span>
-            <span class="sep">·</span>
-            <span style="display:inline-flex;align-items:center;gap:4px;">
-              <svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
+      const actionInfo = ACTION_LABELS[d.action] || ACTION_LABELS.ver;
+      const actionIcon = actionIconSvg(actionInfo.icon);
+
+      card.innerHTML = `
+        <div class="service-head">
+          <div class="service-avatar">${avatarContent}</div>
+          <div class="service-info">
+            <h3 class="service-title">${escapeHTML(d.title)}</h3>
+            <span class="service-provider">
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
               </svg>
-              ${escapeHTML(d.loc)}
+              ${escapeHTML(d.provider)}
             </span>
-            <span class="sep">·</span>
-            <span>OS #${escapeHTML(String(d.id))}</span>
           </div>
+          <div class="service-value">${d.value}</div>
         </div>
-        <div class="list-row-side">
-          <span class="status-badge status-${d.statusClass}">${d.statusLabel}</span>
-          <span class="list-row-value">${d.value}</span>
-          <span class="list-row-date">
-            ${d.date} · ${d.actionText}
-            <svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;">
-              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+
+        <div class="service-meta">
+          <span>
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
             </svg>
+            ${escapeHTML(d.loc)}
+          </span>
+          <span>
+            <svg class="icon" viewBox="0 0 24 24">
+              <rect width="18" height="18" x="3" y="4" rx="2"/>
+              <path d="M16 2v4M8 2v4M3 10h18"/>
+            </svg>
+            ${d.date}
+          </span>
+          <span>
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            OS #${escapeHTML(String(d.id).slice(0, 8))}
           </span>
         </div>
+
+        <div class="service-footer">
+          <span class="status-badge status-${d.statusClass}">${d.statusLabel}</span>
+          <a href="${d.actionLink}" class="service-action ${actionInfo.cls}">
+            ${actionIcon}
+            ${actionInfo.label}
+          </a>
+        </div>
       `;
-      list.appendChild(el);
+
+      list.appendChild(card);
     });
   }
 
   /* ============================================
      EVENT LISTENERS
      ============================================ */
-  function configurarEventListeners() {
+  function configurarEventListeners(supabase) {
     const filtersElement = document.getElementById('filters');
     if (filtersElement) {
       filtersElement.addEventListener('click', (e) => {
@@ -834,18 +1035,28 @@
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async (e) => {
         e.preventDefault();
-
-        const supabase = window.supabaseClient || window.supabase;
         if (supabase) {
           await supabase.auth.signOut();
         }
-
         window.location.href = '../index.html';
       });
     }
   }
-</script>
 
-<script src="../js/mobile-nav.js"></script>
+  /* ============================================
+     REALTIME
+     ============================================ */
+  function configurarRealtime(supabase) {
+    supabase
+      .channel('servicos-contratados-realtime')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'contracts' },
+        () => carregarServicos(supabase)
+      )
+      .subscribe();
+  }
+
+  init();
+</script>
 </body>
 </html>
