@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Acompanhar serviço · WENEED</title>
+<title>Detalhe da demanda · WENEED</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,6 +42,7 @@
     margin:var(--space-4) 0 var(--space-2);
     color:var(--color-white);
     line-height:var(--line-height-snug);
+    word-break:break-word;
   }
   .header-center .sub{
     color:var(--color-gray-400);
@@ -56,85 +57,109 @@
     margin-top:calc(-1 * var(--space-3));
   }
 
-  /* ---------- TIMELINE ---------- */
-  .timeline{
-    position:relative;
-    padding-left:8px;
-    margin-top:var(--space-2);
+  /* ---------- DEMAND DETAIL ---------- */
+  .demand-description{
+    font-size:var(--font-size-sm);
+    color:var(--text-primary);
+    line-height:var(--line-height-relaxed);
+    margin:0 0 var(--space-4);
+    font-style:italic;
   }
-  .tl-item{
-    position:relative;
-    padding-left:32px;
-    padding-bottom:var(--space-6);
-    border-left:2px solid var(--border-default);
+
+  .demand-images{
+    display:flex;
+    gap:var(--space-2);
+    overflow-x:auto;
+    margin-bottom:var(--space-4);
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
   }
-  .tl-item:last-child{
-    padding-bottom:0;
-    border-left:2px solid transparent;
+  .demand-images::-webkit-scrollbar{ display:none; }
+  .demand-images img{
+    width:100px;
+    height:100px;
+    object-fit:cover;
+    border-radius:var(--radius-sm);
+    border:1px solid var(--border-default);
+    cursor:pointer;
+    flex-shrink:0;
   }
-  .tl-dot{
-    position:absolute;
-    left:-9px; top:0;
-    width:16px; height:16px;
-    border-radius:50%;
-    background:var(--surface-default);
-    border:2px solid var(--border-default);
+
+  .detail-lines{
+    border-top:1px solid var(--border-default);
+    padding-top:var(--space-3);
+  }
+  .detail-line{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:var(--space-3);
+    padding:7px 0;
+    font-size:var(--font-size-sm);
+  }
+  .detail-line span:first-child{ color:var(--text-secondary); }
+  .detail-line span:last-child{
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-primary);
+    text-align:right;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .detail-line .icon{ width:12px; height:12px; stroke-width:2; }
+  .detail-line .budget{
+    color:var(--color-brand-blue-deep);
+    font-weight:var(--font-weight-bold);
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- PROPOSALS LIST ---------- */
+  .proposals-header{
     display:flex;
     align-items:center;
-    justify-content:center;
-    color:transparent;
-    transition:all var(--duration-base) var(--ease-out);
+    justify-content:space-between;
+    gap:var(--space-3);
+    margin-bottom:var(--space-3);
   }
-  .tl-dot .icon{ width:8px; height:8px; stroke-width:3; }
-
-  .tl-item.done .tl-dot{
-    background:var(--color-brand-blue-deep);
-    border-color:var(--color-brand-blue-deep);
-    color:var(--color-white);
-  }
-  .tl-item.done .tl-title{ color:var(--text-primary); }
-
-  .tl-item.current .tl-dot{
-    background:var(--surface-default);
-    border-color:var(--color-brand-blue-deep);
-    box-shadow:0 0 0 4px rgba(0,68,204,.15);
-  }
-  .tl-item.current .tl-title{
-    color:var(--color-brand-blue-deep);
-    font-weight:var(--font-weight-extrabold);
-  }
-  .tl-item.pending .tl-title,
-  .tl-item.pending .tl-desc{
-    color:var(--text-secondary);
-  }
-
-  .tl-title{
-    font-size:var(--font-size-sm);
+  .proposals-header h2{
+    font-size:var(--font-size-base);
     font-weight:var(--font-weight-bold);
-    margin-bottom:2px;
+    color:var(--text-primary);
     letter-spacing:var(--tracking-tight);
-    transition:color var(--duration-base);
+    margin:0;
   }
-  .tl-time{
+  .proposals-count{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
     font-size:var(--font-size-xs);
-    color:var(--text-secondary);
-    font-weight:var(--font-weight-medium);
-    margin-bottom:4px;
-  }
-  .tl-desc{
-    font-size:var(--font-size-sm);
-    color:var(--text-secondary);
-    line-height:var(--line-height-normal);
+    font-weight:var(--font-weight-bold);
+    color:var(--color-brand-blue-deep);
+    background:rgba(0,68,204,.08);
+    padding:4px 10px;
+    border-radius:var(--radius-full);
+    line-height:1;
+    font-variant-numeric:tabular-nums;
   }
 
-  /* ---------- PROVIDER CARD ---------- */
-  .provider-row{
+  .proposal-card{
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+    padding:var(--space-4);
+    margin-bottom:var(--space-3);
+  }
+
+  .proposal-head{
     display:flex;
     align-items:center;
     gap:var(--space-3);
+    margin-bottom:var(--space-3);
   }
-  .provider-avatar{
-    width:48px; height:48px;
+  .proposal-avatar{
+    width:44px;
+    height:44px;
     border-radius:50%;
     background:var(--color-gray-50);
     border:1px solid var(--border-default);
@@ -145,10 +170,14 @@
     flex-shrink:0;
     overflow:hidden;
   }
-  .provider-avatar img{ width:100%; height:100%; object-fit:cover; }
-  .provider-avatar .icon{ width:22px; height:22px; }
-  .provider-info{ flex:1; min-width:0; }
-  .provider-info .name{
+  .proposal-avatar img{ width:100%; height:100%; object-fit:cover; }
+  .proposal-avatar .icon{ width:20px; height:20px; }
+
+  .proposal-provider{
+    flex:1;
+    min-width:0;
+  }
+  .proposal-provider-name{
     font-size:var(--font-size-base);
     font-weight:var(--font-weight-bold);
     color:var(--text-primary);
@@ -156,181 +185,138 @@
     margin:0 0 2px;
     word-break:break-word;
   }
-  .provider-info .meta{
-    display:flex;
-    align-items:center;
-    gap:6px;
+  .proposal-provider-meta{
     font-size:var(--font-size-xs);
     color:var(--text-secondary);
-  }
-  .provider-info .meta .icon{
-    width:12px; height:12px; stroke-width:2;
-    color:var(--color-brand-blue-deep);
-    fill:currentColor;
-  }
-  .provider-info .meta .sep{ color:var(--border-default); }
-
-  /* ---------- CODE BLOCK ---------- */
-  .code-warning{
-    display:flex;
-    flex-direction:column;
-    gap:var(--space-3);
-    padding:var(--space-4);
-    background:rgba(247,144,9,.06);
-    border:1px solid rgba(247,144,9,.30);
-    border-radius:var(--radius-md);
-    margin-top:var(--space-3);
-  }
-  .code-warning-head{
-    display:flex;
-    align-items:flex-start;
-    gap:var(--space-3);
-  }
-  .code-warning-icon{
     display:inline-flex;
     align-items:center;
-    justify-content:center;
-    width:32px; height:32px;
-    border-radius:50%;
-    background:rgba(247,144,9,.15);
-    color:var(--color-warning);
+    gap:6px;
+    line-height:var(--line-height-normal);
+  }
+  .proposal-provider-meta .icon{ width:12px; height:12px; stroke-width:2; }
+
+  .proposal-value{
+    font-size:var(--font-size-lg);
+    font-weight:var(--font-weight-extrabold);
+    color:var(--text-primary);
+    letter-spacing:var(--tracking-tighter);
+    white-space:nowrap;
+    font-variant-numeric:tabular-nums;
     flex-shrink:0;
   }
-  .code-warning-icon .icon{ width:16px; height:16px; stroke-width:2.25; }
-  .code-warning-text{ flex:1; min-width:0; }
-  .code-warning-text strong{
-    display:block;
+
+  .proposal-message{
     font-size:var(--font-size-sm);
-    font-weight:var(--font-weight-bold);
-    color:var(--text-primary);
-    letter-spacing:var(--tracking-tight);
-    margin-bottom:4px;
-  }
-  .code-warning-text p{
-    font-size:var(--font-size-xs);
     color:var(--text-secondary);
     line-height:var(--line-height-normal);
-    margin:0;
+    margin:0 0 var(--space-3);
+    padding:var(--space-3);
+    background:var(--surface-subtle);
+    border-radius:var(--radius-sm);
+    display:-webkit-box;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
   }
-  .code-warning .btn{
-    width:100%;
-    padding:12px 18px;
+
+  .proposal-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:var(--space-3);
+    font-size:var(--font-size-xs);
+    color:var(--text-secondary);
+    margin-bottom:var(--space-3);
+  }
+  .proposal-meta span{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+  }
+  .proposal-meta .icon{ width:12px; height:12px; stroke-width:2; }
+
+  .proposal-actions{
+    display:flex;
+    gap:var(--space-2);
+    padding-top:var(--space-3);
+    border-top:1px solid var(--border-subtle);
+  }
+  .proposal-actions .btn{
+    flex:1;
+    padding:12px 16px;
     font-size:var(--font-size-sm);
     text-transform:none;
     letter-spacing:var(--tracking-normal);
-    background:var(--color-black);
-    color:var(--color-white);
-    border:none;
     gap:6px;
   }
-  .code-warning .btn:hover{ background:var(--color-gray-900); }
-  .code-warning .btn .icon{ width:14px; height:14px; stroke-width:2.25; }
+  .proposal-actions .btn .icon{ width:14px; height:14px; stroke-width:2.25; }
 
-  .code-revealed{
-    display:flex;
-    flex-direction:column;
-    gap:var(--space-2);
-    align-items:center;
-    padding:var(--space-5);
-    background:rgba(0,68,204,.06);
-    border:1px dashed rgba(0,68,204,.30);
-    border-radius:var(--radius-md);
-    margin-top:var(--space-3);
-  }
-  .code-revealed .code-label{
-    font-size:10px;
-    font-weight:var(--font-weight-bold);
-    color:var(--color-brand-blue-deep);
-    text-transform:uppercase;
-    letter-spacing:var(--tracking-wider);
-  }
-  .code-revealed .code-value{
-    font-size:var(--font-size-4xl);
-    font-weight:var(--font-weight-extrabold);
-    color:var(--color-brand-blue-deep);
-    letter-spacing:0.25em;
-    line-height:1;
-    font-variant-numeric:tabular-nums;
-  }
-  .code-revealed .code-hint{
-    font-size:var(--font-size-xs);
-    color:var(--text-secondary);
-    text-align:center;
-    line-height:var(--line-height-normal);
-    max-width:36ch;
-  }
-
-  /* ---------- CHAT BUTTON ---------- */
-  .chat-btn{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    width:100%;
-    padding:14px 20px;
+  .btn-accept{
     background:var(--color-black);
     color:var(--color-white);
     border:none;
-    border-radius:var(--radius-sm);
-    font-family:var(--font-family-base);
-    font-weight:var(--font-weight-bold);
-    font-size:var(--font-size-base);
-    letter-spacing:var(--tracking-wide);
-    text-transform:uppercase;
-    cursor:pointer;
-    margin-top:var(--space-3);
-    transition:background var(--duration-fast) var(--ease-out);
   }
-  .chat-btn:hover{ background:var(--color-gray-900); }
-  .chat-btn .icon{ width:16px; height:16px; stroke-width:2.25; }
+  .btn-accept:hover:not(:disabled){ background:var(--color-gray-900); }
 
-  /* ---------- PHOTOS PLACEHOLDER ---------- */
-  .photos-placeholder{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:var(--space-3);
-    padding:var(--space-6) var(--space-5);
-    border:1.5px dashed var(--border-default);
-    border-radius:var(--radius-md);
-    background:var(--surface-subtle);
+  .btn-reject{
+    background:transparent;
+    border:1.5px solid var(--border-default);
     color:var(--text-secondary);
-    font-size:var(--font-size-sm);
-    text-align:center;
-    margin-top:var(--space-3);
   }
-  .photos-placeholder .placeholder-icon{
+  .btn-reject:hover:not(:disabled){
+    border-color:var(--color-error);
+    color:var(--color-error);
+  }
+
+  /* ---------- ACCEPTED STATE ---------- */
+  .accepted-banner{
+    background:var(--color-black);
+    color:var(--color-white);
+    border-radius:var(--radius-lg);
+    padding:var(--space-5);
+    margin-bottom:var(--space-4);
+    text-align:center;
+  }
+  .accepted-banner .icon-circle{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    width:44px; height:44px;
+    width:56px;
+    height:56px;
     border-radius:50%;
-    background:var(--surface-default);
-    border:1px solid var(--border-default);
-    color:var(--color-gray-400);
+    background:rgba(255,255,255,.10);
+    color:var(--color-white);
+    margin:0 auto var(--space-4);
   }
-  .photos-placeholder .placeholder-icon .icon{ width:22px; height:22px; }
-  .photos-placeholder .placeholder-title{
-    font-weight:var(--font-weight-semibold);
-    color:var(--text-primary);
-    margin-bottom:4px;
+  .accepted-banner .icon-circle .icon{ width:26px; height:26px; stroke-width:2.5; }
+  .accepted-banner h3{
+    font-size:var(--font-size-lg);
+    font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tight);
+    margin:0 0 var(--space-2);
+  }
+  .accepted-banner p{
     font-size:var(--font-size-sm);
-  }
-
-  /* ---------- PAGE FOOTER ---------- */
-  .page-footer{
-    text-align:center;
-    padding:var(--space-8) var(--space-5) var(--space-10);
-    font-size:var(--font-size-xs);
-    color:var(--text-secondary);
+    color:var(--color-gray-400);
     line-height:var(--line-height-normal);
+    margin:0 0 var(--space-5);
   }
-  .page-footer a{
-    color:var(--text-link);
-    font-weight:var(--font-weight-semibold);
-    text-decoration:underline;
-    text-underline-offset:2px;
+  .accepted-banner .btn{
+    background:var(--color-white);
+    color:var(--color-black);
+    border:none;
+    padding:13px 22px;
+    border-radius:var(--radius-sm);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-sm);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
   }
+  .accepted-banner .btn .icon{ width:14px; height:14px; stroke-width:2.25; }
 
   /* ---------- EMPTY / ERROR ---------- */
   .empty-state{
@@ -341,193 +327,175 @@
     border-radius:var(--radius-md);
     color:var(--text-secondary);
   }
+  .empty-state .empty-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:56px; height:56px;
+    border-radius:50%;
+    background:var(--surface-subtle);
+    color:var(--color-gray-400);
+    margin:0 auto var(--space-3);
+  }
+  .empty-state .empty-icon .icon{ width:26px; height:26px; stroke-width:1.5; }
   .empty-state h3{
-    font-size:var(--font-size-sm);
+    font-size:var(--font-size-base);
     font-weight:var(--font-weight-bold);
     color:var(--text-primary);
-    margin:0 0 4px;
+    margin:0 0 var(--space-2);
+    letter-spacing:var(--tracking-tight);
+  }
+  .empty-state p{
+    font-size:var(--font-size-sm);
+    line-height:var(--line-height-normal);
+    margin:0 auto;
+    max-width:42ch;
   }
 
-  /* ---------- CHAT OVERLAY ---------- */
-  .chat-overlay{
+  /* ---------- LOADING ---------- */
+  .loading-spinner{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:var(--space-3);
+    padding:var(--space-10);
+    color:var(--text-secondary);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-medium);
+  }
+  .loading-spinner::after{
+    content:'';
+    display:inline-block;
+    width:20px; height:20px;
+    border:2.5px solid var(--color-gray-200);
+    border-top-color:var(--color-brand-blue-deep);
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ---------- CONFIRM MODAL ---------- */
+  .confirm-modal{
     position:fixed;
     inset:0;
-    background:var(--surface-subtle);
+    background:rgba(10,10,10,.55);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
     z-index:var(--z-modal);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:var(--space-5);
+  }
+  .confirm-modal.active{ display:flex; }
+  .confirm-modal-content{
+    background:var(--surface-default);
+    border-radius:var(--radius-lg);
+    padding:var(--space-6);
+    max-width:420px;
+    width:100%;
+    text-align:center;
+    box-shadow:var(--shadow-lg);
+  }
+  .confirm-modal-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:var(--color-gray-50);
+    color:var(--color-black);
+    margin:0 auto var(--space-4);
+  }
+  .confirm-modal-icon .icon{ width:26px; height:26px; stroke-width:1.5; }
+  .confirm-modal-content h3{
+    font-size:var(--font-size-lg);
+    font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tight);
+    margin:0 0 var(--space-2);
+    color:var(--text-primary);
+  }
+  .confirm-modal-content p{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+    margin:0 0 var(--space-5);
+  }
+  .confirm-modal-summary{
+    background:var(--surface-subtle);
+    border-radius:var(--radius-sm);
+    padding:var(--space-3) var(--space-4);
+    margin-bottom:var(--space-5);
+    text-align:left;
+  }
+  .confirm-modal-summary .row{
+    display:flex;
+    justify-content:space-between;
+    gap:var(--space-3);
+    padding:5px 0;
+    font-size:var(--font-size-sm);
+  }
+  .confirm-modal-summary .row span:first-child{ color:var(--text-secondary); }
+  .confirm-modal-summary .row span:last-child{
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-primary);
+    text-align:right;
+  }
+  .confirm-modal-actions{
+    display:flex;
+    gap:var(--space-2);
+  }
+  .confirm-modal-actions .btn{
+    flex:1;
+    padding:13px 16px;
+    font-size:var(--font-size-sm);
+    text-transform:none;
+    letter-spacing:var(--tracking-normal);
+  }
+
+  /* ---------- TOAST ---------- */
+  .toast-container{
+    position:fixed;
+    bottom:90px;
+    right:24px;
+    left:24px;
+    z-index:var(--z-toast);
     display:flex;
     flex-direction:column;
-    transform:translateY(100%);
-    transition:transform .35s cubic-bezier(.16,1,.3,1);
+    gap:var(--space-2);
+    pointer-events:none;
+    align-items:flex-end;
   }
-  .chat-overlay.active{ transform:translateY(0); }
-
-  .chat-header{
+  .toast{
     background:var(--color-black);
     color:var(--color-white);
-    padding:var(--space-3) var(--space-4);
+    padding:var(--space-3) var(--space-5);
+    border-radius:var(--radius-sm);
+    box-shadow:var(--shadow-lg);
     display:flex;
     align-items:center;
     gap:var(--space-3);
-    flex-shrink:0;
-    box-shadow:var(--shadow-md);
-  }
-  .chat-back{
-    background:rgba(255,255,255,.10);
-    border:none;
-    color:var(--color-white);
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    transition:background var(--duration-fast);
-    flex-shrink:0;
-  }
-  .chat-back:hover{ background:rgba(255,255,255,.20); }
-  .chat-back .icon{ width:16px; height:16px; stroke-width:2.25; }
-
-  .chat-header .chat-avatar{
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    background:rgba(255,255,255,.10);
-    border:1px solid rgba(255,255,255,.20);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--color-gray-400);
-    flex-shrink:0;
-  }
-  .chat-header .chat-avatar .icon{ width:18px; height:18px; }
-
-  .chat-header .chat-info{ flex:1; min-width:0; }
-  .chat-header .chat-info .name{
-    font-weight:var(--font-weight-bold);
     font-size:var(--font-size-sm);
-    color:var(--color-white);
-    margin:0 0 2px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-  .chat-header .chat-info .sub{
-    font-size:var(--font-size-xs);
-    color:var(--color-gray-400);
-  }
-
-  .chat-body{
-    flex:1;
-    overflow-y:auto;
-    padding:var(--space-5);
-    display:flex;
-    flex-direction:column;
-    gap:var(--space-4);
-    background:var(--surface-subtle);
-    -webkit-overflow-scrolling:touch;
-  }
-
-  .bubble-system{
-    align-self:center;
-    background:var(--surface-default);
-    border:1px solid var(--border-default);
-    color:var(--text-secondary);
-    font-size:var(--font-size-xs);
-    padding:8px 16px;
-    border-radius:var(--radius-full);
-    text-align:center;
-    max-width:85%;
-    line-height:var(--line-height-normal);
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-  }
-  .bubble-system .icon{ width:12px; height:12px; stroke-width:2; }
-
-  .bubble-row{
-    display:flex;
-    flex-direction:column;
-    max-width:85%;
-  }
-  .bubble-row.mine{
-    align-self:flex-end;
-    align-items:flex-end;
-  }
-  .bubble-row.theirs{
-    align-self:flex-start;
-    align-items:flex-start;
-  }
-  .bubble{
-    padding:12px 16px;
-    border-radius:18px;
-    font-size:var(--font-size-sm);
-    line-height:var(--line-height-normal);
-    word-wrap:break-word;
-    box-shadow:var(--shadow-xs);
-  }
-  .bubble-row.theirs .bubble{
-    background:var(--surface-default);
-    color:var(--text-primary);
-    border-bottom-left-radius:4px;
-  }
-  .bubble-row.mine .bubble{
-    background:var(--color-black);
-    color:var(--color-white);
-    border-bottom-right-radius:4px;
-  }
-  .bubble-time{
-    font-size:10px;
-    color:var(--text-secondary);
-    margin-top:4px;
     font-weight:var(--font-weight-medium);
+    animation:slideIn .35s cubic-bezier(.16,1,.3,1) forwards;
+    min-width:260px;
+    max-width:380px;
+    border-left:4px solid var(--color-brand-blue);
+    pointer-events:auto;
   }
+  .toast.success{ border-left-color:var(--color-success); }
+  .toast.error{ border-left-color:var(--color-error); }
+  .toast .icon{ width:16px; height:16px; stroke-width:2.25; }
 
-  .chat-input-bar{
-    background:var(--surface-default);
-    border-top:1px solid var(--border-default);
-    padding:var(--space-3) var(--space-4);
-    padding-bottom:max(var(--space-3), env(safe-area-inset-bottom));
-    display:flex;
-    gap:var(--space-2);
-    align-items:flex-end;
-    flex-shrink:0;
+  @keyframes slideIn{
+    from{ transform:translateX(120%); opacity:0; }
+    to{ transform:translateX(0); opacity:1; }
   }
-  .chat-input-bar input{
-    flex:1;
-    background:var(--surface-subtle);
-    border:1.5px solid transparent;
-    border-radius:var(--radius-full);
-    padding:12px 16px;
-    font-size:16px;
-    color:var(--text-primary);
-    font-family:var(--font-family-base);
-    outline:none;
-    transition:border-color var(--duration-fast), background var(--duration-fast);
-    -webkit-appearance:none;
-    appearance:none;
+  @keyframes slideOut{
+    from{ transform:translateX(0); opacity:1; }
+    to{ transform:translateX(120%); opacity:0; }
   }
-  .chat-input-bar input:focus{
-    border-color:var(--color-brand-blue-deep);
-    background:var(--surface-default);
-  }
-  .chat-send{
-    width:44px;
-    height:44px;
-    border-radius:50%;
-    background:var(--color-black);
-    color:var(--color-white);
-    border:none;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    flex-shrink:0;
-    transition:transform var(--duration-fast), opacity var(--duration-fast);
-  }
-  .chat-send:active{ transform:scale(0.92); }
-  .chat-send:disabled{ opacity:0.5; cursor:not-allowed; }
-  .chat-send .icon{ width:16px; height:16px; stroke-width:2.25; }
 
   /* ---------- MOBILE NAV ---------- */
   .mobile-nav{ display:none; }
@@ -602,6 +570,10 @@
     .mobile-nav-fab:active{ transform:scale(0.9); }
     .mobile-nav-fab .icon{ width:22px; height:22px; stroke-width:2.25; }
   }
+
+  @media (min-width:640px){
+    .toast-container{ right:16px; left:auto; }
+  }
 </style>
 </head>
 <body>
@@ -610,7 +582,7 @@
   <!-- HEADER ESCURO -->
   <div class="header-dark">
     <div class="header-top">
-      <a class="pill-link" href="servicos-contratados.html">
+      <a class="pill-link" href="minhas-demandas.html">
         <svg class="icon icon-sm" viewBox="0 0 24 24" style="display:inline-block;vertical-align:middle;margin-right:2px;">
           <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
         </svg>
@@ -621,7 +593,7 @@
     </div>
 
     <div class="header-center">
-      <span id="headerStatusBadge" class="status-badge status-andamento">
+      <span id="headerStatusBadge" class="status-badge status-recebendo">
         Carregando...
       </span>
       <h1 id="headerTitle">...</h1>
@@ -632,76 +604,31 @@
   <!-- CONTEÚDO -->
   <div class="content-wrap">
 
-    <!-- TIMELINE -->
-    <div class="card">
+    <!-- ESTADO DE ACEITO (aparece se já tiver contrato) -->
+    <div id="acceptedContainer"></div>
+
+    <!-- DETALHES DA DEMANDA -->
+    <div class="card" id="demandCard">
       <div class="card-label">
         <div class="dot"></div>
-        Andamento do serviço
+        Detalhes da demanda
       </div>
-      <div id="timelineContainer" class="timeline">
-        <div class="empty-state">
-          <h3>Carregando andamento...</h3>
-        </div>
+      <div id="demandBody">
+        <div class="loading-spinner">Carregando demanda...</div>
       </div>
     </div>
 
-    <!-- CÓDIGO (aparece quando necessário) -->
-    <div id="codeContainer"></div>
-
-    <!-- PRESTADOR -->
-    <div class="card" id="providerCard" style="display:none;margin-top:var(--space-3);">
-      <div class="card-label">
-        <div class="dot"></div>
-        Prestador
-      </div>
-      <div class="provider-row">
-        <div class="provider-avatar" id="providerAvatar">
-          <svg class="icon" viewBox="0 0 24 24">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
+    <!-- PROPOSTAS -->
+    <div id="proposalsSection" style="display:none;">
+      <div class="card" style="margin-top:var(--space-3);">
+        <div class="proposals-header">
+          <h2>Propostas recebidas</h2>
+          <span class="proposals-count" id="proposalsCount">0</span>
         </div>
-        <div class="provider-info">
-          <div class="name" id="providerName">...</div>
-          <div class="meta">
-            <svg class="icon" viewBox="0 0 24 24">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
-            <span id="providerRating">—</span>
-            <span class="sep">·</span>
-            <span id="providerCount">0 serviços</span>
-          </div>
-        </div>
+        <div id="proposalsList"></div>
       </div>
     </div>
 
-    <!-- CHAT -->
-    <button id="btnOpenChat" class="chat-btn" onclick="abrirChat()" style="display:none;">
-      <svg class="icon" viewBox="0 0 24 24">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      </svg>
-      Conversar com o prestador
-    </button>
-
-    <!-- FOTOS PLACEHOLDER -->
-    <div class="photos-placeholder">
-      <div class="placeholder-icon">
-        <svg class="icon" viewBox="0 0 24 24">
-          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-          <circle cx="12" cy="13" r="3"/>
-        </svg>
-      </div>
-      <div>
-        <div class="placeholder-title">Fotos do serviço</div>
-        <div>As imagens aparecerão aqui assim que o prestador atualizar o andamento.</div>
-      </div>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="page-footer">
-      WENEED · Acompanhamento seguro.<br>
-      <a href="#">Precisa de ajuda?</a>
-    </footer>
   </div>
 </div>
 
@@ -717,7 +644,7 @@
     <span>Início</span>
   </a>
 
-  <a href="minhas-demandas.html" class="mobile-nav-item">
+  <a href="minhas-demandas.html" class="mobile-nav-item active">
     <span class="nav-icon">
       <svg class="icon icon-lg" viewBox="0 0 24 24">
         <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
@@ -735,7 +662,7 @@
     </a>
   </div>
 
-  <a href="servicos-contratados.html" class="mobile-nav-item active">
+  <a href="servicos-contratados.html" class="mobile-nav-item">
     <span class="nav-icon">
       <svg class="icon icon-lg" viewBox="0 0 24 24">
         <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
@@ -757,48 +684,28 @@
   </a>
 </nav>
 
-<!-- CHAT OVERLAY -->
-<div class="chat-overlay" id="chatOverlay">
-  <div class="chat-header">
-    <button class="chat-back" onclick="fecharChat()" aria-label="Fechar chat">
+<!-- CONFIRM MODAL -->
+<div class="confirm-modal" id="confirmModal">
+  <div class="confirm-modal-content">
+    <div class="confirm-modal-icon">
       <svg class="icon" viewBox="0 0 24 24">
-        <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
-      </svg>
-    </button>
-
-    <div class="chat-avatar">
-      <svg class="icon" viewBox="0 0 24 24">
-        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
+        <path d="M20 6 9 17l-5-5"/>
       </svg>
     </div>
+    <h3>Aceitar proposta?</h3>
+    <p>Ao aceitar, o prestador será notificado. Você será levado para o pagamento em seguida.</p>
 
-    <div class="chat-info">
-      <div id="chatProviderName" class="name">Prestador</div>
-      <div id="chatOrderTitle" class="sub">Ordem de serviço</div>
+    <div class="confirm-modal-summary" id="confirmSummary"></div>
+
+    <div class="confirm-modal-actions">
+      <button class="btn btn-outline" onclick="closeConfirmModal()">Cancelar</button>
+      <button class="btn btn-primary" id="confirmAcceptBtn">Aceitar e pagar</button>
     </div>
   </div>
-
-  <div class="chat-body" id="chatBody">
-    <div class="bubble-system" id="chatSystemBubble">
-      <svg class="icon" viewBox="0 0 24 24">
-        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-      </svg>
-      Conversa protegida até o serviço ser concluído.
-    </div>
-  </div>
-
-  <form class="chat-input-bar" id="chatForm">
-    <input type="text" id="chatInput" placeholder="Digite uma mensagem..." autocomplete="off">
-    <button type="submit" class="chat-send" id="chatSendBtn" aria-label="Enviar">
-      <svg class="icon" viewBox="0 0 24 24">
-        <line x1="22" x2="11" y1="2" y2="13"/>
-        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-      </svg>
-    </button>
-  </form>
 </div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
 
 <!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -811,15 +718,17 @@
   /* ============================================
      ESTADO
      ============================================ */
-  let currentOrderId = null;
   let currentUserId = null;
   let currentProfileId = null;
-  let providerName = 'Prestador';
-  let contractData = null;
-  const revealedCodes = new Set();
+  let currentDemandId = null;
+  let demandData = null;
+  let proposalsCache = [];
+  let acceptedContract = null;
+  let proposalToAccept = null;
+  let actionInProgress = false;
 
   const urlParams = new URLSearchParams(window.location.search);
-  currentOrderId = urlParams.get('id') || urlParams.get('contract_id');
+  currentDemandId = urlParams.get('id');
 
   /* ============================================
      AUXILIARES
@@ -835,6 +744,26 @@
     }[tag]));
   }
 
+  function formatarMoeda(v) {
+    const n = Number(v) || 0;
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(n);
+  }
+
+  function formatarPrazo(dias) {
+    const d = parseInt(dias, 10);
+    if (isNaN(d)) return '—';
+    if (d === 0) return 'Ainda hoje';
+    if (d === 1) return 'Amanhã';
+    if (d < 7) return `${d} dias`;
+    if (d === 7) return '1 semana';
+    if (d === 15) return '2 semanas';
+    if (d === 30) return '1 mês';
+    return `${d} dias`;
+  }
+
   function formatarData(iso) {
     if (!iso) return '—';
     return new Date(iso).toLocaleDateString('pt-BR', {
@@ -844,13 +773,40 @@
     });
   }
 
-  function formatarHora(iso) {
-    if (!iso) return '';
-    return new Date(iso).toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  function mostrarToast(mensagem, tipo = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${tipo}`;
+
+    const icon = tipo === 'success'
+      ? `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+      : tipo === 'error'
+        ? `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`
+        : `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>`;
+
+    toast.innerHTML = `${icon}<span>${escapeHTML(mensagem)}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = 'slideOut .3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
   }
+
+  /* ============================================
+     STATUS MAP
+     ============================================ */
+  const STATUS_MAP = {
+    'OPEN':         { label: 'Aguardando propostas', class: 'status-recebendo' },
+    'ABERTA':       { label: 'Aguardando propostas', class: 'status-recebendo' },
+    'EM_PROPOSTAS': { label: 'Com propostas',        class: 'status-recebendo' },
+    'EM_ANDAMENTO': { label: 'Em andamento',         class: 'status-andamento' },
+    'ANDAMENTO':    { label: 'Em andamento',         class: 'status-andamento' },
+    'CONCLUIDO':    { label: 'Concluída',            class: 'status-concluido' },
+    'CONCLUIDA':    { label: 'Concluída',            class: 'status-concluido' },
+    'CANCELADO':    { label: 'Cancelada',            class: 'status-cancelado' },
+    'CANCELADA':    { label: 'Cancelada',            class: 'status-cancelado' }
+  };
 
   /* ============================================
      INIT
@@ -869,12 +825,11 @@
     }
     currentUserId = session.user.id;
 
-    if (!currentOrderId) {
-      window.location.href = 'servicos-contratados.html';
+    if (!currentDemandId) {
+      window.location.href = 'minhas-demandas.html';
       return;
     }
 
-    /* Buscar profile.id */
     const { data: profile } = await supabase
       .from('profiles')
       .select('id')
@@ -883,365 +838,503 @@
 
     if (!profile) {
       alert('Perfil não encontrado.');
-      window.location.href = 'servicos-contratados.html';
+      window.location.href = 'minhas-demandas.html';
       return;
     }
     currentProfileId = profile.id;
 
-    await carregarOrdem(supabase);
-    await carregarMensagens(supabase);
-    configurarChat(supabase);
+    configurarConfirmModal(supabase);
+    await carregarDemanda(supabase);
+    await carregarPropostas(supabase);
+    await carregarContratoAceito(supabase);
     configurarRealtime(supabase);
   }
 
   /* ============================================
-     CARREGAR ORDEM
+     CARREGAR DEMANDA
      ============================================ */
-  async function carregarOrdem(supabase) {
-    const { data: contract, error } = await supabase
+  async function carregarDemanda(supabase) {
+    const { data: demand, error } = await supabase
+      .from('demands')
+      .select(`
+        id,
+        title,
+        description,
+        budget_min,
+        budget_max,
+        city,
+        neighborhood,
+        status,
+        created_at,
+        media_urls,
+        category_id,
+        categories ( name, service_type ),
+        client_id
+      `)
+      .eq('id', currentDemandId)
+      .single();
+
+    if (error || !demand) {
+      console.error('Erro ao carregar demanda:', error);
+      document.getElementById('demandBody').innerHTML = `
+        <div class="empty-state">
+          <h3>Demanda não encontrada</h3>
+          <p>Volte e tente novamente.</p>
+        </div>`;
+      return;
+    }
+
+    if (demand.client_id !== currentProfileId) {
+      document.getElementById('demandBody').innerHTML = `
+        <div class="empty-state">
+          <h3>Acesso negado</h3>
+          <p>Esta demanda não pertence à sua conta.</p>
+        </div>`;
+      return;
+    }
+
+    demandData = demand;
+
+    /* Header */
+    const st = STATUS_MAP[demand.status] || { label: demand.status, class: 'status-recebendo' };
+    document.getElementById('headerStatusBadge').className = `status-badge ${st.class}`;
+    document.getElementById('headerStatusBadge').textContent = st.label;
+    document.getElementById('headerTitle').textContent = demand.title || 'Demanda';
+    document.getElementById('headerSub').textContent =
+      `${demand.city || 'Local não definido'}${demand.neighborhood ? ' · ' + demand.neighborhood : ''}`;
+
+    /* Body */
+    renderDemanda(demand);
+  }
+
+  function renderDemanda(demand) {
+    const isFreelance = demand.categories?.service_type === 'FREELANCE';
+    const budget = demand.budget_max
+      ? `Até ${formatarMoeda(demand.budget_max)}`
+      : (demand.budget_min
+        ? `A partir de ${formatarMoeda(demand.budget_min)}`
+        : 'A combinar');
+
+    const location = isFreelance
+      ? 'Online'
+      : [demand.neighborhood, demand.city].filter(Boolean).join(', ') || 'Local não definido';
+
+    let imagesHtml = '';
+    if (demand.media_urls && demand.media_urls.length > 0) {
+      imagesHtml = `
+        <div class="demand-images">
+          ${demand.media_urls.map(url =>
+            `<img src="${escapeHTML(url)}" alt="" loading="lazy" onclick="window.open('${escapeHTML(url)}')">`
+          ).join('')}
+        </div>`;
+    }
+
+    document.getElementById('demandBody').innerHTML = `
+      ${imagesHtml}
+
+      <p class="demand-description">"${escapeHTML(demand.description)}"</p>
+
+      <div class="detail-lines">
+        <div class="detail-line">
+          <span>Categoria</span>
+          <span>${escapeHTML(demand.categories?.name || 'Serviço')}</span>
+        </div>
+        <div class="detail-line">
+          <span>Local</span>
+          <span>
+            ${isFreelance
+              ? `<svg class="icon" viewBox="0 0 24 24">
+                   <rect width="20" height="14" x="2" y="3" rx="2"/>
+                   <line x1="8" x2="16" y1="21" y2="21"/>
+                   <line x1="12" x2="12" y1="17" y2="21"/>
+                 </svg>`
+              : `<svg class="icon" viewBox="0 0 24 24">
+                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                   <circle cx="12" cy="10" r="3"/>
+                 </svg>`}
+            ${escapeHTML(location)}
+          </span>
+        </div>
+        <div class="detail-line">
+          <span>Orçamento</span>
+          <span class="budget">${budget}</span>
+        </div>
+        <div class="detail-line">
+          <span>Publicada em</span>
+          <span>${formatarData(demand.created_at)}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ============================================
+     CARREGAR PROPOSTAS
+     ============================================ */
+  async function carregarPropostas(supabase) {
+    const { data: proposals, error } = await supabase
+      .from('proposals')
+      .select(`
+        id,
+        price,
+        deadline_days,
+        message,
+        status,
+        created_at,
+        provider:profiles!proposals_provider_id_fkey (
+          id,
+          full_name,
+          company_name,
+          avatar_url,
+          city,
+          uf
+        )
+      `)
+      .eq('demand_id', currentDemandId)
+      .in('status', ['pendente', 'PENDENTE'])
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Erro ao carregar propostas:', error);
+      proposalsCache = [];
+      renderPropostas([]);
+      return;
+    }
+
+    proposalsCache = proposals || [];
+    renderPropostas(proposalsCache);
+  }
+
+  function renderPropostas(propostas) {
+    const section = document.getElementById('proposalsSection');
+    const list = document.getElementById('proposalsList');
+    const countEl = document.getElementById('proposalsCount');
+
+    section.style.display = 'block';
+    countEl.textContent = propostas.length;
+
+    if (propostas.length === 0) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h3>Nenhuma proposta ainda</h3>
+          <p>Quando um prestador enviar uma proposta, ela aparece aqui.</p>
+        </div>`;
+      return;
+    }
+
+    list.innerHTML = propostas.map(p => {
+      const provider = p.provider || {};
+      const providerName = provider.company_name || provider.full_name || 'Prestador';
+      const providerLocation = provider.city
+        ? `${provider.city}${provider.uf ? ', ' + provider.uf : ''}`
+        : 'Local não informado';
+
+      const avatarHtml = provider.avatar_url
+        ? `<img src="${escapeHTML(provider.avatar_url)}" alt="">`
+        : `<svg class="icon" viewBox="0 0 24 24">
+             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+             <circle cx="12" cy="7" r="4"/>
+           </svg>`;
+
+      const dataFmt = p.created_at
+        ? new Date(p.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+        : '';
+
+      return `
+        <div class="proposal-card" data-proposal-id="${escapeHTML(p.id)}">
+          <div class="proposal-head">
+            <div class="proposal-avatar">${avatarHtml}</div>
+            <div class="proposal-provider">
+              <h3 class="proposal-provider-name">${escapeHTML(providerName)}</h3>
+              <span class="proposal-provider-meta">
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                ${escapeHTML(providerLocation)}
+              </span>
+            </div>
+            <div class="proposal-value">${formatarMoeda(p.price)}</div>
+          </div>
+
+          <div class="proposal-meta">
+            <span>
+              <svg class="icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              ${escapeHTML(formatarPrazo(p.deadline_days))}
+            </span>
+            ${dataFmt ? `<span>
+              <svg class="icon" viewBox="0 0 24 24">
+                <rect width="18" height="18" x="3" y="4" rx="2"/>
+                <path d="M16 2v4M8 2v4M3 10h18"/>
+              </svg>
+              ${dataFmt}
+            </span>` : ''}
+          </div>
+
+          ${p.message ? `<p class="proposal-message">${escapeHTML(p.message)}</p>` : ''}
+
+          <div class="proposal-actions">
+            <button class="btn btn-reject" data-action="reject" data-id="${escapeHTML(p.id)}">
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+              </svg>
+              Recusar
+            </button>
+            <button class="btn btn-accept" data-action="accept" data-id="${escapeHTML(p.id)}">
+              <svg class="icon" viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Aceitar
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    list.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = btn.dataset.id;
+        const action = btn.dataset.action;
+        if (action === 'accept') abrirConfirmAceite(id);
+        else if (action === 'reject') recusarProposta(id);
+      });
+    });
+  }
+
+  /* ============================================
+     CARREGAR CONTRATO ACEITO
+     ============================================ */
+  async function carregarContratoAceito(supabase) {
+    const { data: contract } = await supabase
       .from('contracts')
       .select(`
         id,
         status,
         final_price,
-        start_code,
-        finish_code,
-        started_at,
-        finished_at,
         created_at,
-        demand:demands (
-          id,
-          title,
-          city,
-          neighborhood,
-          client_id
-        ),
         proposal:proposals (
           provider:profiles (
-            id,
             full_name,
-            company_name,
-            avatar_url
+            company_name
           )
         )
       `)
-      .eq('id', currentOrderId)
-      .single();
+      .eq('demand_id', currentDemandId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-    if (error || !contract) {
-      console.error('Erro ao carregar ordem:', error);
-      alert('Serviço não encontrado ou você não tem permissão.');
-      window.location.href = 'servicos-contratados.html';
-      return;
-    }
+    if (!contract) return;
 
-    if (contract.demand?.client_id !== currentProfileId) {
-      alert('Este serviço não pertence à sua conta.');
-      window.location.href = 'servicos-contratados.html';
-      return;
-    }
-
-    contractData = contract;
-    renderOrdem();
+    acceptedContract = contract;
+    renderAceito(contract);
   }
 
-  /* ============================================
-     RENDER ORDEM
-     ============================================ */
-  function renderOrdem() {
-    const c = contractData;
-    const demand = c.demand || {};
-    const provider = c.proposal?.provider || {};
-    providerName = provider.company_name || provider.full_name || 'Prestador';
+  function renderAceito(contract) {
+    const container = document.getElementById('acceptedContainer');
+    const provider = contract.proposal?.provider || {};
+    const providerName = provider.company_name || provider.full_name || 'Prestador';
 
-    /* Status */
     const statusMap = {
-      'aguardando_pagamento':       { label: 'Aguardando pagamento', class: 'status-cancelado' },
-      'pago_aguardando_inicio':     { label: 'Aguardando início',    class: 'status-recebendo' },
-      'em_andamento':               { label: 'Em andamento',         class: 'status-andamento' },
-      'aguardando_confirmacao_fim': { label: 'Confirme a finalização', class: 'status-andamento' },
-      'finalizado':                 { label: 'Concluído',            class: 'status-concluido' },
-      'cancelado':                  { label: 'Cancelado',            class: 'status-cancelado' }
+      'aguardando_pagamento':       { label: 'Aguardando pagamento', action: 'pagar' },
+      'pago_aguardando_inicio':     { label: 'Aguardando início',    action: 'acompanhar' },
+      'em_andamento':               { label: 'Em andamento',         action: 'acompanhar' },
+      'aguardando_confirmacao_fim': { label: 'Confirme a finalização', action: 'confirmar' },
+      'finalizado':                 { label: 'Concluído',            action: 'avaliar' }
     };
-    const st = statusMap[c.status] || { label: c.status, class: 'status-recebendo' };
 
-    document.getElementById('headerStatusBadge').className = `status-badge ${st.class}`;
-    document.getElementById('headerStatusBadge').textContent = st.label;
-    document.getElementById('headerTitle').textContent = demand.title || 'Serviço';
-    document.getElementById('headerSub').textContent =
-      `OS #${String(c.id).slice(0, 8)} · ${demand.city || 'Local não definido'}`;
+    const st = statusMap[contract.status] || { label: contract.status, action: 'acompanhar' };
 
-    /* Timeline */
-    renderTimeline(c.status, c.created_at, c.started_at, c.finished_at);
+    let btnLabel = 'Acompanhar serviço';
+    let btnIcon = `<svg class="icon" viewBox="0 0 24 24">
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>`;
 
-    /* Códigos */
-    renderCodeBlock(c);
-
-    /* Provider */
-    document.getElementById('providerName').textContent = providerName;
-    if (provider.avatar_url) {
-      document.getElementById('providerAvatar').innerHTML =
-        `<img src="${escapeHTML(provider.avatar_url)}" alt="">`;
-    }
-    document.getElementById('providerCard').style.display = 'block';
-    document.getElementById('btnOpenChat').style.display = 'flex';
-    document.getElementById('chatProviderName').textContent = providerName;
-    document.getElementById('chatOrderTitle').textContent = `OS #${String(c.id).slice(0, 8)}`;
-  }
-
-  /* ============================================
-     TIMELINE
-     ============================================ */
-  function renderTimeline(status, createdAt, startedAt, finishedAt) {
-    const container = document.getElementById('timelineContainer');
-    const dataCriacao = formatarData(createdAt);
-    const dataInicio = startedAt ? formatarData(startedAt) : null;
-    const dataFim = finishedAt ? formatarData(finishedAt) : null;
-
-    const etapas = [
-      {
-        key: 'criado',
-        title: 'Serviço contratado',
-        desc: 'Você aceitou a proposta e o serviço foi registrado.',
-        time: dataCriacao
-      },
-      {
-        key: 'pago',
-        title: 'Pagamento aprovado',
-        desc: 'O valor foi retido com segurança pela plataforma.',
-        time: status !== 'aguardando_pagamento' ? dataCriacao : '—'
-      },
-      {
-        key: 'iniciado',
-        title: 'Serviço em andamento',
-        desc: 'O prestador iniciou o serviço com o código de início.',
-        time: dataInicio || '—'
-      },
-      {
-        key: 'finalizado',
-        title: 'Serviço concluído',
-        desc: 'Serviço finalizado e validado.',
-        time: dataFim || '—'
-      }
-    ];
-
-    const ordem = ['aguardando_pagamento', 'pago_aguardando_inicio', 'em_andamento', 'aguardando_confirmacao_fim', 'finalizado'];
-    const statusIndex = ordem.indexOf(status);
-
-    let currentStep = 0;
-    if (status === 'aguardando_pagamento') currentStep = 0;
-    else if (status === 'pago_aguardando_inicio') currentStep = 1;
-    else if (status === 'em_andamento') currentStep = 2;
-    else if (status === 'aguardando_confirmacao_fim' || status === 'finalizado') currentStep = 3;
-
-    container.innerHTML = etapas.map((etapa, index) => {
-      let stateClass = 'pending';
-      if (index < currentStep) stateClass = 'done';
-      else if (index === currentStep) stateClass = 'current';
-
-      const dotSvg = stateClass === 'done'
-        ? `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
-        : stateClass === 'current'
-          ? `<svg class="icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none;"><circle cx="12" cy="12" r="4"/></svg>`
-          : '';
-
-      return `
-        <div class="tl-item ${stateClass}">
-          <div class="tl-dot">${dotSvg}</div>
-          <div>
-            <div class="tl-title">${etapa.title}</div>
-            <div class="tl-time">${etapa.time}</div>
-            <div class="tl-desc">${etapa.desc}</div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  /* ============================================
-     BLOCO DE CÓDIGO
-     ============================================ */
-  function renderCodeBlock(c) {
-    const container = document.getElementById('codeContainer');
-    container.innerHTML = '';
-
-    const isStartPhase = c.status === 'pago_aguardando_inicio';
-    const isFinishPhase = c.status === 'aguardando_confirmacao_fim';
-
-    if (!isStartPhase && !isFinishPhase) return;
-
-    const codeToShow = isStartPhase ? c.start_code : c.finish_code;
-    const codeLabel = isStartPhase ? 'Código de início' : 'Código de finalização';
-    const buttonLabel = isStartPhase ? 'Ver código de início' : 'Ver código de finalização';
-    const isRevealed = revealedCodes.has(c.id);
-
-    const warningText = isStartPhase
-      ? 'Verifique se o prestador é a pessoa certa e está no local combinado. Só informe o código depois disso.'
-      : 'Confira se o serviço foi concluído corretamente antes de revelar o código. Depois de informar, o pagamento é liberado e não pode ser desfeito.';
-
-    const codeHint = isStartPhase
-      ? 'Diga este código ao prestador quando ele chegar para iniciar o serviço.'
-      : 'Diga este código ao prestador para ele confirmar a finalização e receber o pagamento.';
-
-    if (!codeToShow) {
-      container.innerHTML = `
-        <div class="card" style="margin-top:var(--space-3);">
-          <div class="card-label"><div class="dot"></div> Código</div>
-          <div class="empty-state">
-            <h3>Aguardando código</h3>
-            <p>O código será liberado em instantes.</p>
-          </div>
-        </div>`;
-      return;
+    if (st.action === 'pagar') {
+      btnLabel = 'Ir para pagamento';
+      btnIcon = `<svg class="icon" viewBox="0 0 24 24">
+        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>`;
+    } else if (st.action === 'confirmar') {
+      btnLabel = 'Confirmar finalização';
+      btnIcon = `<svg class="icon" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>`;
     }
 
-    if (!isRevealed) {
-      container.innerHTML = `
-        <div class="card" style="margin-top:var(--space-3);">
-          <div class="card-label"><div class="dot"></div> ${codeLabel}</div>
-          <div class="code-warning">
-            <div class="code-warning-head">
-              <div class="code-warning-icon">
-                <svg class="icon" viewBox="0 0 24 24">
-                  <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                  <line x1="12" x2="12" y1="9" y2="13"/>
-                  <line x1="12" x2="12.01" y1="17" y2="17"/>
-                </svg>
-              </div>
-              <div class="code-warning-text">
-                <strong>Só revele o código quando for seguro</strong>
-                <p>${warningText}</p>
-              </div>
-            </div>
-            <button class="btn" data-reveal>
-              <svg class="icon" viewBox="0 0 24 24">
-                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-              ${buttonLabel}
-            </button>
-          </div>
-        </div>`;
-
-      container.querySelector('[data-reveal]').addEventListener('click', () => {
-        revealedCodes.add(c.id);
-        renderCodeBlock(c);
-      });
-      return;
+    let href = `detalhe-ordem.html?id=${contract.id}`;
+    if (st.action === 'pagar') {
+      href = `pagamento.html?contract_id=${contract.id}`;
     }
 
     container.innerHTML = `
-      <div class="card" style="margin-top:var(--space-3);">
-        <div class="card-label"><div class="dot"></div> ${codeLabel}</div>
-        <div class="code-revealed">
-          <span class="code-label">${codeLabel}</span>
-          <span class="code-value">${escapeHTML(codeToShow)}</span>
-          <span class="code-hint">${codeHint}</span>
+      <div class="accepted-banner" style="margin-top:var(--space-4);">
+        <div class="icon-circle">
+          <svg class="icon" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
         </div>
-      </div>`;
+        <h3>Proposta aceita</h3>
+        <p>Você já contratou <strong>${escapeHTML(providerName)}</strong> para este serviço.<br>Status atual: <strong>${escapeHTML(st.label)}</strong>.</p>
+        <a class="btn" href="${href}">
+          ${btnIcon}
+          ${btnLabel}
+        </a>
+      </div>
+    `;
   }
 
   /* ============================================
-     CHAT · CARREGAR MENSAGENS
+     CONFIRM MODAL
      ============================================ */
-  async function carregarMensagens(supabase) {
-    const body = document.getElementById('chatBody');
-    const systemBubble = document.getElementById('chatSystemBubble');
+  function configurarConfirmModal(supabase) {
+    document.getElementById('confirmAcceptBtn').addEventListener('click', async () => {
+      if (!proposalToAccept || actionInProgress) return;
+      await aceitarProposta(supabase, proposalToAccept);
+    });
 
-    const { data: messages, error } = await supabase
-      .from('messages')
-      .select('id, content, sender_id, created_at')
-      .eq('contract_id', currentOrderId)
-      .order('created_at', { ascending: true });
+    document.getElementById('confirmModal').addEventListener('click', (e) => {
+      if (e.target.id === 'confirmModal') closeConfirmModal();
+    });
 
-    if (error) {
-      console.error('Erro ao carregar mensagens:', error);
-      return;
-    }
-
-    /* Preserva a bubble do sistema */
-    body.innerHTML = '';
-    if (systemBubble) body.appendChild(systemBubble);
-
-    if (messages && messages.length > 0) {
-      messages.forEach(msg => {
-        const isMine = msg.sender_id === currentUserId;
-        body.appendChild(criarBubble(msg.content, isMine ? 'mine' : 'theirs', msg.created_at));
-      });
-    }
-
-    setTimeout(() => {
-      body.scrollTop = body.scrollHeight;
-    }, 100);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeConfirmModal();
+    });
   }
 
-  function criarBubble(texto, tipo, timestamp) {
-    const row = document.createElement('div');
-    row.className = `bubble-row ${tipo}`;
-    const hora = formatarHora(timestamp);
+  function abrirConfirmAceite(proposalId) {
+    const p = proposalsCache.find(x => x.id === proposalId);
+    if (!p) return;
 
-    row.innerHTML = `
-      <div class="bubble">${escapeHTML(texto)}</div>
-      <span class="bubble-time">${hora}</span>
+    proposalToAccept = proposalId;
+
+    const provider = p.provider || {};
+    const providerName = provider.company_name || provider.full_name || 'Prestador';
+
+    document.getElementById('confirmSummary').innerHTML = `
+      <div class="row"><span>Prestador</span><span>${escapeHTML(providerName)}</span></div>
+      <div class="row"><span>Demanda</span><span>${escapeHTML(demandData.title)}</span></div>
+      <div class="row"><span>Valor</span><span>${formatarMoeda(p.price)}</span></div>
+      <div class="row"><span>Prazo</span><span>${escapeHTML(formatarPrazo(p.deadline_days))}</span></div>
     `;
 
-    return row;
+    document.getElementById('confirmModal').classList.add('active');
+  }
+
+  function closeConfirmModal() {
+    document.getElementById('confirmModal').classList.remove('active');
+    proposalToAccept = null;
   }
 
   /* ============================================
-     CHAT · ABRIR/FECHAR
+     ACEITAR PROPOSTA
      ============================================ */
-  window.abrirChat = function() {
-    document.getElementById('chatOverlay').classList.add('active');
-    setTimeout(() => {
-      const body = document.getElementById('chatBody');
-      body.scrollTop = body.scrollHeight;
-      document.getElementById('chatInput').focus();
-    }, 100);
-  };
+  async function aceitarProposta(supabase, proposalId) {
+    if (actionInProgress) return;
+    actionInProgress = true;
 
-  window.fecharChat = function() {
-    document.getElementById('chatOverlay').classList.remove('active');
-    document.getElementById('chatInput').blur();
-  };
+    const btn = document.getElementById('confirmAcceptBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Aceitando...';
+    btn.disabled = true;
 
-  /* ============================================
-     CHAT · ENVIAR
-     ============================================ */
-  function configurarChat(supabase) {
-    document.getElementById('chatForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+    try {
+      const proposal = proposalsCache.find(x => x.id === proposalId);
+      if (!proposal) throw new Error('Proposta não encontrada.');
 
-      const input = document.getElementById('chatInput');
-      const btn = document.getElementById('chatSendBtn');
-      const texto = input.value.trim();
+      /* 1. Proposta aceita */
+      const { error: errAccept } = await supabase
+        .from('proposals')
+        .update({ status: 'ACEITA' })
+        .eq('id', proposalId);
 
-      if (!texto) return;
+      if (errAccept) throw errAccept;
 
-      btn.disabled = true;
+      /* 2. Recusar as outras */
+      const otherIds = proposalsCache
+        .filter(x => x.id !== proposalId)
+        .map(x => x.id);
 
-      const { error } = await supabase
-        .from('messages')
-        .insert({
-          contract_id: currentOrderId,
-          sender_id: currentUserId,
-          content: texto
-        });
-
-      if (error) {
-        console.error('Erro ao enviar mensagem:', error);
-        alert('Não foi possível enviar a mensagem.');
-      } else {
-        const body = document.getElementById('chatBody');
-        body.appendChild(criarBubble(texto, 'mine', new Date().toISOString()));
-        input.value = '';
-        setTimeout(() => {
-          body.scrollTop = body.scrollHeight;
-        }, 50);
+      if (otherIds.length > 0) {
+        await supabase
+          .from('proposals')
+          .update({ status: 'RECUSADA' })
+          .in('id', otherIds);
       }
 
+      /* 3. Atualizar demanda */
+      await supabase
+        .from('demands')
+        .update({ status: 'EM_ANDAMENTO' })
+        .eq('id', currentDemandId);
+
+      /* 4. Criar contrato */
+      const finalPrice = parseFloat(proposal.price);
+
+      const { data: contractData, error: errContract } = await supabase
+        .from('contracts')
+        .insert({
+          demand_id: currentDemandId,
+          proposal_id: proposalId,
+          status: 'aguardando_pagamento',
+          final_price: finalPrice,
+          created_at: new Date().toISOString()
+        })
+        .select()
+        .single();
+
+      if (errContract) throw errContract;
+
+      mostrarToast('Proposta aceita. Redirecionando para o pagamento...', 'success');
+      closeConfirmModal();
+
+      setTimeout(() => {
+        window.location.href = `pagamento.html?contract_id=${contractData.id}`;
+      }, 900);
+
+    } catch (err) {
+      console.error('Erro ao aceitar proposta:', err);
+      mostrarToast('Erro ao aceitar: ' + err.message, 'error');
+      btn.textContent = originalText;
       btn.disabled = false;
-    });
+      actionInProgress = false;
+    }
+  }
+
+  /* ============================================
+     RECUSAR PROPOSTA
+     ============================================ */
+  async function recusarProposta(proposalId) {
+    if (!confirm('Tem certeza que deseja recusar esta proposta?')) return;
+
+    const supabase = window.supabaseClient;
+    if (!supabase) return;
+
+    try {
+      const { error } = await supabase
+        .from('proposals')
+        .update({ status: 'RECUSADA' })
+        .eq('id', proposalId);
+
+      if (error) throw error;
+
+      mostrarToast('Proposta recusada.', 'success');
+      await carregarPropostas(supabase);
+
+    } catch (err) {
+      console.error('Erro ao recusar proposta:', err);
+      mostrarToast('Erro ao recusar: ' + err.message, 'error');
+    }
   }
 
   /* ============================================
@@ -1249,14 +1342,14 @@
      ============================================ */
   function configurarRealtime(supabase) {
     supabase
-      .channel('detalhe-ordem-realtime')
+      .channel('detalhe-demanda-cliente-realtime')
       .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'contracts', filter: `id=eq.${currentOrderId}` },
-        () => carregarOrdem(supabase)
+        { event: '*', schema: 'public', table: 'proposals', filter: `demand_id=eq.${currentDemandId}` },
+        () => carregarPropostas(supabase)
       )
       .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'messages', filter: `contract_id=eq.${currentOrderId}` },
-        () => carregarMensagens(supabase)
+        { event: '*', schema: 'public', table: 'contracts', filter: `demand_id=eq.${currentDemandId}` },
+        () => carregarContratoAceito(supabase)
       )
       .subscribe();
   }
