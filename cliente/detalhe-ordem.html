@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Acompanhar serviço · WENEED</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="stylesheet" href="../style.css">
+
+<style>
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{ width:16px;height:16px;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;fill:none;flex-shrink:0;display:block; }
+  .icon-sm{ width:14px;height:14px;stroke-width:2; }
+  .icon-md{ width:18px;height:18px;stroke-width:1.75; }
+  .icon-lg{ width:22px;height:22px;stroke-width:1.5; }
+  .icon-xl{ width:28px;height:28px;stroke-width:1.5; }
+
+  /* ---------- HEADER CENTRALIZADO ---------- */
+  .header-center{ text-align:center; padding:var(--space-3) 0 var(--space-5); }
+  .header-center h1{
+    font-size:var(--font-size-xl); font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tighter); margin:var(--space-4) 0 var(--space-2);
+    color:var(--color-white); line-height:var(--line-height-snug); word-break:break-word;
+  }
+  .header-center .sub{ color:var(--color-gray-400); font-size:var(--font-size-sm); margin:0; font-weight:var(--font-weight-medium); }
+
+  .content-wrap{ padding:0 var(--space-5) var(--space-10); margin-top:calc(-1 * var(--space-3)); }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; padding-left:8px; margin-top:var(--space-2); }
+  .tl-item{
+    position:relative; padding-left:32px; padding-bottom:var(--space-6);
+    border-left:2px solid var(--border-default);
+  }
+  .tl-item:last-child{ padding-bottom:0; border-left:2px solid transparent; }
+  .tl-dot{
+    position:absolute; left:-9px; top:0; width:16px; height:16px;
+    border-radius:50%; background:var(--surface-default);
+    border:2px solid var(--border-default);
+    display:flex; align-items:center; justify-content:center;
+    color:transparent; transition:all var(--duration-base) var(--ease-out);
+  }
+  .tl-dot .icon{ width:8px; height:8px; stroke-width:3; }
+
+  .tl-item.done .tl-dot{
+    background:var(--color-brand-blue-deep);
+    border-color:var(--color-brand-blue-deep);
+    color:var(--color-white);
+  }
+  .tl-item.done .tl-title{ color:var(--text-primary); }
+
+  .tl-item.current .tl-dot{
+    background:var(--surface-default);
+    border-color:var(--color-brand-blue-deep);
+    box-shadow:0 0 0 4px rgba(0,68,204,.15);
+  }
+  .tl-item.current .tl-title{
+    color:var(--color-brand-blue-deep);
+    font-weight:var(--font-weight-extrabold);
+  }
+  .tl-item.pending .tl-title,
+  .tl-item.pending .tl-desc{ color:var(--text-secondary); }
+
+  .tl-title{
+    font-size:var(--font-size-sm); font-weight:var(--font-weight-bold);
+    margin-bottom:2px; letter-spacing:var(--tracking-tight);
+    transition:color var(--duration-base);
+  }
+  .tl-time{
+    font-size:var(--font-size-xs); color:var(--text-secondary);
+    font-weight:var(--font-weight-medium); margin-bottom:4px;
+  }
+  .tl-desc{
+    font-size:var(--font-size-sm); color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+  }
+
+  /* ---------- CODE BLOCK ---------- */
+  .code-warning{
+    display:flex; flex-direction:column; gap:var(--space-3);
+    padding:var(--space-4); background:rgba(247,144,9,.06);
+    border:1px solid rgba(247,144,9,.30); border-radius:var(--radius-md);
+    margin-top:var(--space-3);
+  }
+  .code-warning-head{ display:flex; align-items:flex-start; gap:var(--space-3); }
+  .code-warning-icon{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:32px; height:32px; border-radius:50%;
+    background:rgba(247,144,9,.15); color:var(--color-warning);
+    flex-shrink:0;
+  }
+  .code-warning-icon .icon{ width:16px; height:16px; stroke-width:2.25; }
+  .code-warning-text{ flex:1; min-width:0; }
+  .code-warning-text strong{
+    display:block; font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-bold); color:var(--text-primary);
+    letter-spacing:var(--tracking-tight); margin-bottom:4px;
+  }
+  .code-warning-text p{
+    font-size:var(--font-size-xs); color:var(--text-secondary);
+    line-height:var(--line-height-normal); margin:0;
+  }
+  .code-warning .btn{
+    width:100%; padding:12px 18px; font-size:var(--font-size-sm);
+    text-transform:none; letter-spacing:var(--tracking-normal);
+    background:var(--color-black); color:var(--color-white);
+    border:none; gap:6px;
+  }
+  .code-warning .btn:hover{ background:var(--color-gray-900); }
+  .code-warning .btn .icon{ width:14px; height:14px; stroke-width:2.25; }
+
+  .code-revealed{
+    display:flex; flex-direction:column; gap:var(--space-2);
+    align-items:center; padding:var(--space-5);
+    background:rgba(0,68,204,.06);
+    border:1px dashed rgba(0,68,204,.30);
+    border-radius:var(--radius-md); margin-top:var(--space-3);
+  }
+  .code-revealed .code-label{
+    font-size:10px; font-weight:var(--font-weight-bold);
+    color:var(--color-brand-blue-deep);
+    text-transform:uppercase; letter-spacing:var(--tracking-wider);
+  }
+  .code-revealed .code-value{
+    font-size:var(--font-size-4xl);
+    font-weight:var(--font-weight-extrabold);
+    color:var(--color-brand-blue-deep);
+    letter-spacing:0.25em; line-height:1;
+    font-variant-numeric:tabular-nums;
+  }
+  .code-revealed .code-hint{
+    font-size:var(--font-size-xs); color:var(--text-secondary);
+    text-align:center; line-height:var(--line-height-normal); max-width:36ch;
+  }
+
+  /* ---------- PAY BUTTON ---------- */
+  .pay-action{
+    display:flex; flex-direction:column; gap:var(--space-3);
+    padding:var(--space-4); background:var(--color-black);
+    border-radius:var(--radius-md); margin-top:var(--space-3);
+  }
+  .pay-action .pay-text{
+    text-align:center;
+  }
+  .pay-action .pay-text strong{
+    display:block; font-size:var(--font-size-base);
+    font-weight:var(--font-weight-bold); color:var(--color-white);
+    letter-spacing:var(--tracking-tight); margin-bottom:4px;
+  }
+  .pay-action .pay-text span{
+    font-size:var(--font-size-xs); color:var(--color-gray-400);
+    line-height:var(--line-height-normal);
+  }
+  .pay-action .btn{
+    width:100%; padding:14px 20px;
+    background:var(--color-white); color:var(--color-black);
+    border:none; border-radius:var(--radius-sm);
+    font-weight:var(--font-weight-bold); font-size:var(--font-size-sm);
+    letter-spacing:var(--tracking-wide); text-transform:uppercase;
+    text-decoration:none; display:inline-flex; align-items:center;
+    justify-content:center; gap:6px;
+    transition:background var(--duration-fast);
+  }
+  .pay-action .btn:hover{ background:var(--color-gray-100); }
+  .pay-action .btn .icon{ width:14px; height:14px; stroke-width:2.25; }
+
+  /* ---------- PROVIDER CARD ---------- */
+  .provider-row{ display:flex; align-items:center; gap:var(--space-3); }
+  .provider-avatar{
+    width:48px; height:48px; border-radius:50%;
+    background:var(--color-gray-50); border:1px solid var(--border-default);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--color-gray-700); flex-shrink:0; overflow:hidden;
+  }
+  .provider-avatar img{ width:100%;height:100%;object-fit:cover; }
+  .provider-avatar .icon{ width:22px; height:22px; }
+  .provider-info{ flex:1; min-width:0; }
+  .provider-info .name{
+    font-size:var(--font-size-base); font-weight:var(--font-weight-bold);
+    color:var(--text-primary); letter-spacing:var(--tracking-tight);
+    margin:0 0 2px; word-break:break-word;
+  }
+  .provider-info .meta{
+    display:flex; align-items:center; gap:6px;
+    font-size:var(--font-size-xs); color:var(--text-secondary);
+  }
+  .provider-info .meta .icon{ width:12px; height:12px; stroke-width:2; }
+
+  /* ---------- CHAT BUTTON ---------- */
+  .chat-btn{
+    display:flex; align-items:center; justify-content:center;
+    gap:8px; width:100%; padding:14px 20px;
+    background:var(--color-black); color:var(--color-white);
+    border:none; border-radius:var(--radius-sm);
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-base);
+    letter-spacing:var(--tracking-wide); text-transform:uppercase;
+    cursor:pointer; margin-top:var(--space-3);
+    transition:background var(--duration-fast) var(--ease-out);
+  }
+  .chat-btn:hover{ background:var(--color-gray-900); }
+  .chat-btn .icon{ width:16px; height:16px; stroke-width:2.25; }
+
+  /* ---------- PHOTOS PLACEHOLDER ---------- */
+  .photos-placeholder{
+    display:flex; flex-direction:column; align-items:center;
+    gap:var(--space-3); padding:var(--space-6) var(--space-5);
+    border:1.5px dashed var(--border-default);
+    border-radius:var(--radius-md);
+    background:var(--surface-subtle);
+    color:var(--text-secondary); font-size:var(--font-size-sm);
+    text-align:center; margin-top:var(--space-3);
+  }
+  .photos-placeholder .placeholder-icon{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:44px; height:44px; border-radius:50%;
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    color:var(--color-gray-400);
+  }
+  .photos-placeholder .placeholder-icon .icon{ width:22px; height:22px; }
+  .photos-placeholder .placeholder-title{
+    font-weight:var(--font-weight-semibold);
+    color:var(--text-primary); margin-bottom:4px;
+    font-size:var(--font-size-sm);
+  }
+
+  /* ---------- PAGE FOOTER ---------- */
+  .page-footer{
+    text-align:center; padding:var(--space-8) var(--space-5) var(--space-10);
+    font-size:var(--font-size-xs); color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+  }
+  .page-footer a{
+    color:var(--text-link); font-weight:var(--font-weight-semibold);
+    text-decoration:underline; text-underline-offset:2px;
+  }
+
+  /* ---------- EMPTY / ERROR ---------- */
+  .empty-state{
+    text-align:center; padding:var(--space-6) var(--space-4);
+    background:var(--surface-default);
+    border:1px dashed var(--border-default);
+    border-radius:var(--radius-md); color:var(--text-secondary);
+  }
+  .empty-state h3{
+    font-size:var(--font-size-sm); font-weight:var(--font-weight-bold);
+    color:var(--text-primary); margin:0 0 4px;
+  }
+
+  /* ---------- CHAT OVERLAY ---------- */
+  .chat-overlay{
+    position:fixed; inset:0; background:var(--surface-subtle);
+    z-index:var(--z-modal); display:flex; flex-direction:column;
+    transform:translateY(100%);
+    transition:transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .chat-overlay.active{ transform:translateY(0); }
+
+  .chat-header{
+    background:var(--color-black); color:var(--color-white);
+    padding:var(--space-3) var(--space-4);
+    display:flex; align-items:center; gap:var(--space-3);
+    flex-shrink:0; box-shadow:var(--shadow-md);
+  }
+  .chat-back{
+    background:rgba(255,255,255,.10); border:none;
+    color:var(--color-white); width:36px; height:36px;
+    border-radius:50%; display:flex; align-items:center;
+    justify-content:center; cursor:pointer;
+    transition:background var(--duration-fast); flex-shrink:0;
+  }
+  .chat-back:hover{ background:rgba(255,255,255,.20); }
+  .chat-back .icon{ width:16px; height:16px; stroke-width:2.25; }
+
+  .chat-header .chat-avatar{
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.20);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--color-gray-400); flex-shrink:0;
+  }
+  .chat-header .chat-avatar .icon{ width:18px; height:18px; }
+
+  .chat-header .chat-info{ flex:1; min-width:0; }
+  .chat-header .chat-info .name{
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-sm);
+    color:var(--color-white); margin:0 0 2px;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .chat-header .chat-info .sub{
+    font-size:var(--font-size-xs); color:var(--color-gray-400);
+  }
+
+  .chat-body{
+    flex:1; overflow-y:auto; padding:var(--space-5);
+    display:flex; flex-direction:column; gap:var(--space-4);
+    background:var(--surface-subtle);
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .bubble-system{
+    align-self:center; background:var(--surface-default);
+    border:1px solid var(--border-default);
+    color:var(--text-secondary); font-size:var(--font-size-xs);
+    padding:8px 16px; border-radius:var(--radius-full);
+    text-align:center; max-width:85%;
+    line-height:var(--line-height-normal);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .bubble-system .icon{ width:12px; height:12px; stroke-width:2; }
+
+  .bubble-row{ display:flex; flex-direction:column; max-width:85%; }
+  .bubble-row.mine{ align-self:flex-end; align-items:flex-end; }
+  .bubble-row.theirs{ align-self:flex-start; align-items:flex-start; }
+
+  .bubble{
+    padding:12px 16px; border-radius:18px;
+    font-size:var(--font-size-sm);
+    line-height:var(--line-height-normal);
+    word-wrap:break-word; box-shadow:var(--shadow-xs);
+  }
+  .bubble-row.theirs .bubble{
+    background:var(--surface-default);
+    color:var(--text-primary);
+    border-bottom-left-radius:4px;
+  }
+  .bubble-row.mine .bubble{
+    background:var(--color-black); color:var(--color-white);
+    border-bottom-right-radius:4px;
+  }
+  .bubble-time{
+    font-size:10px; color:var(--text-secondary);
+    margin-top:4px; font-weight:var(--font-weight-medium);
+  }
+
+  .chat-input-bar{
+    background:var(--surface-default);
+    border-top:1px solid var(--border-default);
+    padding:var(--space-3) var(--space-4);
+    padding-bottom:max(var(--space-3), env(safe-area-inset-bottom));
+    display:flex; gap:var(--space-2);
+    align-items:flex-end; flex-shrink:0;
+  }
+  .chat-input-bar input{
+    flex:1; background:var(--surface-subtle);
+    border:1.5px solid transparent;
+    border-radius:var(--radius-full);
+    padding:12px 16px; font-size:16px;
+    color:var(--text-primary);
+    font-family:var(--font-family-base);
+    outline:none;
+    transition:border-color var(--duration-fast), background var(--duration-fast);
+    -webkit-appearance:none; appearance:none;
+  }
+  .chat-input-bar input:focus{
+    border-color:var(--color-brand-blue-deep);
+    background:var(--surface-default);
+  }
+  .chat-send{
+    width:44px; height:44px; border-radius:50%;
+    background:var(--color-black); color:var(--color-white);
+    border:none; display:flex; align-items:center;
+    justify-content:center; cursor:pointer; flex-shrink:0;
+    transition:transform var(--duration-fast), opacity var(--duration-fast);
+  }
+  .chat-send:active{ transform:scale(0.92); }
+  .chat-send:disabled{ opacity:.5; cursor:not-allowed; }
+  .chat-send .icon{ width:16px; height:16px; stroke-width:2.25; }
+
+  /* ---------- MOBILE NAV ---------- */
+  .mobile-nav{ display:none; }
+
+  @media (max-width:1023px){
+    .mobile-nav{
+      display:grid !important;
+      grid-template-columns:1fr 1fr 72px 1fr 1fr;
+      position:fixed; bottom:0; left:0; right:0;
+      height:var(--app-mobile-nav-height);
+      background:var(--surface-default);
+      border-top:1px solid var(--border-default);
+      align-items:stretch; z-index:var(--z-sticky);
+      padding-bottom:env(safe-area-inset-bottom);
+      box-shadow:0 -4px 20px rgba(10,10,10,.05);
+      isolation:isolate;
+    }
+    .mobile-nav-item{
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:3px; text-decoration:none;
+      color:var(--color-gray-400);
+      font-size:11px; font-weight:var(--font-weight-semibold);
+      height:100%; position:relative;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation; user-select:none;
+      transition:color var(--duration-base), transform var(--duration-fast);
+    }
+    .mobile-nav-item:active{ transform:scale(0.88); }
+    .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
+    .mobile-nav-item.active::before{
+      content:''; position:absolute; top:6px; left:50%;
+      transform:translateX(-50%); width:5px; height:5px;
+      background:var(--color-brand-blue); border-radius:50%;
+    }
+    .mobile-nav-fab-wrapper{
+      display:flex; align-items:flex-start;
+      justify-content:center; position:relative;
+    }
+    .mobile-nav-fab{
+      width:54px; height:54px;
+      background:var(--color-black); color:var(--color-white);
+      border-radius:50%; display:flex; align-items:center;
+      justify-content:center; text-decoration:none;
+      box-shadow:0 4px 15px rgba(10,10,10,.25);
+      margin-top:-22px; border:3px solid var(--surface-default);
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+      user-select:none; position:relative; z-index:10;
+    }
+    .mobile-nav-fab:active{ transform:scale(0.9); }
+    .mobile-nav-fab .icon{ width:22px; height:22px; stroke-width:2.25; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container-mobile">
+  <!-- HEADER ESCURO -->
+  <div class="header-dark">
+    <div class="header-top">
+      <a class="pill-link" href="servicos-contratados.html">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" style="display:inline-block;vertical-align:middle;margin-right:2px;">
+          <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+        </svg>
+        Voltar
+      </a>
+      <div class="brand">WENEED<span class="dot">.</span></div>
+      <div style="width:64px;"></div>
+    </div>
+
+    <div class="header-center">
+      <span id="headerStatusBadge" class="status-badge status-recebendo">Carregando...</span>
+      <h1 id="headerTitle">...</h1>
+      <p class="sub" id="headerSub">...</p>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="content-wrap">
+
+    <!-- TIMELINE -->
+    <div class="card">
+      <div class="card-label">
+        <div class="dot"></div>
+        Andamento do serviço
+      </div>
+      <div id="timelineContainer" class="timeline">
+        <div class="empty-state">
+          <h3>Carregando andamento...</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- AÇÃO CONTEXTUAL (pagar / código / avaliar) -->
+    <div id="actionContainer"></div>
+
+    <!-- PRESTADOR -->
+    <div class="card" id="providerCard" style="display:none;margin-top:var(--space-3);">
+      <div class="card-label">
+        <div class="dot"></div>
+        Prestador
+      </div>
+      <div class="provider-row">
+        <div class="provider-avatar" id="providerAvatar">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="provider-info">
+          <div class="name" id="providerName">...</div>
+          <div class="meta">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span id="providerLoc">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <button id="btnOpenChat" class="chat-btn" onclick="abrirChat()" style="display:none;">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      Conversar com o prestador
+    </button>
+
+    <!-- FOTOS PLACEHOLDER -->
+    <div class="photos-placeholder">
+      <div class="placeholder-icon">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+          <circle cx="12" cy="13" r="3"/>
+        </svg>
+      </div>
+      <div>
+        <div class="placeholder-title">Fotos do serviço</div>
+        <div>As imagens aparecerão aqui assim que o prestador atualizar o andamento.</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+      WENEED · Acompanhamento seguro.<br>
+      <a href="central-ajuda.html">Precisa de ajuda?</a>
+    </footer>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" aria-label="Navegação principal">
+  <a href="dashboard-cliente.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </span>
+    <span>Início</span>
+  </a>
+
+  <a href="minhas-demandas.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+        <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+      </svg>
+    </span>
+    <span>Demandas</span>
+  </a>
+
+  <div class="mobile-nav-fab-wrapper">
+    <a href="nova-demanda.html" class="mobile-nav-fab" aria-label="Nova demanda">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M5 12h14"/><path d="M12 5v14"/>
+      </svg>
+    </a>
+  </div>
+
+  <a href="servicos-contratados.html" class="mobile-nav-item active">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <path d="m9 14 2 2 4-4"/>
+      </svg>
+    </span>
+    <span>Serviços</span>
+  </a>
+
+  <a href="meu-perfil-cliente.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </span>
+    <span>Perfil</span>
+  </a>
+</nav>
+
+<!-- CHAT OVERLAY -->
+<div class="chat-overlay" id="chatOverlay">
+  <div class="chat-header">
+    <button class="chat-back" onclick="fecharChat()" aria-label="Fechar chat">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+      </svg>
+    </button>
+
+    <div class="chat-avatar">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </div>
+
+    <div class="chat-info">
+      <div id="chatProviderName" class="name">Prestador</div>
+      <div id="chatOrderTitle" class="sub">Ordem de serviço</div>
+    </div>
+  </div>
+
+  <div class="chat-body" id="chatBody">
+    <div class="bubble-system" id="chatSystemBubble">
+      <svg class="icon" viewBox="0 0 24 24">
+        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      Conversa protegida pela plataforma.
+    </div>
+  </div>
+
+  <form class="chat-input-bar" id="chatForm">
+    <input type="text" id="chatInput" placeholder="Digite uma mensagem..." autocomplete="off">
+    <button type="submit" class="chat-send" id="chatSendBtn" aria-label="Enviar">
+      <svg class="icon" viewBox="0 0 24 24">
+        <line x1="22" x2="11" y1="2" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </form>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-cliente.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../app.js"></script>
+
+<script>
+  /* ============================================
+     ESTADO
+     ============================================ */
+  let currentUserId = null;
+  let currentProfileId = null;
+  let contractId = null;
+  let contractData = null;
+  let providerName = 'Prestador';
+  const revealedCodes = new Set();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  contractId = urlParams.get('id') || urlParams.get('contract_id');
+
+  /* ============================================
+     AUXILIARES
+     ============================================ */
+  function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'
+    }[tag]));
+  }
+
+  function formatarData(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    });
+  }
+
+  function formatarDataHora(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) +
+      ' às ' +
+      d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function formatarHora(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  /* ============================================
+     INIT
+     ============================================ */
+  async function init() {
+    const supabase = window.supabaseClient;
+    if (!supabase) { window.location.href = '../index.html'; return; }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { window.location.href = '../index.html'; return; }
+    currentUserId = session.user.id;
+
+    if (!contractId) { window.location.href = 'servicos-contratados.html'; return; }
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('user_id', currentUserId)
+      .single();
+
+    if (!profile) {
+      alert('Perfil não encontrado.');
+      window.location.href = 'servicos-contratados.html';
+      return;
+    }
+    currentProfileId = profile.id;
+
+    await carregarOrdem(supabase);
+    await carregarMensagens(supabase);
+    configurarChat(supabase);
+    configurarRealtime(supabase);
+  }
+
+  /* ============================================
+     CARREGAR ORDEM
+     ============================================ */
+  async function carregarOrdem(supabase) {
+    const { data: contract, error } = await supabase
+      .from('contracts')
+      .select(`
+        id, status, final_price, platform_fee,
+        start_code, finish_code,
+        started_at, finished_at, created_at,
+        prestador_a_caminho_at, prestador_chegou_at,
+        payment_deadline_at,
+        demand:demands (
+          id, title, city, neighborhood, client_id
+        ),
+        proposal:proposals (
+          provider:profiles (
+            id, full_name, company_name, avatar_url, city, uf
+          )
+        )
+      `)
+      .eq('id', contractId)
+      .single();
+
+    if (error || !contract) {
+      console.error('Erro ao carregar ordem:', error);
+      document.querySelector('.content-wrap').innerHTML = `
+        <div class="empty-state">
+          <h3>Serviço não encontrado</h3>
+          <p>Volte ao painel e tente novamente.</p>
+        </div>`;
+      return;
+    }
+
+    if (contract.demand?.client_id !== currentProfileId) {
+      document.querySelector('.content-wrap').innerHTML = `
+        <div class="empty-state">
+          <h3>Acesso negado</h3>
+          <p>Este serviço não pertence à sua conta.</p>
+        </div>`;
+      return;
+    }
+
+    contractData = contract;
+    renderOrdem();
+  }
+
+  /* ============================================
+     RENDER
+     ============================================ */
+  function renderOrdem() {
+    const c = contractData;
+    const demand = c.demand || {};
+    const provider = c.proposal?.provider || {};
+    providerName = provider.company_name || provider.full_name || 'Prestador';
+
+    /* Status badge */
+    const statusMap = {
+      'aguardando_prestador':       { label: 'Prestador a caminho',   class: 'status-recebendo' },
+      'prestador_a_caminho':        { label: 'Prestador a caminho',   class: 'status-recebendo' },
+      'prestador_no_local':         { label: 'Iniciar e pagar',       class: 'status-andamento' },
+      'aguardando_pagamento':       { label: 'Aguardando pagamento',  class: 'status-andamento' },
+      'em_andamento':               { label: 'Em andamento',          class: 'status-andamento' },
+      'aguardando_confirmacao_fim': { label: 'Liberar pagamento',     class: 'status-andamento' },
+      'finalizado':                 { label: 'Concluído',             class: 'status-concluido' },
+      'cancelado':                  { label: 'Cancelado',             class: 'status-cancelado' }
+    };
+    const st = statusMap[c.status] || { label: c.status, class: 'status-recebendo' };
+
+    document.getElementById('headerStatusBadge').className = `status-badge ${st.class}`;
+    document.getElementById('headerStatusBadge').textContent = st.label;
+    document.getElementById('headerTitle').textContent = demand.title || 'Serviço';
+    document.getElementById('headerSub').textContent =
+      `OS #${String(c.id).slice(0, 8)} · ${demand.city || 'Local não definido'}`;
+
+    /* Timeline */
+    renderTimeline(c);
+
+    /* Ação contextual */
+    renderAction(c);
+
+    /* Provider */
+    document.getElementById('providerName').textContent = providerName;
+    if (provider.avatar_url) {
+      document.getElementById('providerAvatar').innerHTML =
+        `<img src="${escapeHTML(provider.avatar_url)}" alt="">`;
+    }
+    const providerLoc = provider.city
+      ? `${provider.city}${provider.uf ? ', ' + provider.uf : ''}`
+      : 'Local não informado';
+    document.getElementById('providerLoc').textContent = providerLoc;
+    document.getElementById('providerCard').style.display = 'block';
+    document.getElementById('btnOpenChat').style.display = 'flex';
+    document.getElementById('chatProviderName').textContent = providerName;
+    document.getElementById('chatOrderTitle').textContent = `OS #${String(c.id).slice(0, 8)}`;
+  }
+
+  /* ============================================
+     TIMELINE
+     ============================================ */
+  function renderTimeline(c) {
+    const container = document.getElementById('timelineContainer');
+
+    const etapas = [
+      {
+        key: 'contratado',
+        title: 'Proposta aceita',
+        desc: 'Você escolheu o prestador e o serviço foi registrado.',
+        time: c.created_at ? formatarDataHora(c.created_at) : '—'
+      },
+      {
+        key: 'chegou',
+        title: 'Prestador no local',
+        desc: 'O prestador confirmou a chegada.',
+        time: c.prestador_chegou_at ? formatarDataHora(c.prestador_chegou_at) : '—'
+      },
+      {
+        key: 'pago',
+        title: 'Pagamento confirmado',
+        desc: 'O valor foi retido com segurança pela plataforma.',
+        time: c.started_at ? formatarDataHora(c.started_at) : '—'
+      },
+      {
+        key: 'andamento',
+        title: 'Serviço em andamento',
+        desc: 'O prestador está executando o serviço.',
+        time: c.started_at ? formatarDataHora(c.started_at) : '—'
+      },
+      {
+        key: 'finalizado',
+        title: 'Serviço concluído',
+        desc: 'Serviço finalizado e validado.',
+        time: c.finished_at ? formatarDataHora(c.finished_at) : '—'
+      }
+    ];
+
+    /* Descobre em qual etapa estamos */
+    const ordem = ['aguardando_prestador', 'prestador_a_caminho', 'prestador_no_local', 'aguardando_pagamento', 'em_andamento', 'aguardando_confirmacao_fim', 'finalizado'];
+    const idx = ordem.indexOf(c.status);
+
+    let currentStep = 0;
+    if (c.status === 'aguardando_prestador' || c.status === 'prestador_a_caminho') currentStep = 0;
+    else if (c.status === 'prestador_no_local') currentStep = 1;
+    else if (c.status === 'aguardando_pagamento') currentStep = 2;
+    else if (c.status === 'em_andamento') currentStep = 3;
+    else if (c.status === 'aguardando_confirmacao_fim' || c.status === 'finalizado') currentStep = 4;
+
+    container.innerHTML = etapas.map((etapa, index) => {
+      let stateClass = 'pending';
+      if (index < currentStep) stateClass = 'done';
+      else if (index === currentStep) stateClass = 'current';
+
+      const dotSvg = stateClass === 'done'
+        ? `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+        : stateClass === 'current'
+          ? `<svg class="icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none;"><circle cx="12" cy="12" r="4"/></svg>`
+          : '';
+
+      return `
+        <div class="tl-item ${stateClass}">
+          <div class="tl-dot">${dotSvg}</div>
+          <div>
+            <div class="tl-title">${etapa.title}</div>
+            <div class="tl-time">${etapa.time}</div>
+            <div class="tl-desc">${etapa.desc}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  /* ============================================
+     AÇÃO CONTEXTUAL
+     ============================================ */
+  function renderAction(c) {
+    const container = document.getElementById('actionContainer');
+    container.innerHTML = '';
+
+    /* PRESTADOR NO LOCAL → botão Pagar */
+    if (c.status === 'prestador_no_local') {
+      container.innerHTML = `
+        <div class="pay-action">
+          <div class="pay-text">
+            <strong>Prestador chegou</strong>
+            <span>Faça o pagamento para liberar o início do serviço. O valor fica retido com segurança.</span>
+          </div>
+          <a class="btn" href="pagamento.html?contract_id=${escapeHTML(c.id)}">
+            <svg class="icon" viewBox="0 0 24 24">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Pagar agora
+          </a>
+        </div>`;
+      return;
+    }
+
+    /* AGUARDANDO PAGAMENTO → aviso */
+    if (c.status === 'aguardando_pagamento') {
+      container.innerHTML = `
+        <div class="card" style="margin-top:var(--space-3);">
+          <div class="card-label"><div class="dot"></div> Pagamento em processamento</div>
+          <p style="font-size:var(--font-size-sm);color:var(--text-secondary);line-height:var(--line-height-normal);margin:0;">
+            Estamos aguardando a confirmação do Pix. Isso costuma levar alguns segundos.
+          </p>
+        </div>`;
+      return;
+    }
+
+    /* AGUARDANDO CONFIRMAÇÃO FIM → código de finalização */
+    if (c.status === 'aguardando_confirmacao_fim') {
+      const code = c.finish_code;
+      const isRevealed = revealedCodes.has(c.id);
+
+      if (!code) return;
+
+      if (!isRevealed) {
+        container.innerHTML = `
+          <div class="card" style="margin-top:var(--space-3);">
+            <div class="card-label"><div class="dot"></div> Liberar pagamento</div>
+            <div class="code-warning">
+              <div class="code-warning-head">
+                <div class="code-warning-icon">
+                  <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" x2="12" y1="9" y2="13"/>
+                    <line x1="12" x2="12.01" y1="17" y2="17"/>
+                  </svg>
+                </div>
+                <div class="code-warning-text">
+                  <strong>Só revele depois de conferir</strong>
+                  <p>Verifique se o serviço foi concluído corretamente. Ao informar o código, o pagamento é liberado ao prestador e não pode ser desfeito.</p>
+                </div>
+              </div>
+              <button class="btn" data-reveal>
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                Ver código de finalização
+              </button>
+            </div>
+          </div>`;
+
+        container.querySelector('[data-reveal]').addEventListener('click', () => {
+          revealedCodes.add(c.id);
+          renderAction(c);
+        });
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="card" style="margin-top:var(--space-3);">
+          <div class="card-label"><div class="dot"></div> Código de finalização</div>
+          <div class="code-revealed">
+            <span class="code-label">Informe ao prestador</span>
+            <span class="code-value">${escapeHTML(code)}</span>
+            <span class="code-hint">Diga este código ao prestador para ele confirmar a finalização e receber o pagamento.</span>
+          </div>
+        </div>`;
+      return;
+    }
+
+    /* FINALIZADO → avaliar */
+    if (c.status === 'finalizado') {
+      container.innerHTML = `
+        <div class="card" style="margin-top:var(--space-3);">
+          <div class="card-label"><div class="dot"></div> Serviço concluído</div>
+          <p style="font-size:var(--font-size-sm);color:var(--text-secondary);line-height:var(--line-height-normal);margin:0 0 var(--space-3);">
+            O serviço foi concluído com sucesso. Avalie o prestador para ajudar a comunidade.
+          </p>
+          <a class="btn btn-primary" href="avaliar.html?id=${escapeHTML(c.id)}" style="width:100%;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            Avaliar serviço
+          </a>
+        </div>`;
+      return;
+    }
+
+    /* CANCELADO */
+    if (c.status === 'cancelado') {
+      container.innerHTML = `
+        <div class="card" style="margin-top:var(--space-3);">
+          <div class="card-label"><div class="dot"></div> Serviço cancelado</div>
+          <p style="font-size:var(--font-size-sm);color:var(--text-secondary);line-height:var(--line-height-normal);margin:0;">
+            Este serviço foi cancelado.
+          </p>
+        </div>`;
+      return;
+    }
+
+    /* AGUARDANDO PRESTADOR / A CAMINHO */
+    if (c.status === 'aguardando_prestador' || c.status === 'prestador_a_caminho') {
+      container.innerHTML = `
+        <div class="card" style="margin-top:var(--space-3);">
+          <div class="card-label"><div class="dot"></div> Prestador a caminho</div>
+          <p style="font-size:var(--font-size-sm);color:var(--text-secondary);line-height:var(--line-height-normal);margin:0;">
+            Aguarde o prestador chegar ao local. Quando ele confirmar a chegada, você poderá fazer o pagamento e liberar o início do serviço.
+          </p>
+        </div>`;
+    }
+  }
+
+  /* ============================================
+     CHAT · CARREGAR MENSAGENS
+     ============================================ */
+  async function carregarMensagens(supabase) {
+    const body = document.getElementById('chatBody');
+    const systemBubble = document.getElementById('chatSystemBubble');
+
+    const { data: messages, error } = await supabase
+      .from('messages')
+      .select('id, content, sender_id, created_at')
+      .eq('contract_id', contractId)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('Erro ao carregar mensagens:', error);
+      return;
+    }
+
+    body.innerHTML = '';
+    if (systemBubble) body.appendChild(systemBubble);
+
+    if (messages && messages.length > 0) {
+      messages.forEach(msg => {
+        const isMine = msg.sender_id === currentUserId;
+        body.appendChild(criarBubble(msg.content, isMine ? 'mine' : 'theirs', msg.created_at));
+      });
+    }
+
+    setTimeout(() => {
+      body.scrollTop = body.scrollHeight;
+    }, 100);
+  }
+
+  function criarBubble(texto, tipo, timestamp) {
+    const row = document.createElement('div');
+    row.className = `bubble-row ${tipo}`;
+    const hora = formatarHora(timestamp);
+
+    row.innerHTML = `
+      <div class="bubble">${escapeHTML(texto)}</div>
+      <span class="bubble-time">${hora}</span>
+    `;
+
+    return row;
+  }
+
+  /* ============================================
+     CHAT · ABRIR / FECHAR
+     ============================================ */
+  window.abrirChat = function() {
+    document.getElementById('chatOverlay').classList.add('active');
+    setTimeout(() => {
+      const body = document.getElementById('chatBody');
+      body.scrollTop = body.scrollHeight;
+      document.getElementById('chatInput').focus();
+    }, 100);
+  };
+
+  window.fecharChat = function() {
+    document.getElementById('chatOverlay').classList.remove('active');
+    document.getElementById('chatInput').blur();
+  };
+
+  /* ============================================
+     CHAT · ENVIAR
+     ============================================ */
+  function configurarChat(supabase) {
+    document.getElementById('chatForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const input = document.getElementById('chatInput');
+      const btn = document.getElementById('chatSendBtn');
+      const texto = input.value.trim();
+
+      if (!texto) return;
+
+      btn.disabled = true;
+
+      const { error } = await supabase
+        .from('messages')
+        .insert({
+          contract_id: contractId,
+          sender_id: currentUserId,
+          content: texto
+        });
+
+      if (error) {
+        console.error('Erro ao enviar mensagem:', error);
+        alert('Não foi possível enviar a mensagem.');
+      } else {
+        const body = document.getElementById('chatBody');
+        body.appendChild(criarBubble(texto, 'mine', new Date().toISOString()));
+        input.value = '';
+        setTimeout(() => {
+          body.scrollTop = body.scrollHeight;
+        }, 50);
+      }
+
+      btn.disabled = false;
+    });
+  }
+
+  /* ============================================
+     REALTIME
+     ============================================ */
+  function configurarRealtime(supabase) {
+    supabase
+      .channel('detalhe-ordem-realtime')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'contracts', filter: `id=eq.${contractId}` },
+        () => carregarOrdem(supabase)
+      )
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'messages', filter: `contract_id=eq.${contractId}` },
+        () => carregarMensagens(supabase)
+      )
+      .subscribe();
+  }
+
+  init();
+</script>
+</body>
+</html>
