@@ -2,234 +2,1229 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enviar proposta · weneed</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Minha proposta · WENEED</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <link rel="manifest" href="../manifest.json">
-<meta name="theme-color" content="#4F46E5">
+<meta name="theme-color" content="#0A0A0A">
 <link rel="stylesheet" href="../style.css">
+
 <style>
-  .wrap{ padding:24px 22px 60px; }
-  .success-state{ text-align:center; padding:20px 4px 4px; display:none; }
-  .success-state.show{ display:block; }
-  .check-circle{ width:56px; height:56px; border-radius:50%; background:var(--accent-soft); margin:0 auto 16px; display:flex; align-items:center; justify-content:center; }
-  .check-circle svg{ width:26px; height:26px; }
-  .check-circle path{ stroke:var(--accent-ink); stroke-width:3; fill:none; stroke-linecap:round; stroke-linejoin:round; }
-  .success-state h3{ font-size:1.1rem; margin:0 0 6px; }
-  .success-state p{ font-size:0.85rem; color:var(--ink-soft); margin:0 0 20px; }
+  /* ---------- ICON SYSTEM ---------- */
+  .icon{ width:16px;height:16px;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;fill:none;flex-shrink:0;display:block; }
+  .icon-sm{ width:14px;height:14px;stroke-width:2; }
+  .icon-md{ width:18px;height:18px;stroke-width:1.75; }
+  .icon-lg{ width:22px;height:22px;stroke-width:1.5; }
+  .icon-xl{ width:28px;height:28px;stroke-width:1.5; }
+
+  .header-center{ text-align:center; padding:var(--space-3) 0 var(--space-5); }
+  .header-center h1{
+    font-size:var(--font-size-xl); font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tighter); margin:var(--space-4) 0 var(--space-2);
+    color:var(--color-white); line-height:var(--line-height-snug); word-break:break-word;
+  }
+  .header-center .sub{ color:var(--color-gray-400); font-size:var(--font-size-sm); margin:0; font-weight:var(--font-weight-medium); }
+
+  .content-wrap{ padding:0 var(--space-5) var(--space-10); margin-top:calc(-1 * var(--space-3)); }
+
+  .demand-description{
+    font-size:var(--font-size-sm); color:var(--text-primary);
+    line-height:var(--line-height-relaxed); margin:0 0 var(--space-4); font-style:italic;
+  }
+
+  .detail-lines{ border-top:1px solid var(--border-default); padding-top:var(--space-3); }
+  .detail-line{
+    display:flex; justify-content:space-between; align-items:center;
+    gap:var(--space-3); padding:7px 0; font-size:var(--font-size-sm);
+  }
+  .detail-line span:first-child{ color:var(--text-secondary); }
+  .detail-line span:last-child{
+    font-weight:var(--font-weight-semibold); color:var(--text-primary);
+    text-align:right; display:inline-flex; align-items:center; gap:6px;
+  }
+  .detail-line .icon{ width:12px;height:12px;stroke-width:2; }
+  .detail-line .budget{ color:var(--color-brand-blue-deep); font-weight:var(--font-weight-bold); font-variant-numeric:tabular-nums; }
+
+  /* ---------- PROPOSAL (o que o prestador enviou) ---------- */
+  .my-proposal{
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+    padding:var(--space-4);
+    margin-top:var(--space-3);
+    border-left:3px solid var(--color-brand-blue-deep);
+  }
+  .my-proposal-value{
+    font-size:var(--font-size-3xl);
+    font-weight:var(--font-weight-extrabold);
+    color:var(--color-brand-blue-deep);
+    letter-spacing:var(--tracking-tighter);
+    line-height:1;
+    font-variant-numeric:tabular-nums;
+    margin-bottom:var(--space-2);
+  }
+  .my-proposal-message{
+    font-size:var(--font-size-sm);
+    color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+    margin:var(--space-3) 0 0;
+    padding:var(--space-3);
+    background:var(--surface-subtle);
+    border-radius:var(--radius-sm);
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; padding-left:8px; margin-top:var(--space-2); }
+  .tl-item{
+    position:relative; padding-left:32px; padding-bottom:var(--space-6);
+    border-left:2px solid var(--border-default);
+  }
+  .tl-item:last-child{ padding-bottom:0; border-left:2px solid transparent; }
+  .tl-dot{
+    position:absolute; left:-9px; top:0; width:16px; height:16px;
+    border-radius:50%; background:var(--surface-default);
+    border:2px solid var(--border-default);
+    display:flex; align-items:center; justify-content:center;
+    color:transparent; transition:all var(--duration-base) var(--ease-out);
+  }
+  .tl-dot .icon{ width:8px;height:8px;stroke-width:3; }
+
+  .tl-item.done .tl-dot{
+    background:var(--color-brand-blue-deep);
+    border-color:var(--color-brand-blue-deep);
+    color:var(--color-white);
+  }
+  .tl-item.current .tl-dot{
+    background:var(--surface-default);
+    border-color:var(--color-brand-blue-deep);
+    box-shadow:0 0 0 4px rgba(0,68,204,.15);
+  }
+  .tl-item.current .tl-title{
+    color:var(--color-brand-blue-deep);
+    font-weight:var(--font-weight-extrabold);
+  }
+  .tl-item.pending .tl-title,
+  .tl-item.pending .tl-desc{ color:var(--text-secondary); }
+
+  .tl-title{
+    font-size:var(--font-size-sm); font-weight:var(--font-weight-bold);
+    margin-bottom:2px; letter-spacing:var(--tracking-tight);
+    transition:color var(--duration-base);
+  }
+  .tl-time{
+    font-size:var(--font-size-xs); color:var(--text-secondary);
+    font-weight:var(--font-weight-medium); margin-bottom:4px;
+  }
+  .tl-desc{
+    font-size:var(--font-size-sm); color:var(--text-secondary);
+    line-height:var(--line-height-normal);
+  }
+
+  /* ---------- ACTION CARD ---------- */
+  .action-card{
+    display:flex; flex-direction:column; gap:var(--space-3);
+    padding:var(--space-4);
+    border-radius:var(--radius-md);
+    margin-top:var(--space-3);
+  }
+  .action-card.dark{ background:var(--color-black); color:var(--color-white); }
+  .action-card.blue{ background:var(--color-brand-blue-deep); color:var(--color-white); }
+  .action-card.light{ background:var(--surface-default); border:1px solid var(--border-default); }
+
+  .action-card .action-title{
+    font-size:var(--font-size-base);
+    font-weight:var(--font-weight-bold);
+    letter-spacing:var(--tracking-tight);
+    line-height:var(--line-height-snug);
+    margin:0;
+  }
+  .action-card .action-text{
+    font-size:var(--font-size-xs);
+    line-height:var(--line-height-normal);
+    margin:0;
+  }
+  .action-card.dark .action-text{ color:var(--color-gray-400); }
+  .action-card.blue .action-text{ color:rgba(255,255,255,.75); }
+  .action-card.light .action-text{ color:var(--text-secondary); }
+
+  .action-card .action-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    gap:6px; width:100%; padding:13px 20px;
+    border-radius:var(--radius-sm);
+    font-family:var(--font-family-base);
+    font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-sm);
+    letter-spacing:var(--tracking-wide);
+    text-transform:uppercase;
+    text-decoration:none;
+    cursor:pointer;
+    border:none;
+    transition:background var(--duration-fast), color var(--duration-fast);
+  }
+  .action-card.dark .action-btn{ background:var(--color-white); color:var(--color-black); }
+  .action-card.dark .action-btn:hover{ background:var(--color-gray-100); }
+  .action-card.blue .action-btn{ background:var(--color-white); color:var(--color-black); }
+  .action-card.blue .action-btn:hover{ background:var(--color-gray-100); }
+  .action-card.light .action-btn{ background:var(--color-black); color:var(--color-white); }
+  .action-card.light .action-btn:hover{ background:var(--color-gray-900); }
+
+  .action-card .action-btn .icon{ width:14px;height:14px;stroke-width:2.25; }
+
+  /* ---------- CODE MODAL INPUT ---------- */
+  .code-input{
+    width:100%;
+    padding:var(--space-4);
+    font-size:var(--font-size-2xl);
+    text-align:center;
+    letter-spacing:0.25em;
+    font-weight:var(--font-weight-extrabold);
+    font-family:var(--font-family-base);
+    margin:var(--space-2) 0 var(--space-4);
+    border:1.5px solid var(--border-default);
+    border-radius:var(--radius-sm);
+    background:var(--surface-subtle);
+    color:var(--text-primary);
+    outline:none;
+    transition:border-color var(--duration-fast), background var(--duration-fast), box-shadow var(--duration-fast);
+  }
+  .code-input:focus{
+    border-color:var(--color-brand-blue-deep);
+    background:var(--surface-default);
+    box-shadow:0 0 0 3px rgba(0,68,204,.18);
+  }
+
+  /* ---------- EMPTY ---------- */
+  .empty-state{
+    text-align:center; padding:var(--space-6) var(--space-4);
+    background:var(--surface-default); border:1px dashed var(--border-default);
+    border-radius:var(--radius-md); color:var(--text-secondary);
+  }
+  .empty-state .empty-icon{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:56px; height:56px; border-radius:50%;
+    background:var(--surface-subtle); color:var(--color-gray-400);
+    margin:0 auto var(--space-3);
+  }
+  .empty-state .empty-icon .icon{ width:26px;height:26px;stroke-width:1.5; }
+  .empty-state h3{
+    font-size:var(--font-size-base); font-weight:var(--font-weight-bold);
+    color:var(--text-primary); margin:0 0 var(--space-2); letter-spacing:var(--tracking-tight);
+  }
+  .empty-state p{ font-size:var(--font-size-sm); line-height:var(--line-height-normal); margin:0 auto; max-width:42ch; }
+
+  .loading-spinner{
+    display:flex; align-items:center; justify-content:center; gap:var(--space-3);
+    padding:var(--space-10); color:var(--text-secondary);
+    font-size:var(--font-size-sm); font-weight:var(--font-weight-medium);
+  }
+  .loading-spinner::after{
+    content:''; display:inline-block; width:20px; height:20px;
+    border:2.5px solid var(--color-gray-200);
+    border-top-color:var(--color-brand-blue-deep);
+    border-radius:50%; animation:spin .8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ---------- CONFIRM MODAL ---------- */
+  .confirm-modal{
+    position:fixed; inset:0; background:rgba(10,10,10,.55);
+    backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+    z-index:var(--z-modal); display:none; align-items:center; justify-content:center;
+    padding:var(--space-5);
+  }
+  .confirm-modal.active{ display:flex; }
+  .confirm-modal-content{
+    background:var(--surface-default); border-radius:var(--radius-lg);
+    padding:var(--space-6); max-width:420px; width:100%; text-align:center;
+    box-shadow:var(--shadow-lg);
+  }
+  .confirm-modal-icon{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:56px; height:56px; border-radius:50%;
+    background:var(--color-gray-50); color:var(--color-black);
+    margin:0 auto var(--space-4);
+  }
+  .confirm-modal-icon .icon{ width:26px;height:26px;stroke-width:1.5; }
+  .confirm-modal-content h3{
+    font-size:var(--font-size-lg); font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tight); margin:0 0 var(--space-2); color:var(--text-primary);
+  }
+  .confirm-modal-content p{
+    font-size:var(--font-size-sm); color:var(--text-secondary);
+    line-height:var(--line-height-normal); margin:0 0 var(--space-5);
+  }
+  .confirm-modal-actions{ display:flex; gap:var(--space-2); }
+  .confirm-modal-actions .btn{
+    flex:1; padding:13px 16px; font-size:var(--font-size-sm);
+    text-transform:none; letter-spacing:var(--tracking-normal);
+  }
+
+  /* ---------- TOAST ---------- */
+  .toast-container{
+    position:fixed; bottom:90px; right:24px; left:24px;
+    z-index:var(--z-toast); display:flex; flex-direction:column;
+    gap:var(--space-2); pointer-events:none; align-items:flex-end;
+  }
+  .toast{
+    background:var(--color-black); color:var(--color-white);
+    padding:var(--space-3) var(--space-5); border-radius:var(--radius-sm);
+    box-shadow:var(--shadow-lg); display:flex; align-items:center;
+    gap:var(--space-3); font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-medium);
+    animation:slideIn .35s cubic-bezier(.16,1,.3,1) forwards;
+    min-width:260px; max-width:380px;
+    border-left:4px solid var(--color-brand-blue); pointer-events:auto;
+  }
+  .toast.success{ border-left-color:var(--color-success); }
+  .toast.error{ border-left-color:var(--color-error); }
+  .toast .icon{ width:16px;height:16px;stroke-width:2.25; }
+
+  @keyframes slideIn{ from{ transform:translateX(120%); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+  @keyframes slideOut{ from{ transform:translateX(0); opacity:1; } to{ transform:translateX(120%); opacity:0; } }
+
+  /* ---------- MOBILE NAV ---------- */
+  .mobile-nav{ display:none; }
+
+  @media (max-width:1023px){
+    .mobile-nav{
+      display:grid !important; grid-template-columns:1fr 1fr 72px 1fr 1fr;
+      position:fixed; bottom:0; left:0; right:0;
+      height:var(--app-mobile-nav-height);
+      background:var(--surface-default); border-top:1px solid var(--border-default);
+      align-items:stretch; z-index:var(--z-sticky);
+      padding-bottom:env(safe-area-inset-bottom);
+      box-shadow:0 -4px 20px rgba(10,10,10,.05); isolation:isolate;
+    }
+    .mobile-nav-item{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:3px; text-decoration:none; color:var(--color-gray-400);
+      font-size:11px; font-weight:var(--font-weight-semibold); height:100%;
+      position:relative; -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation; user-select:none;
+      transition:color var(--duration-base), transform var(--duration-fast);
+    }
+    .mobile-nav-item:active{ transform:scale(0.88); }
+    .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
+    .mobile-nav-item.active::before{
+      content:''; position:absolute; top:6px; left:50%;
+      transform:translateX(-50%); width:5px; height:5px;
+      background:var(--color-brand-blue); border-radius:50%;
+    }
+    .mobile-nav-fab-wrapper{ display:flex; align-items:flex-start; justify-content:center; position:relative; }
+    .mobile-nav-fab{
+      width:54px; height:54px; background:var(--color-black); color:var(--color-white);
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      text-decoration:none; box-shadow:0 4px 15px rgba(10,10,10,.25);
+      margin-top:-22px; border:3px solid var(--surface-default);
+      touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+      user-select:none; position:relative; z-index:10;
+    }
+    .mobile-nav-fab:active{ transform:scale(0.9); }
+    .mobile-nav-fab .icon{ width:22px;height:22px;stroke-width:2.25; }
+  }
+
+  @media (min-width:640px){
+    .toast-container{ right:16px; left:auto; }
+  }
 </style>
 </head>
 <body>
 
 <div class="container-mobile">
-  <header class="header-dark">
+  <div class="header-dark">
     <div class="header-top">
-      <div class="brand alert">Bizu<span>xo</span></div>
-      <a class="pill-link" href="demandas-disponiveis.html">← Voltar</a>
-    </div>
-    <h2 id="demandTitle" style="font-size:1.1rem; margin:0;">Carregando demanda...</h2>
-  </header>
-
-  <div class="wrap">
-    <div class="card" id="detailCard">
-      <div class="card-label alert"><span class="dot"></span>Detalhes da demanda</div>
-      <div class="detail-lines" id="detailLines"></div>
-      <p id="demandDesc" style="font-size:0.85rem; color:var(--ink-soft); line-height:1.5; margin:16px 0 0;"></p>
+      <a class="pill-link" href="minhas-propostas.html">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" style="display:inline-block;vertical-align:middle;margin-right:2px;">
+          <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
+        </svg>
+        Voltar
+      </a>
+      <div class="brand">WENEED<span class="dot">.</span></div>
+      <div style="width:64px;"></div>
     </div>
 
-    <form id="propostaForm">
-      <div class="card">
-        <div class="card-label alert"><span class="dot"></span>Sua proposta</div>
-        <div class="field-row">
-          <div class="field">
-            <label for="valor">Valor (R$)</label>
-            <input type="number" id="valor" placeholder="120" min="1" step="0.01" required>
-          </div>
-          <div class="field">
-            <label for="prazo">Prazo</label>
-            <!-- ✅ deadline_days é INTEGER — value agora é número de dias -->
-            <select id="prazo" required>
-              <option value="">Selecione...</option>
-              <option value="1">Amanhã (1 dia)</option>
-              <option value="2">Em 2 dias</option>
-              <option value="3">Em 3 dias</option>
-              <option value="7">Em 1 semana</option>
-              <option value="15">Em 2 semanas</option>
-              <option value="30">Em 1 mês</option>
-            </select>
-          </div>
-        </div>
-        <div class="field">
-          <label for="mensagem">Mensagem para o cliente</label>
-          <textarea id="mensagem" placeholder="Ex: Consigo ir aí amanhã às 14h, já levo o material necessário..." required></textarea>
-        </div>
+    <div class="header-center">
+      <span id="headerStatusBadge" class="status-badge status-recebendo">Carregando...</span>
+      <h1 id="headerTitle">...</h1>
+      <p class="sub" id="headerSub">...</p>
+    </div>
+  </div>
+
+  <div class="content-wrap">
+
+    <!-- AÇÃO CONTEXTUAL (check-in / solicitar fim / avisos) -->
+    <div id="actionContainer"></div>
+
+    <!-- DEMANDA -->
+    <div class="card" id="demandCard">
+      <div class="card-label"><div class="dot"></div> Demanda do cliente</div>
+      <div id="demandBody">
+        <div class="loading-spinner">Carregando demanda...</div>
       </div>
-      <button type="submit" class="btn btn-alert" id="sendBtn">Enviar proposta</button>
-    </form>
+    </div>
 
-    <div class="success-state" id="successState">
-      <div class="check-circle"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
-      <h3>Proposta enviada!</h3>
-      <p>O cliente vai receber sua proposta e pode entrar em contato a qualquer momento.</p>
-      <a class="btn btn-dark" href="minhas-propostas.html">Ver minhas propostas</a>
+    <!-- MINHA PROPOSTA -->
+    <div class="card" id="proposalCard" style="margin-top:var(--space-3);display:none;">
+      <div class="card-label"><div class="dot"></div> Sua proposta</div>
+      <div class="my-proposal" id="myProposalContent" style="margin-top:0;border-left:none;background:transparent;padding:0;"></div>
+    </div>
+
+    <!-- TIMELINE (só aparece se contrato existir) -->
+    <div class="card" id="timelineCard" style="margin-top:var(--space-3);display:none;">
+      <div class="card-label"><div class="dot"></div> Andamento do serviço</div>
+      <div id="timelineContainer" class="timeline"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MOBILE NAV (prestador) -->
+<nav class="mobile-nav" aria-label="Navegação principal">
+  <a href="dashboard-prestador.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </span>
+    <span>Início</span>
+  </a>
+
+  <a href="demandas-disponiveis.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.3-4.3"/>
+      </svg>
+    </span>
+    <span>Demandas</span>
+  </a>
+
+  <a href="minhas-propostas.html" class="mobile-nav-item active">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" x2="8" y1="13" y2="13"/>
+        <line x1="16" x2="8" y1="17" y2="17"/>
+      </svg>
+    </span>
+    <span>Propostas</span>
+  </a>
+
+  <a href="ordens-servico.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <path d="m9 14 2 2 4-4"/>
+      </svg>
+    </span>
+    <span>Ordens</span>
+  </a>
+
+  <a href="meu-perfil-prestador.html" class="mobile-nav-item">
+    <span class="nav-icon">
+      <svg class="icon icon-lg" viewBox="0 0 24 24">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </span>
+    <span>Perfil</span>
+  </a>
+</nav>
+
+<!-- MODAL · CONFIRMAR AÇÃO -->
+<div class="confirm-modal" id="confirmModal">
+  <div class="confirm-modal-content">
+    <div class="confirm-modal-icon" id="confirmIcon">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+    </div>
+    <h3 id="confirmTitle">Confirmar</h3>
+    <p id="confirmText">Tem certeza?</p>
+    <div class="confirm-modal-actions">
+      <button class="btn btn-outline" onclick="closeConfirmModal()">Cancelar</button>
+      <button class="btn btn-brand" id="confirmActionBtn">Confirmar</button>
     </div>
   </div>
 </div>
 
-<!-- Supabase -->
+<!-- MODAL · INSERIR CÓDIGO DE FIM -->
+<div class="confirm-modal" id="codeModal">
+  <div class="confirm-modal-content">
+    <div class="confirm-modal-icon">
+      <svg class="icon" viewBox="0 0 24 24">
+        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+    <h3>Confirmar finalização</h3>
+    <p>Peça ao cliente o <b>Código de Finalização</b> de 4 dígitos que ele recebeu no app.</p>
+
+    <input type="text"
+           id="finishCodeInput"
+           class="code-input"
+           maxlength="4"
+           inputmode="numeric"
+           pattern="[0-9]*"
+           placeholder="0000"
+           autocomplete="one-time-code">
+
+    <div class="confirm-modal-actions">
+      <button class="btn btn-outline" onclick="closeCodeModal()">Cancelar</button>
+      <button class="btn btn-brand" id="confirmCodeBtn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/utils.js"></script>
-<script src="../js/cadastro.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../app.js"></script>
 
 <script>
-  // ==========================================
-  // 0. SETUP
-  // ==========================================
-  const db = window.supabaseClient;
+  /* ============================================
+     ESTADO
+     ============================================ */
+  let currentUserId = null;
+  let currentProfileId = null;
+  let currentProposalId = null;
+  let proposalData = null;
+  let demandData = null;
+  let contractData = null;
+  let actionInProgress = false;
+
   const urlParams = new URLSearchParams(window.location.search);
-  const demandId  = urlParams.get('id');
+  currentProposalId = urlParams.get('id');
 
-  let providerProfileId = null;
-
-  // ==========================================
-  // 1. CARREGA DEMANDA + PERFIL DO PRESTADOR
-  // ==========================================
-  async function init() {
-    if (!db) { console.error('❌ supabaseClient não inicializado'); return; }
-    if (!demandId) { window.location.href = 'demandas-disponiveis.html'; return; }
-
-    // ---- 1.1 Sessão e perfil (precisamos do profile.id, não do user.id) ----
-    const { data: { session } } = await db.auth.getSession();
-    if (!session) { window.location.href = '../index.html'; return; }
-
-    const { data: profile, error: profErr } = await db
-      .from('profiles')
-      .select('id')
-      .eq('user_id', session.user.id)
-      .single();
-
-    if (profErr || !profile) {
-      console.error('Erro perfil:', profErr);
-      alert('Perfil de prestador não encontrado.');
-      return;
-    }
-    providerProfileId = profile.id;
-
-    // ---- 1.2 Buscar a demanda (SEM join — mais seguro) ----
-    const { data, error } = await db
-      .from('demands')
-      .select('id, title, description, city, neighborhood, status, created_at, category_id')
-      .eq('id', demandId)
-      .single();
-
-    if (error || !data) {
-      console.error('Erro ao carregar demanda:', error);
-      alert('Demanda não encontrada.');
-      window.location.href = 'demandas-disponiveis.html';
-      return;
-    }
-
-    // ---- 1.3 Tentar pegar o nome da categoria (join opcional) ----
-   let categoriaNome = '—';
-let categoriaIcon = '';
-if (data.category_id) {
-  const { data: cat } = await db
-    .from('categories')
-    .select('name, icon')
-    .eq('id', data.category_id)
-    .maybeSingle();
-
-  if (cat) {
-    categoriaNome = cat.name || '—';
-    categoriaIcon = cat.icon || '';
+  /* ============================================
+     AUXILIARES
+     ============================================ */
+  function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'
+    }[tag]));
   }
 
-      } else {
-        // Fallback: tenta 'categories' (alguns projetos usam esse nome)
-        const { data: cat2 } = await db
-          .from('categories')
-          .select('name')
-          .eq('id', data.category_id)
-          .maybeSingle();
-        if (cat2?.name) categoriaNome = cat2.name;
-      }
+  function formatarMoeda(v) {
+    const n = Number(v) || 0;
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
+  }
+
+  function formatarPrazo(dias) {
+    const d = parseInt(dias, 10);
+    if (isNaN(d)) return '—';
+    if (d === 0) return 'Ainda hoje';
+    if (d === 1) return 'Amanhã';
+    if (d < 7) return `${d} dias`;
+    if (d === 7) return '1 semana';
+    if (d === 15) return '2 semanas';
+    if (d === 30) return '1 mês';
+    return `${d} dias`;
+  }
+
+  function formatarData(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    });
+  }
+
+  function formatarDataHora(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) +
+      ' às ' +
+      d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function mostrarToast(mensagem, tipo = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${tipo}`;
+
+    const icon = tipo === 'success'
+      ? `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+      : tipo === 'error'
+        ? `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`
+        : `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>`;
+
+    toast.innerHTML = `${icon}<span>${escapeHTML(mensagem)}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = 'slideOut .3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
+  }
+
+  /* ============================================
+     STATUS MAP
+     ============================================ */
+  const PROPOSAL_STATUS = {
+    'pendente': { label: 'Aguardando cliente', class: 'status-recebendo' },
+    'PENDENTE': { label: 'Aguardando cliente', class: 'status-recebendo' },
+    'ACEITA':   { label: 'Aceita',             class: 'status-andamento' },
+    'aceita':   { label: 'Aceita',             class: 'status-andamento' },
+    'RECUSADA': { label: 'Recusada',           class: 'status-cancelado' },
+    'recusada': { label: 'Recusada',           class: 'status-cancelado' },
+    'CANCELADA':{ label: 'Cancelada',          class: 'status-cancelado' }
+  };
+
+  const CONTRACT_STATUS = {
+    'aguardando_prestador':       { label: 'Prestador a caminho',    class: 'status-recebendo' },
+    'prestador_a_caminho':        { label: 'Prestador a caminho',    class: 'status-recebendo' },
+    'prestador_no_local':         { label: 'Aguardando cliente',     class: 'status-andamento' },
+    'aguardando_pagamento':       { label: 'Aguardando pagamento',   class: 'status-andamento' },
+    'em_andamento':               { label: 'Em andamento',           class: 'status-andamento' },
+    'aguardando_confirmacao_fim': { label: 'Aguardando cliente',     class: 'status-andamento' },
+    'finalizado':                 { label: 'Concluído',              class: 'status-concluido' },
+    'cancelado':                  { label: 'Cancelado',              class: 'status-cancelado' }
+  };
+
+  /* ============================================
+     INIT
+     ============================================ */
+  async function init() {
+    const supabase = window.supabaseClient;
+    if (!supabase) { window.location.href = '../index.html'; return; }
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { window.location.href = '../index.html'; return; }
+    currentUserId = session.user.id;
+
+    if (!currentProposalId) { window.location.href = 'minhas-propostas.html'; return; }
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('user_id', currentUserId)
+      .single();
+
+    if (!profile) {
+      alert('Perfil não encontrado.');
+      window.location.href = 'minhas-propostas.html';
+      return;
     }
+    currentProfileId = profile.id;
 
-    // ---- 1.4 Contar propostas existentes ----
-    const { count: propostasCount } = await db
+    configurarConfirmModal(supabase);
+    configurarCodeModal(supabase);
+    await carregarProposta(supabase);
+    await carregarContrato(supabase);
+    configurarRealtime(supabase);
+  }
+
+  /* ============================================
+     CARREGAR PROPOSTA
+     ============================================ */
+  async function carregarProposta(supabase) {
+    const { data: proposal, error } = await supabase
       .from('proposals')
-      .select('id', { count: 'exact', head: true })
-      .eq('demand_id', demandId);
+      .select(`
+        id, price, deadline_days, message, status, created_at,
+        provider_id,
+        demand:demands (
+          id, title, description, budget_min, budget_max,
+          city, neighborhood, status, created_at, media_urls,
+          category_id, categories ( name, service_type )
+        )
+      `)
+      .eq('id', currentProposalId)
+      .single();
 
-    // ---- 1.5 Preencher DOM ----
-    document.getElementById('demandTitle').textContent = data.title || 'Demanda';
-    document.getElementById('demandDesc').textContent  = data.description ? `"${data.description}"` : '';
-
-    const dataPub = data.created_at
-      ? new Date(data.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
-      : '—';
-
-    document.getElementById('detailLines').innerHTML = `
-      <div class="detail-line">
-  <span>Categoria</span>
-  <span>${categoriaIcon ? categoriaIcon + ' ' : ''}${categoriaNome}</span>
-</div>
-      <div class="detail-line"><span>Local</span><span>${data.neighborhood || '—'}, ${data.city || '—'}</span></div>
-      <div class="detail-line"><span>Publicada</span><span>${dataPub}</span></div>
-      <div class="detail-line"><span>Propostas até agora</span><span>${propostasCount || 0}</span></div>
-    `;
-  
-
-  // ==========================================
-  // 2. ENVIO DA PROPOSTA
-  // ==========================================
-  document.getElementById('propostaForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    if (!providerProfileId) {
-      alert('Sessão expirada. Faça login novamente.');
-      window.location.href = '../index.html';
+    if (error || !proposal) {
+      console.error('Erro ao carregar proposta:', error);
+      document.getElementById('demandBody').innerHTML = `
+        <div class="empty-state">
+          <h3>Proposta não encontrada</h3>
+          <p>Volte e tente novamente.</p>
+        </div>`;
       return;
     }
 
-    const btn = document.getElementById('sendBtn');
-    btn.textContent = 'Enviando...';
+    if (proposal.provider_id !== currentProfileId) {
+      document.getElementById('demandBody').innerHTML = `
+        <div class="empty-state">
+          <h3>Acesso negado</h3>
+          <p>Esta proposta não pertence à sua conta.</p>
+        </div>`;
+      return;
+    }
+
+    proposalData = proposal;
+    demandData = proposal.demand || {};
+
+    renderHeader();
+    renderDemanda();
+    renderMinhaProposta();
+  }
+
+  /* ============================================
+     HEADER
+     ============================================ */
+  function renderHeader() {
+    const demand = demandData;
+
+    /* Prioridade: se tem contrato, mostra status do contrato. Senão, da proposta */
+    let badge, title, sub;
+
+    if (contractData) {
+      const st = CONTRACT_STATUS[contractData.status] || { label: contractData.status, class: 'status-recebendo' };
+      badge = st;
+    } else {
+      const st = PROPOSAL_STATUS[proposalData.status] || { label: proposalData.status, class: 'status-recebendo' };
+      badge = st;
+    }
+
+    title = demand.title || 'Demanda';
+    sub = [demand.neighborhood, demand.city].filter(Boolean).join(', ') || 'Local não definido';
+
+    document.getElementById('headerStatusBadge').className = `status-badge ${badge.class}`;
+    document.getElementById('headerStatusBadge').textContent = badge.label;
+    document.getElementById('headerTitle').textContent = title;
+    document.getElementById('headerSub').textContent = sub;
+  }
+
+  /* ============================================
+     RENDER DEMANDA
+     ============================================ */
+  function renderDemanda() {
+    const demand = demandData;
+    if (!demand) return;
+
+    const isFreelance = demand.categories?.service_type === 'FREELANCE';
+    const budget = demand.budget_max
+      ? `Até ${formatarMoeda(demand.budget_max)}`
+      : (demand.budget_min
+        ? `A partir de ${formatarMoeda(demand.budget_min)}`
+        : 'A combinar');
+
+    const location = isFreelance
+      ? 'Online'
+      : [demand.neighborhood, demand.city].filter(Boolean).join(', ') || 'Local não definido';
+
+    let imagesHtml = '';
+    if (demand.media_urls && demand.media_urls.length > 0) {
+      imagesHtml = `
+        <div class="demand-images" style="display:flex;gap:var(--space-2);overflow-x:auto;margin-bottom:var(--space-4);padding-bottom:4px;scrollbar-width:none;">
+          ${demand.media_urls.map(url =>
+            `<img src="${escapeHTML(url)}" alt="" loading="lazy" onclick="window.open('${escapeHTML(url)}')" style="width:100px;height:100px;object-fit:cover;border-radius:var(--radius-sm);border:1px solid var(--border-default);cursor:pointer;flex-shrink:0;">`
+          ).join('')}
+        </div>`;
+    }
+
+    document.getElementById('demandBody').innerHTML = `
+      ${imagesHtml}
+      <p class="demand-description">"${escapeHTML(demand.description)}"</p>
+
+      <div class="detail-lines">
+        <div class="detail-line">
+          <span>Categoria</span>
+          <span>${escapeHTML(demand.categories?.name || 'Serviço')}</span>
+        </div>
+        <div class="detail-line">
+          <span>Local</span>
+          <span>
+            ${isFreelance
+              ? `<svg class="icon" viewBox="0 0 24 24">
+                   <rect width="20" height="14" x="2" y="3" rx="2"/>
+                   <line x1="8" x2="16" y1="21" y2="21"/>
+                   <line x1="12" x2="12" y1="17" y2="21"/>
+                 </svg>`
+              : `<svg class="icon" viewBox="0 0 24 24">
+                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                   <circle cx="12" cy="10" r="3"/>
+                 </svg>`}
+            ${escapeHTML(location)}
+          </span>
+        </div>
+        <div class="detail-line">
+          <span>Orçamento do cliente</span>
+          <span class="budget">${budget}</span>
+        </div>
+        <div class="detail-line">
+          <span>Publicada em</span>
+          <span>${formatarData(demand.created_at)}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ============================================
+     RENDER MINHA PROPOSTA
+     ============================================ */
+  function renderMinhaProposta() {
+    const p = proposalData;
+    if (!p) return;
+
+    const card = document.getElementById('proposalCard');
+    const content = document.getElementById('myProposalContent');
+    card.style.display = 'block';
+
+    const st = PROPOSAL_STATUS[p.status] || { label: p.status, class: 'status-recebendo' };
+
+    content.innerHTML = `
+      <div class="my-proposal-value">${formatarMoeda(p.price)}</div>
+
+      <div class="detail-lines">
+        <div class="detail-line">
+          <span>Prazo proposto</span>
+          <span>${escapeHTML(formatarPrazo(p.deadline_days))}</span>
+        </div>
+        <div class="detail-line">
+          <span>Enviada em</span>
+          <span>${formatarDataHora(p.created_at)}</span>
+        </div>
+        <div class="detail-line">
+          <span>Status</span>
+          <span>
+            <span class="status-badge ${st.class}">${st.label}</span>
+          </span>
+        </div>
+      </div>
+
+      ${p.message ? `<p class="my-proposal-message">${escapeHTML(p.message)}</p>` : ''}
+    `;
+  }
+
+  /* ============================================
+     CARREGAR CONTRATO
+     ============================================ */
+  async function carregarContrato(supabase) {
+    const { data: contract } = await supabase
+      .from('contracts')
+      .select(`
+        id, status, final_price, platform_fee, provider_payout,
+        start_code, finish_code,
+        started_at, finished_at, created_at,
+        prestador_a_caminho_at, prestador_chegou_at,
+        payment_deadline_at
+      `)
+      .eq('proposal_id', currentProposalId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (!contract) return;
+
+    contractData = contract;
+
+    renderHeader();
+    renderTimeline();
+    renderAction();
+  }
+
+  /* ============================================
+     TIMELINE
+     ============================================ */
+  function renderTimeline() {
+    const c = contractData;
+    if (!c) return;
+
+    document.getElementById('timelineCard').style.display = 'block';
+
+    const etapas = [
+      {
+        title: 'Proposta aceita',
+        desc: 'O cliente escolheu você.',
+        time: c.created_at ? formatarDataHora(c.created_at) : '—'
+      },
+      {
+        title: 'Você chegou ao local',
+        desc: 'Check-in confirmado.',
+        time: c.prestador_chegou_at ? formatarDataHora(c.prestador_chegou_at) : '—'
+      },
+      {
+        title: 'Pagamento confirmado',
+        desc: 'O cliente pagou. Você pode iniciar.',
+        time: c.started_at ? formatarDataHora(c.started_at) : '—'
+      },
+      {
+        title: 'Serviço finalizado',
+        desc: 'Serviço concluído e validado.',
+        time: c.finished_at ? formatarDataHora(c.finished_at) : '—'
+      }
+    ];
+
+    let currentStep = 0;
+    if (c.status === 'aguardando_prestador' || c.status === 'prestador_a_caminho') currentStep = 0;
+    else if (c.status === 'prestador_no_local') currentStep = 1;
+    else if (c.status === 'aguardando_pagamento' || c.status === 'em_andamento') currentStep = 2;
+    else if (c.status === 'aguardando_confirmacao_fim' || c.status === 'finalizado') currentStep = 3;
+
+    document.getElementById('timelineContainer').innerHTML = etapas.map((etapa, index) => {
+      let stateClass = 'pending';
+      if (index < currentStep) stateClass = 'done';
+      else if (index === currentStep) stateClass = 'current';
+
+      const dotSvg = stateClass === 'done'
+        ? `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+        : stateClass === 'current'
+          ? `<svg class="icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none;"><circle cx="12" cy="12" r="4"/></svg>`
+          : '';
+
+      return `
+        <div class="tl-item ${stateClass}">
+          <div class="tl-dot">${dotSvg}</div>
+          <div>
+            <div class="tl-title">${etapa.title}</div>
+            <div class="tl-time">${etapa.time}</div>
+            <div class="tl-desc">${etapa.desc}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  /* ============================================
+     AÇÃO CONTEXTUAL
+     ============================================ */
+  function renderAction() {
+    const container = document.getElementById('actionContainer');
+    container.innerHTML = '';
+
+    const c = contractData;
+    const p = proposalData;
+
+    /* SEM CONTRATO AINDA — proposta aguardando ou recusada */
+    if (!c) {
+      if (p.status === 'pendente' || p.status === 'PENDENTE') {
+        container.innerHTML = `
+          <div class="action-card light">
+            <h3 class="action-title">Proposta aguardando resposta</h3>
+            <p class="action-text">O cliente vai analisar sua proposta e outras que recebeu. Avisaremos assim que houver resposta.</p>
+          </div>`;
+      } else if (p.status === 'RECUSADA' || p.status === 'recusada' || p.status === 'CANCELADA' || p.status === 'cancelada') {
+        container.innerHTML = `
+          <div class="action-card light">
+            <h3 class="action-title">Proposta ${p.status.toLowerCase()}</h3>
+            <p class="action-text">Continue buscando outras demandas para enviar novas propostas.</p>
+            <a href="demandas-disponiveis.html" class="action-btn">
+              <svg class="icon" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.3-4.3"/>
+              </svg>
+              Buscar demandas
+            </a>
+          </div>`;
+      }
+      return;
+    }
+
+    /* COM CONTRATO — ação por status */
+
+    // Aguardando prestador se deslocar
+    if (c.status === 'aguardando_prestador') {
+      container.innerHTML = `
+        <div class="action-card blue">
+          <h3 class="action-title">Você foi contratado</h3>
+          <p class="action-text">Avise o cliente quando estiver a caminho e confirme quando chegar ao local. O pagamento será liberado pelo cliente na sua chegada.</p>
+          <button class="action-btn" onclick="abrirConfirm('Saindo agora','Avisar o cliente que você está a caminho?', 'estouACaminho')">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 11l-1.7-3.3c-.3-.6-.9-.9-1.6-.9H12v6"/>
+              <circle cx="6.5" cy="17.5" r="2.5"/>
+              <circle cx="17.5" cy="17.5" r="2.5"/>
+            </svg>
+            Estou a caminho
+          </button>
+        </div>`;
+      return;
+    }
+
+    // A caminho
+    if (c.status === 'prestador_a_caminho') {
+      container.innerHTML = `
+        <div class="action-card blue">
+          <h3 class="action-title">Cliente avisado</h3>
+          <p class="action-text">Quando chegar ao local, confirme o check-in para o cliente liberar o pagamento.</p>
+          <button class="action-btn" onclick="abrirConfirm('Cheguei ao local','Confirmar que você chegou ao local? O cliente será notificado para fazer o pagamento.', 'chegueiNoLocal')">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            Cheguei ao local
+          </button>
+        </div>`;
+      return;
+    }
+
+    // Prestador no local — aguardando cliente pagar
+    if (c.status === 'prestador_no_local') {
+      container.innerHTML = `
+        <div class="action-card light">
+          <h3 class="action-title">Aguardando pagamento do cliente</h3>
+          <p class="action-text">Você já confirmou a chegada. Assim que o cliente fizer o Pix, você será liberado para iniciar o serviço.</p>
+        </div>`;
+      return;
+    }
+
+    // Aguardando confirmação do Pix
+    if (c.status === 'aguardando_pagamento') {
+      container.innerHTML = `
+        <div class="action-card light">
+          <h3 class="action-title">Confirmando pagamento</h3>
+          <p class="action-text">Estamos aguardando a confirmação do Pix. Isso leva alguns segundos.</p>
+        </div>`;
+      return;
+    }
+
+    // Em andamento — botão de solicitar finalização
+    if (c.status === 'em_andamento') {
+      container.innerHTML = `
+        <div class="action-card dark">
+          <h3 class="action-title">Serviço em andamento</h3>
+          <p class="action-text">Quando terminar o serviço, clique em "Solicitar finalização". O cliente receberá um código para liberar seu pagamento.</p>
+          <button class="action-btn" onclick="abrirConfirm('Solicitar finalização','Confirmar que o serviço foi concluído? O cliente receberá um código de finalização no app dele.', 'solicitarFim')">
+            <svg class="icon" viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Solicitar finalização
+          </button>
+        </div>`;
+      return;
+    }
+
+    // Aguardando confirmação do cliente — inserir código
+    if (c.status === 'aguardando_confirmacao_fim') {
+      container.innerHTML = `
+        <div class="action-card blue">
+          <h3 class="action-title">Peça o código ao cliente</h3>
+          <p class="action-text">Você já solicitou a finalização. Peça ao cliente o <b>código de 4 dígitos</b> que ele recebeu no app e insira abaixo para confirmar.</p>
+          <button class="action-btn" onclick="abrirCodeModal()">
+            <svg class="icon" viewBox="0 0 24 24">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Inserir código
+          </button>
+        </div>`;
+      return;
+    }
+
+    // Finalizado
+    if (c.status === 'finalizado') {
+      container.innerHTML = `
+        <div class="action-card light">
+          <h3 class="action-title">Serviço concluído</h3>
+          <p class="action-text">Tudo certo. Seu pagamento será liberado em até 1 dia útil.</p>
+        </div>`;
+      return;
+    }
+
+    // Cancelado
+    if (c.status === 'cancelado') {
+      container.innerHTML = `
+        <div class="action-card light">
+          <h3 class="action-title">Serviço cancelado</h3>
+          <p class="action-text">Este contrato foi cancelado.</p>
+        </div>`;
+    }
+  }
+
+  /* ============================================
+     CONFIRM MODAL
+     ============================================ */
+  let pendingAction = null;
+
+  function configurarConfirmModal(supabase) {
+    document.getElementById('confirmActionBtn').addEventListener('click', async () => {
+      if (!pendingAction || actionInProgress) return;
+      await executarAcao(supabase, pendingAction);
+    });
+
+    document.getElementById('confirmModal').addEventListener('click', (e) => {
+      if (e.target.id === 'confirmModal') closeConfirmModal();
+    });
+  }
+
+  window.abrirConfirm = function(title, text, action) {
+    pendingAction = action;
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmText').textContent = text;
+    document.getElementById('confirmModal').classList.add('active');
+  };
+
+  window.closeConfirmModal = function() {
+    document.getElementById('confirmModal').classList.remove('active');
+    pendingAction = null;
+  };
+
+  async function executarAcao(supabase, action) {
+    if (actionInProgress) return;
+    actionInProgress = true;
+
+    const btn = document.getElementById('confirmActionBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Processando...';
     btn.disabled = true;
 
-    // ✅ Colunas reais de proposals: demand_id, provider_id, price, deadline_days, message, status
-    const payload = {
-      demand_id:     demandId,                                              // UUID direto
-      provider_id:   providerProfileId,                                     // profile.id
-      price:         parseFloat(document.getElementById('valor').value),    // numeric
-      deadline_days: parseInt(document.getElementById('prazo').value, 10),  // INTEGER
-      message:       document.getElementById('mensagem').value.trim(),
-      status:        'pendente'
-    };
+    try {
+      if (action === 'estouACaminho') {
+        await supabase
+          .from('contracts')
+          .update({
+            status: 'prestador_a_caminho',
+            prestador_a_caminho_at: new Date().toISOString()
+          })
+          .eq('id', contractData.id);
 
-    const { error: insertError } = await db.from('proposals').insert(payload);
+        mostrarToast('Cliente avisado. Boa viagem!', 'success');
+      } else if (action === 'chegueiNoLocal') {
+        await supabase
+          .from('contracts')
+          .update({
+            status: 'prestador_no_local',
+            prestador_chegou_at: new Date().toISOString(),
+            payment_deadline_at: new Date(Date.now() + 30 * 60 * 1000).toISOString()
+          })
+          .eq('id', contractData.id);
 
-    if (insertError) {
-      console.error('Erro insert:', insertError);
-      alert('Erro ao enviar: ' + insertError.message);
-      btn.textContent = 'Enviar proposta';
+        mostrarToast('Check-in confirmado. Aguarde o pagamento do cliente.', 'success');
+      } else if (action === 'solicitarFim') {
+        const finishCode = Math.floor(1000 + Math.random() * 9000).toString();
+        await supabase
+          .from('contracts')
+          .update({
+            status: 'aguardando_confirmacao_fim',
+            finish_code: finishCode,
+            finished_at: new Date().toISOString()
+          })
+          .eq('id', contractData.id);
+
+        mostrarToast('Solicitação enviada. Peça o código ao cliente.', 'success');
+      }
+
+      closeConfirmModal();
+      await carregarContrato(supabase);
+
+    } catch (err) {
+      console.error('Erro:', err);
+      mostrarToast('Erro: ' + err.message, 'error');
+    } finally {
+      btn.textContent = originalText;
       btn.disabled = false;
+      actionInProgress = false;
+    }
+  }
+
+  /* ============================================
+     CODE MODAL — inserir código de finalização
+     ============================================ */
+  function configurarCodeModal(supabase) {
+    document.getElementById('confirmCodeBtn').addEventListener('click', async () => {
+      if (actionInProgress) return;
+      await confirmarFinalizacao(supabase);
+    });
+
+    document.getElementById('codeModal').addEventListener('click', (e) => {
+      if (e.target.id === 'codeModal') closeCodeModal();
+    });
+
+    document.getElementById('finishCodeInput').addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeConfirmModal();
+        closeCodeModal();
+      }
+    });
+  }
+
+  window.abrirCodeModal = function() {
+    document.getElementById('finishCodeInput').value = '';
+    document.getElementById('codeModal').classList.add('active');
+    setTimeout(() => document.getElementById('finishCodeInput').focus(), 100);
+  };
+
+  window.closeCodeModal = function() {
+    document.getElementById('codeModal').classList.remove('active');
+    document.getElementById('finishCodeInput').blur();
+  };
+
+  async function confirmarFinalizacao(supabase) {
+    const code = document.getElementById('finishCodeInput').value.trim();
+
+    if (code.length !== 4) {
+      mostrarToast('O código precisa ter 4 dígitos.', 'error');
       return;
     }
 
-    // Atualiza status da demanda
-    await db
-      .from('demands')
-      .update({ status: 'EM_PROPOSTAS' })
-      .eq('id', demandId);
+    if (!contractData || !contractData.finish_code) {
+      mostrarToast('Código não encontrado no contrato.', 'error');
+      return;
+    }
 
-    document.getElementById('detailCard').style.display   = 'none';
-    document.getElementById('propostaForm').style.display = 'none';
-    document.getElementById('successState').classList.add('show');
-  });
+    if (code !== contractData.finish_code) {
+      mostrarToast('Código inválido. Confirme com o cliente.', 'error');
+      return;
+    }
+
+    actionInProgress = true;
+    const btn = document.getElementById('confirmCodeBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Confirmando...';
+    btn.disabled = true;
+
+    try {
+      await supabase
+        .from('contracts')
+        .update({
+          status: 'finalizado',
+          finished_at: new Date().toISOString()
+        })
+        .eq('id', contractData.id);
+
+      mostrarToast('Serviço finalizado! Pagamento será liberado em até 1 dia útil.', 'success');
+      closeCodeModal();
+      await carregarContrato(supabase);
+
+    } catch (err) {
+      console.error('Erro ao finalizar:', err);
+      mostrarToast('Erro: ' + err.message, 'error');
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      actionInProgress = false;
+    }
+  }
+
+  /* ============================================
+     REALTIME
+     ============================================ */
+  function configurarRealtime(supabase) {
+    if (!currentProposalId) return;
+
+    supabase
+      .channel('detalhe-demanda-prestador-realtime')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'contracts', filter: `proposal_id=eq.${currentProposalId}` },
+        () => {
+          carregarContrato(supabase);
+        }
+      )
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'proposals', filter: `id=eq.${currentProposalId}` },
+        () => {
+          carregarProposta(supabase);
+        }
+      )
+      .subscribe();
+  }
 
   init();
 </script>
