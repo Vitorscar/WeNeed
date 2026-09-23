@@ -14,120 +14,80 @@
 <link rel="stylesheet" href="../style.css">
 
 <style>
-  .icon{ width:16px; height:16px; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; fill:none; flex-shrink:0; display:block; }
-  .icon-sm{ width:14px; height:14px; stroke-width:2; }
-  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
-  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+  .icon{ width:16px;height:16px;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;fill:none;flex-shrink:0;display:block; }
+  .icon-sm{ width:14px;height:14px;stroke-width:2; }
+  .icon-md{ width:18px;height:18px;stroke-width:1.75; }
+  .icon-lg{ width:22px;height:22px;stroke-width:1.5; }
 
   .wrap{ padding:var(--space-4) var(--space-5) var(--space-12); }
 
   .card-label .dot{ background:var(--color-brand-blue) !important; }
 
+  /* ---------- LOADING ---------- */
+  .loading-block{ display:flex; align-items:center; justify-content:center; gap:var(--space-3); padding:var(--space-8); color:var(--text-secondary); font-size:var(--font-size-sm); font-weight:var(--font-weight-medium); }
+  .loading-block::after{ content:''; display:inline-block; width:18px; height:18px; border:2.5px solid var(--color-gray-200); border-top-color:var(--color-brand-blue-deep); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ---------- DETAIL LINES ---------- */
   .detail-lines{ border-top:1px solid var(--border-default); padding-top:var(--space-3); }
-  .detail-line{
-    display:flex; justify-content:space-between; align-items:center;
-    gap:var(--space-3); padding:7px 0; font-size:var(--font-size-sm);
-  }
+  .detail-line{ display:flex; justify-content:space-between; align-items:center; gap:var(--space-3); padding:7px 0; font-size:var(--font-size-sm); }
   .detail-line span:first-child{ color:var(--text-secondary); }
-  .detail-line span:last-child{
-    font-weight:var(--font-weight-semibold); color:var(--text-primary);
-    text-align:right; display:inline-flex; align-items:center; gap:6px;
-  }
-  .detail-line .count-badge{
-    display:inline-flex; align-items:center; justify-content:center;
-    min-width:24px; padding:2px 8px;
-    background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep);
-    border-radius:var(--radius-full); font-size:var(--font-size-xs);
-    font-weight:var(--font-weight-bold); font-variant-numeric:tabular-nums;
-  }
+  .detail-line span:last-child{ font-weight:var(--font-weight-semibold); color:var(--text-primary); text-align:right; display:inline-flex; align-items:center; gap:6px; }
+  .detail-line .count-badge{ display:inline-flex; align-items:center; justify-content:center; min-width:24px; padding:2px 8px; background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep); border-radius:var(--radius-full); font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); font-variant-numeric:tabular-nums; }
 
-  .demand-desc{
-    font-size:var(--font-size-sm); color:var(--text-secondary);
-    line-height:var(--line-height-relaxed); margin:var(--space-4) 0 0;
-    font-style:italic;
-  }
+  .demand-desc{ font-size:var(--font-size-sm); color:var(--text-secondary); line-height:var(--line-height-relaxed); margin:var(--space-4) 0 0; font-style:italic; word-break:break-word; }
 
+  /* ---------- SUCCESS ---------- */
   .success-state{ text-align:center; padding:var(--space-6) var(--space-4) var(--space-4); display:none; }
   .success-state.show{ display:block; animation:fadeIn var(--duration-slow) var(--ease-out); }
   @keyframes fadeIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
 
-  .check-circle{
-    width:56px; height:56px; border-radius:50%;
-    background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep);
-    margin:0 auto var(--space-4);
-    display:flex; align-items:center; justify-content:center;
-  }
+  .check-circle{ width:56px; height:56px; border-radius:50%; background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep); margin:0 auto var(--space-4); display:flex; align-items:center; justify-content:center; }
   .check-circle .icon{ width:26px; height:26px; stroke-width:2.5; }
 
-  .success-state h3{
-    font-size:var(--font-size-lg); font-weight:var(--font-weight-extrabold);
-    letter-spacing:var(--tracking-tight); margin:0 0 var(--space-2);
-    color:var(--text-primary);
-  }
-  .success-state p{
-    font-size:var(--font-size-sm); color:var(--text-secondary);
-    margin:0 0 var(--space-5); line-height:var(--line-height-normal);
-    max-width:36ch; margin-left:auto; margin-right:auto;
-  }
+  .success-state h3{ font-size:var(--font-size-lg); font-weight:var(--font-weight-extrabold); letter-spacing:var(--tracking-tight); margin:0 0 var(--space-2); color:var(--text-primary); }
+  .success-state p{ font-size:var(--font-size-sm); color:var(--text-secondary); margin:0 0 var(--space-5); line-height:var(--line-height-normal); max-width:36ch; margin-left:auto; margin-right:auto; }
 
-  .send-btn{
-    width:100%; margin-top:var(--space-3);
-    display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    background:var(--color-brand-blue-deep); color:var(--color-white);
-    border:none; padding:16px 20px;
-    font-family:var(--font-family-base); font-weight:var(--font-weight-bold);
-    font-size:var(--font-size-base); letter-spacing:var(--tracking-wide);
-    text-transform:uppercase; border-radius:var(--radius-sm); cursor:pointer;
-    transition:background var(--duration-fast) var(--ease-out),
-               opacity var(--duration-fast) var(--ease-out);
-  }
+  /* ---------- SEND BUTTON ---------- */
+  .send-btn{ width:100%; margin-top:var(--space-3); display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--color-brand-blue-deep); color:var(--color-white); border:none; padding:16px 20px; font-family:var(--font-family-base); font-weight:var(--font-weight-bold); font-size:var(--font-size-base); letter-spacing:var(--tracking-wide); text-transform:uppercase; border-radius:var(--radius-sm); cursor:pointer; transition:background var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out); -webkit-tap-highlight-color:transparent; }
   .send-btn:hover:not(:disabled){ background:var(--color-brand-blue); }
-  .send-btn:active{ opacity:.9; }
+  .send-btn:active:not(:disabled){ opacity:.9; }
   .send-btn:disabled{ opacity:.55; cursor:not-allowed; }
   .send-btn .icon{ width:14px; height:14px; stroke-width:2.25; }
 
-  select{
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
-    background-repeat:no-repeat;
-    background-position:right 14px center;
-    background-size:16px;
-    padding-right:42px;
-  }
+  /* ---------- SELECT ARROW ---------- */
+  select{ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat:no-repeat; background-position:right 14px center; background-size:16px; padding-right:42px; }
 
-  .error-state{
-    text-align:center; padding:var(--space-6) var(--space-4);
-    color:var(--color-error); font-size:var(--font-size-sm);
-    display:flex; flex-direction:column; align-items:center; gap:var(--space-2);
-  }
-  .error-state .icon{ width:28px; height:28px; }
+  /* ---------- ERROR / ALREADY ---------- */
+  .state-card{ text-align:center; padding:var(--space-6) var(--space-4); background:var(--surface-default); border:1px solid var(--border-default); border-radius:var(--radius-md); margin-top:var(--space-3); }
+  .state-card-icon{ display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; margin:0 auto var(--space-3); }
+  .state-card-icon.info{ background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep); }
+  .state-card-icon.warn{ background:rgba(220,38,38,.10); color:var(--color-error); }
+  .state-card-icon .icon{ width:22px; height:22px; stroke-width:2.25; }
+  .state-card h3{ font-size:var(--font-size-base); font-weight:var(--font-weight-bold); color:var(--text-primary); margin:0 0 var(--space-2); letter-spacing:var(--tracking-tight); }
+  .state-card p{ font-size:var(--font-size-sm); color:var(--text-secondary); margin:0 0 var(--space-4); line-height:var(--line-height-normal); max-width:40ch; margin-left:auto; margin-right:auto; }
+  .state-card .btn{ width:auto; display:inline-flex; padding:13px 22px; text-decoration:none; }
 
-  /* ---------- JÁ ENVIOU (estado próprio) ---------- */
-  .already-state{
-    text-align:center;
-    padding:var(--space-6) var(--space-4);
-    background:var(--surface-default);
-    border:1px solid var(--border-default);
-    border-radius:var(--radius-md);
-    margin-top:var(--space-3);
+  /* ---------- FORM WRAPPER ---------- */
+  #formWrapper{ display:none; }
+  #formWrapper.ready{ display:block; }
+
+  /* ---------- MSG COUNTER ---------- */
+  .msg-counter{ font-size:var(--font-size-xs); color:var(--text-secondary); text-align:right; margin-top:4px; font-variant-numeric:tabular-nums; }
+  .msg-counter.limit{ color:var(--color-error); font-weight:var(--font-weight-semibold); }
+
+  /* ---------- TOAST ---------- */
+  .toast-container{ position:fixed; bottom:24px; right:24px; left:24px; z-index:var(--z-toast); display:flex; flex-direction:column; gap:var(--space-2); pointer-events:none; align-items:flex-end; }
+  .toast{ background:var(--color-black); color:var(--color-white); padding:var(--space-3) var(--space-5); border-radius:var(--radius-sm); box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:var(--space-3); font-size:var(--font-size-sm); font-weight:var(--font-weight-medium); animation:slideIn .35s cubic-bezier(.16,1,.3,1) forwards; min-width:260px; max-width:380px; border-left:4px solid var(--color-brand-blue); pointer-events:auto; }
+  .toast.success{ border-left-color:var(--color-success); }
+  .toast.error{ border-left-color:var(--color-error); }
+  .toast .icon{ width:16px;height:16px;stroke-width:2.25; }
+  @keyframes slideIn{ from{ transform:translateX(120%); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+  @keyframes slideOut{ from{ transform:translateX(0); opacity:1; } to{ transform:translateX(120%); opacity:0; } }
+
+  @media (min-width:640px){
+    .toast-container{ right:16px; left:auto; }
   }
-  .already-icon{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:48px; height:48px; border-radius:50%;
-    background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep);
-    margin:0 auto var(--space-3);
-  }
-  .already-icon .icon{ width:22px; height:22px; stroke-width:2.25; }
-  .already-state h3{
-    font-size:var(--font-size-base); font-weight:var(--font-weight-bold);
-    color:var(--text-primary); margin:0 0 var(--space-2);
-    letter-spacing:var(--tracking-tight);
-  }
-  .already-state p{
-    font-size:var(--font-size-sm); color:var(--text-secondary);
-    margin:0 0 var(--space-4); line-height:var(--line-height-normal);
-    max-width:40ch; margin-left:auto; margin-right:auto;
-  }
-  .already-state .btn{ width:auto; display:inline-flex; padding:13px 22px; }
 </style>
 </head>
 <body>
@@ -154,73 +114,97 @@
     <!-- DETALHES -->
     <div class="card" id="detailCard">
       <div class="card-label"><div class="dot"></div> Detalhes da demanda</div>
-      <div class="detail-lines" id="detailLines"></div>
-      <p id="demandDesc" class="demand-desc"></p>
+      <div class="loading-block" id="detailLoading">Carregando...</div>
+      <div class="detail-lines" id="detailLines" style="display:none;"></div>
+      <p id="demandDesc" class="demand-desc" style="display:none;"></p>
     </div>
 
-    <!-- ESTADO: JÁ ENVIOU PROPOSTA -->
-    <div class="already-state" id="alreadyState" style="display:none;">
-      <div class="already-icon">
-        <svg class="icon" viewBox="0 0 24 24">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
+    <!-- ESTADOS ALTERNATIVOS -->
+    <div class="state-card" id="alreadyState" style="display:none;">
+      <div class="state-card-icon info">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
       <h3>Você já enviou uma proposta</h3>
-      <p>Aguarde a resposta do cliente. Você pode acompanhar em "Minhas propostas".</p>
-      <a class="btn btn-primary" href="minhas-propostas.html" style="text-decoration:none;">
-        Ver minhas propostas
-      </a>
+      <p>Aguarde a resposta do cliente. Você pode acompanhar o status em "Minhas propostas".</p>
+      <a class="btn btn-primary" href="minhas-propostas.html">Ver minhas propostas</a>
+    </div>
+
+    <div class="state-card" id="closedState" style="display:none;">
+      <div class="state-card-icon warn">
+        <svg class="icon" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" x2="12" y1="8" y2="12"/>
+          <line x1="12" x2="12.01" y1="16" y2="16"/>
+        </svg>
+      </div>
+      <h3>Esta demanda não está mais aberta</h3>
+      <p>O cliente já fechou ou pausou as propostas. Busque outras oportunidades disponíveis.</p>
+      <a class="btn btn-primary" href="demandas-disponiveis.html">Ver demandas</a>
+    </div>
+
+    <div class="state-card" id="errorState" style="display:none;">
+      <div class="state-card-icon warn">
+        <svg class="icon" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" x2="12" y1="8" y2="12"/>
+          <line x1="12" x2="12.01" y1="16" y2="16"/>
+        </svg>
+      </div>
+      <h3 id="errorTitle">Algo deu errado</h3>
+      <p id="errorText">Não foi possível carregar a demanda.</p>
+      <a class="btn btn-primary" href="demandas-disponiveis.html">Voltar para demandas</a>
     </div>
 
     <!-- FORMULÁRIO -->
-    <form id="propostaForm">
-      <div class="card">
-        <div class="card-label"><div class="dot"></div> Sua proposta</div>
+    <div id="formWrapper">
+      <form id="propostaForm" novalidate>
+        <div class="card">
+          <div class="card-label"><div class="dot"></div> Sua proposta</div>
 
-        <div class="field-row">
-          <div class="field">
-            <label for="valor">Valor (R$)</label>
-            <input type="number" id="valor" placeholder="120" min="1" step="0.01" inputmode="decimal" required>
+          <div class="field-row">
+            <div class="field">
+              <label for="valor">Valor (R$)</label>
+              <input type="number" id="valor" placeholder="120" min="1" step="0.01" inputmode="decimal" autocomplete="off" required>
+            </div>
+            <div class="field">
+              <label for="prazo">Prazo</label>
+              <select id="prazo" required>
+                <option value="">Selecione...</option>
+                <option value="1">Amanhã (1 dia)</option>
+                <option value="2">Em 2 dias</option>
+                <option value="3">Em 3 dias</option>
+                <option value="7">Em 1 semana</option>
+                <option value="15">Em 2 semanas</option>
+                <option value="30">Em 1 mês</option>
+              </select>
+            </div>
           </div>
+
           <div class="field">
-            <label for="prazo">Prazo</label>
-            <select id="prazo" required>
-              <option value="">Selecione...</option>
-              <option value="1">Amanhã (1 dia)</option>
-              <option value="2">Em 2 dias</option>
-              <option value="3">Em 3 dias</option>
-              <option value="7">Em 1 semana</option>
-              <option value="15">Em 2 semanas</option>
-              <option value="30">Em 1 mês</option>
-            </select>
+            <label for="mensagem">Mensagem para o cliente</label>
+            <textarea id="mensagem" placeholder="Ex: Consigo ir amanhã às 14h, já levo o material necessário..." maxlength="1000" autocomplete="off" required></textarea>
+            <div class="helper">Seja específico sobre prazo, materiais e experiência.</div>
+            <div class="msg-counter" id="msgCounter">0/1000</div>
           </div>
         </div>
 
-        <div class="field">
-          <label for="mensagem">Mensagem para o cliente</label>
-          <textarea id="mensagem" placeholder="Ex: Consigo ir amanhã às 14h, já levo o material necessário..." required></textarea>
-          <div class="helper">Seja específico sobre prazo, materiais e experiência.</div>
-        </div>
-      </div>
-
-      <button type="submit" class="send-btn" id="sendBtn">
-        <svg class="icon" viewBox="0 0 24 24">
-          <line x1="22" x2="11" y1="2" y2="13"/>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-        </svg>
-        Enviar proposta
-      </button>
-    </form>
+        <button type="submit" class="send-btn" id="sendBtn">
+          <svg class="icon" viewBox="0 0 24 24">
+            <line x1="22" x2="11" y1="2" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+          Enviar proposta
+        </button>
+      </form>
+    </div>
 
     <!-- SUCESSO -->
     <div class="success-state" id="successState">
       <div class="check-circle">
-        <svg class="icon" viewBox="0 0 24 24">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
       <h3>Proposta enviada</h3>
-      <p>O cliente vai receber sua proposta e pode entrar em contato a qualquer momento.</p>
+      <p>O cliente receberá sua proposta e poderá entrar em contato a qualquer momento.</p>
       <a class="btn btn-primary" href="minhas-propostas.html" style="text-decoration:none;">
         Ver minhas propostas
       </a>
@@ -229,11 +213,12 @@
   </div>
 </div>
 
+<div class="toast-container" id="toastContainer"></div>
+
 <!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/utils.js"></script>
-<script src="../js/cadastro.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../app.js"></script>
 
@@ -241,16 +226,20 @@
   /* ============================================
      ESTADO
      ============================================ */
-  const db = window.supabaseClient;
   const urlParams = new URLSearchParams(window.location.search);
-  const demandId = urlParams.get('id') || urlParams.get('demand_id');
-
-  let providerProfileId = null;
+  const rawDemandId = urlParams.get('demand_id') || urlParams.get('id');
+  const demandId = rawDemandId ? rawDemandId.replace(/[^a-zA-Z0-9-]/g, '').slice(0, 64) : null;
 
   const STATUS_ABERTOS = ['OPEN', 'ABERTA', 'EM_PROPOSTAS'];
 
+  let supabase = null;
+  let providerProfileId = null;
+  let currentDemandStatus = null;
+  let submitting = false;
+  let realtimeChannel = null;
+
   /* ============================================
-     AUXILIARES
+     HELPERS
      ============================================ */
   function escapeHTML(str) {
     if (str === null || str === undefined) return '';
@@ -259,121 +248,78 @@
     }[tag]));
   }
 
-  function mostrarErro(titulo) {
-    document.getElementById('detailCard').innerHTML = `
-      <div class="error-state">
-        <svg class="icon" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" x2="12" y1="8" y2="12"/>
-          <line x1="12" x2="12.01" y1="16" y2="16"/>
-        </svg>
-        ${escapeHTML(titulo)}
-      </div>`;
-    document.getElementById('propostaForm').style.display = 'none';
-    document.getElementById('backLink').style.display = 'inline-flex';
+  function mostrarToast(mensagem, tipo = 'success') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = `toast ${tipo}`;
+    const icon = tipo === 'success'
+      ? `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+      : tipo === 'error'
+        ? `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`
+        : `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>`;
+    toast.innerHTML = `${icon}<span>${escapeHTML(mensagem)}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'slideOut .3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3400);
   }
 
-  function mostrarJaEnviou() {
-    document.getElementById('detailCard').style.display = 'block';
-    document.getElementById('propostaForm').style.display = 'none';
+  function hideAllStates() {
+    ['alreadyState', 'closedState', 'errorState', 'formWrapper', 'successState'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.display = 'none';
+        el.classList.remove('show');
+        if (id === 'formWrapper') el.classList.remove('ready');
+      }
+    });
+  }
+
+  function showError(title, text) {
+    hideAllStates();
+    document.getElementById('errorTitle').textContent = title || 'Algo deu errado';
+    document.getElementById('errorText').textContent = text || 'Tente novamente.';
+    document.getElementById('errorState').style.display = 'block';
+    document.getElementById('demandTitle').textContent = 'Erro';
+  }
+
+  function showAlready() {
+    hideAllStates();
     document.getElementById('alreadyState').style.display = 'block';
-    document.getElementById('backLink').style.display = 'inline-flex';
   }
 
-  function mostrarDemandaFechada() {
-    document.getElementById('propostaForm').style.display = 'none';
-    document.getElementById('detailCard').insertAdjacentHTML('beforeend', `
-      <div class="error-state" style="margin-top:var(--space-3);">
-        <svg class="icon" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" x2="12" y1="8" y2="12"/>
-          <line x1="12" x2="12.01" y1="16" y2="16"/>
-        </svg>
-        Esta demanda não está mais aberta para propostas.
-      </div>`);
+  function showClosed() {
+    hideAllStates();
+    document.getElementById('closedState').style.display = 'block';
+  }
+
+  function showForm() {
+    hideAllStates();
+    document.getElementById('formWrapper').classList.add('ready');
+  }
+
+  function showSuccess() {
+    hideAllStates();
+    document.getElementById('successState').classList.add('show');
   }
 
   /* ============================================
-     INIT
+     RENDER DOS DETALHES
      ============================================ */
-  async function init() {
-    if (!db) {
-      console.error('supabaseClient não inicializado');
-      return;
-    }
-    if (!demandId) {
-      window.location.href = 'demandas-disponiveis.html';
-      return;
-    }
+  function renderDetalhes(demand, categoriaNome, propostasCount) {
+    document.getElementById('demandTitle').textContent = demand.title || 'Demanda';
 
-    /* 1. Sessão */
-    const { data: { session } } = await db.auth.getSession();
-    if (!session) {
-      window.location.href = '../index.html';
-      return;
-    }
+    const desc = document.getElementById('demandDesc');
+    desc.textContent = demand.description ? `"${demand.description}"` : '';
+    desc.style.display = demand.description ? 'block' : 'none';
 
-    /* 2. Perfil do prestador */
-    const { data: profile, error: profErr } = await db
-      .from('profiles')
-      .select('id')
-      .eq('user_id', session.user.id)
-      .single();
-
-    if (profErr || !profile) {
-      console.error('Erro perfil:', profErr);
-      alert('Perfil de prestador não encontrado.');
-      return;
-    }
-    providerProfileId = profile.id;
-
-    /* 3. Demanda */
-    const { data, error } = await db
-      .from('demands')
-      .select('id, title, description, city, neighborhood, status, created_at, category_id')
-      .eq('id', demandId)
-      .single();
-
-    if (error || !data) {
-      console.error('Erro ao carregar demanda:', error);
-      mostrarErro('Demanda não encontrada.');
-      return;
-    }
-
-    /* 4. Categoria (opcional) */
-    let categoriaNome = '—';
-    if (data.category_id) {
-      const { data: cat } = await db
-        .from('categories')
-        .select('name')
-        .eq('id', data.category_id)
-        .maybeSingle();
-
-      if (cat?.name) categoriaNome = cat.name;
-    }
-
-    /* 5. Contar propostas da demanda (todas) */
-    const { count: propostasCount } = await db
-      .from('proposals')
-      .select('id', { count: 'exact', head: true })
-      .eq('demand_id', demandId);
-
-    /* 6. Verificar se EU já enviei proposta */
-    const { count: minhaCount } = await db
-      .from('proposals')
-      .select('id', { count: 'exact', head: true })
-      .eq('demand_id', demandId)
-      .eq('provider_id', providerProfileId);
-
-    /* 7. Render cabeçalho e detalhes */
-    document.getElementById('demandTitle').textContent = data.title || 'Demanda';
-    document.getElementById('demandDesc').textContent = data.description ? `"${data.description}"` : '';
-
-    const dataPub = data.created_at
-      ? new Date(data.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+    const dataPub = demand.created_at
+      ? new Date(demand.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
       : '—';
 
-    const local = [data.neighborhood, data.city].filter(Boolean).join(', ') || '—';
+    const local = [demand.neighborhood, demand.city].filter(Boolean).join(', ') || '—';
 
     document.getElementById('detailLines').innerHTML = `
       <div class="detail-line">
@@ -392,109 +338,293 @@
       </div>
       <div class="detail-line">
         <span>Publicada</span>
-        <span>${dataPub}</span>
+        <span>${escapeHTML(dataPub)}</span>
       </div>
       <div class="detail-line">
         <span>Propostas até agora</span>
-        <span class="count-badge">${propostasCount || 0}</span>
+        <span class="count-badge" id="propostasCount">${propostasCount || 0}</span>
       </div>
     `;
 
-    /* 8. Bloquear formulário em ordem de prioridade */
-
-    // 8a. Já enviei proposta → mostra estado próprio
-    if (minhaCount && minhaCount > 0) {
-      mostrarJaEnviou();
-      return;
-    }
-
-    // 8b. Demanda fechada → bloqueia
-    if (!STATUS_ABERTOS.includes(data.status)) {
-      mostrarDemandaFechada();
-      return;
-    }
-
-    // 8c. Tudo certo → formulário ativo
+    document.getElementById('detailLoading').style.display = 'none';
+    document.getElementById('detailLines').style.display = 'block';
   }
 
   /* ============================================
-     SUBMIT · ENVIAR PROPOSTA
+     INIT
      ============================================ */
-  document.getElementById('propostaForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  async function init() {
+    supabase = window.supabaseClient;
+    if (!supabase) {
+      showError('Erro de configuração', 'Não foi possível conectar ao servidor.');
+      return;
+    }
 
-    if (!providerProfileId) {
-      alert('Sessão expirada. Faça login novamente.');
+    if (!demandId) {
+      window.location.href = 'demandas-disponiveis.html';
+      return;
+    }
+
+    /* 1. Sessão */
+    const { data: { session }, error: sessErr } = await supabase.auth.getSession();
+    if (sessErr || !session) {
       window.location.href = '../index.html';
       return;
     }
 
-    /* Validação dos campos */
+    /* 2. Perfil */
+    const { data: profile, error: profErr } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('user_id', session.user.id)
+      .single();
+
+    if (profErr || !profile) {
+      console.error('Erro perfil:', profErr);
+      showError('Perfil não encontrado', 'Faça login novamente.');
+      return;
+    }
+    providerProfileId = profile.id;
+
+    /* 3. Demanda */
+    const { data: demand, error: demandErr } = await supabase
+      .from('demands')
+      .select('id, title, description, city, neighborhood, status, created_at, category_id')
+      .eq('id', demandId)
+      .single();
+
+    if (demandErr || !demand) {
+      console.error('Erro demanda:', demandErr);
+      showError('Demanda não encontrada', 'Ela pode ter sido removida.');
+      return;
+    }
+
+    currentDemandStatus = demand.status;
+
+    /* 4. Categoria (best effort) */
+    let categoriaNome = '—';
+    if (demand.category_id) {
+      const { data: cat } = await supabase
+        .from('categories')
+        .select('name')
+        .eq('id', demand.category_id)
+        .maybeSingle();
+      if (cat?.name) categoriaNome = cat.name;
+    }
+
+    /* 5. Contagens em paralelo */
+    const [totalRes, minhaRes] = await Promise.all([
+      supabase.from('proposals').select('id', { count: 'exact', head: true }).eq('demand_id', demandId),
+      supabase.from('proposals').select('id', { count: 'exact', head: true }).eq('demand_id', demandId).eq('provider_id', providerProfileId)
+    ]);
+
+    const propostasCount = totalRes.count || 0;
+    const minhaCount = minhaRes.count || 0;
+
+    /* 6. Render cabeçalho e detalhes */
+    renderDetalhes(demand, categoriaNome, propostasCount);
+
+    /* 7. Decidir estado */
+    if (minhaCount > 0) {
+      showAlready();
+    } else if (!STATUS_ABERTOS.includes(demand.status)) {
+      showClosed();
+    } else {
+      showForm();
+    }
+
+    /* 8. Listeners do form (se aplicável) */
+    configurarForm();
+
+    /* 9. Realtime */
+    configurarRealtime();
+  }
+
+  /* ============================================
+     REALTIME
+     ============================================ */
+  function configurarRealtime() {
+    if (!supabase || !demandId || !providerProfileId) return;
+
+    realtimeChannel = supabase
+      .channel('enviar-proposta-realtime')
+      /* Demanda mudou (status, etc.) */
+      .on('postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'demands', filter: `id=eq.${demandId}` },
+        (payload) => {
+          const newStatus = payload.new?.status;
+          if (newStatus && newStatus !== currentDemandStatus) {
+            currentDemandStatus = newStatus;
+
+            /* Se fechou e o form está aberto, bloqueia */
+            const formAberto = document.getElementById('formWrapper').classList.contains('ready');
+            if (formAberto && !STATUS_ABERTOS.includes(newStatus)) {
+              mostrarToast('Esta demanda foi fechada pelo cliente.', 'error');
+              showClosed();
+            }
+          }
+        }
+      )
+      /* Nova proposta na mesma demanda — atualiza contador */
+      .on('postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'proposals', filter: `demand_id=eq.${demandId}` },
+        (payload) => {
+          const badge = document.getElementById('propostasCount');
+          if (badge) {
+            const atual = parseInt(badge.textContent, 10) || 0;
+            badge.textContent = atual + 1;
+          }
+
+          /* Se fui eu que enviei em outra aba */
+          if (payload.new?.provider_id === providerProfileId) {
+            const jaEnviou = document.getElementById('formWrapper').classList.contains('ready');
+            if (jaEnviou) {
+              showAlready();
+            }
+          }
+        }
+      )
+      .subscribe();
+  }
+
+  /* ============================================
+     CONFIGURAR FORM
+     ============================================ */
+  function configurarForm() {
+    const form = document.getElementById('propostaForm');
+    if (!form || form.dataset.bound === 'true') return;
+    form.dataset.bound = 'true';
+
+    /* Contador de mensagem */
+    const msgEl = document.getElementById('mensagem');
+    const counter = document.getElementById('msgCounter');
+    msgEl.addEventListener('input', () => {
+      const len = msgEl.value.length;
+      counter.textContent = `${len}/1000`;
+      counter.classList.toggle('limit', len >= 1000);
+    });
+
+    /* Submit */
+    form.addEventListener('submit', onSubmit);
+  }
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    if (submitting) return;
+
+    if (!providerProfileId) {
+      mostrarToast('Sessão expirada. Faça login novamente.', 'error');
+      setTimeout(() => window.location.href = '../index.html', 1200);
+      return;
+    }
+
+    /* Validação */
     const valorRaw = document.getElementById('valor').value;
     const prazoRaw = document.getElementById('prazo').value;
     const mensagem = document.getElementById('mensagem').value.trim();
 
     const valor = parseFloat(valorRaw);
     if (!valorRaw || isNaN(valor) || valor <= 0) {
-      alert('Informe um valor válido.');
+      mostrarToast('Informe um valor válido.', 'error');
+      document.getElementById('valor').focus();
+      return;
+    }
+    if (valor > 1000000) {
+      mostrarToast('Valor acima do limite permitido.', 'error');
       document.getElementById('valor').focus();
       return;
     }
 
     const prazo = parseInt(prazoRaw, 10);
     if (!prazoRaw || isNaN(prazo) || prazo <= 0) {
-      alert('Selecione um prazo.');
+      mostrarToast('Selecione um prazo.', 'error');
       document.getElementById('prazo').focus();
       return;
     }
 
     if (mensagem.length < 10) {
-      alert('Escreva uma mensagem com pelo menos 10 caracteres.');
+      mostrarToast('A mensagem precisa ter pelo menos 10 caracteres.', 'error');
+      document.getElementById('mensagem').focus();
+      return;
+    }
+    if (mensagem.length > 1000) {
+      mostrarToast('A mensagem não pode passar de 1000 caracteres.', 'error');
       document.getElementById('mensagem').focus();
       return;
     }
 
+    /* Bloqueia ANTES do await — evita double click */
+    submitting = true;
     const btn = document.getElementById('sendBtn');
     const originalHTML = btn.innerHTML;
     btn.innerHTML = 'Enviando...';
     btn.disabled = true;
 
-    const payload = {
-      demand_id: demandId,
-      provider_id: providerProfileId,
-      price: valor,
-      deadline_days: prazo,
-      message: mensagem,
-      status: 'pendente'
-    };
+    try {
+      /* Revalida status no banco — pode ter fechado entre o load e o submit */
+      const { data: freshDemand } = await supabase
+        .from('demands')
+        .select('status')
+        .eq('id', demandId)
+        .single();
 
-    const { error: insertError } = await db.from('proposals').insert(payload);
-
-    if (insertError) {
-      console.error('Erro insert:', insertError);
-
-      /* Duplicata: unique constraint */
-      if (insertError.code === '23505' || /duplicate/i.test(insertError.message)) {
-        mostrarJaEnviou();
+      if (!freshDemand || !STATUS_ABERTOS.includes(freshDemand.status)) {
+        mostrarToast('Esta demanda não está mais aberta.', 'error');
+        showClosed();
         return;
       }
 
-      alert('Erro ao enviar: ' + insertError.message);
+      const payload = {
+        demand_id: demandId,
+        provider_id: providerProfileId,
+        price: valor,
+        deadline_days: prazo,
+        message: mensagem,
+        status: 'pendente'
+      };
+
+      const { error: insertError } = await supabase.from('proposals').insert(payload);
+
+      if (insertError) {
+        console.error('Erro insert:', insertError);
+
+        /* Duplicata: unique constraint no banco */
+        if (insertError.code === '23505' || /duplicate|unique/i.test(insertError.message)) {
+          mostrarToast('Você já enviou uma proposta para esta demanda.', 'error');
+          showAlready();
+          return;
+        }
+
+        throw insertError;
+      }
+
+      /* Marca demanda como EM_PROPOSTAS (best effort, não bloqueia sucesso) */
+      supabase
+        .from('demands')
+        .update({ status: 'EM_PROPOSTAS' })
+        .eq('id', demandId)
+        .then(() => {})
+        .catch(err => console.warn('Não foi possível atualizar status da demanda:', err));
+
+      mostrarToast('Proposta enviada com sucesso!', 'success');
+      showSuccess();
+
+    } catch (err) {
+      console.error('Erro ao enviar proposta:', err);
+      mostrarToast('Erro ao enviar: ' + (err.message || 'tente novamente.'), 'error');
       btn.innerHTML = originalHTML;
       btn.disabled = false;
-      return;
+      submitting = false;
     }
+  }
 
-    /* Atualiza status da demanda para EM_PROPOSTAS */
-    await db
-      .from('demands')
-      .update({ status: 'EM_PROPOSTAS' })
-      .eq('id', demandId);
-
-    document.getElementById('detailCard').style.display = 'none';
-    document.getElementById('propostaForm').style.display = 'none';
-    document.getElementById('successState').classList.add('show');
-    document.getElementById('backLink').style.display = 'none';
+  /* ============================================
+     CLEANUP
+     ============================================ */
+  window.addEventListener('beforeunload', () => {
+    if (realtimeChannel && supabase) {
+      supabase.removeChannel(realtimeChannel).catch(() => {});
+    }
   });
 
   init();
