@@ -24,224 +24,90 @@
   }
 
   /* ---------- ICON SYSTEM ---------- */
-  .icon{
-    width:16px; height:16px;
-    stroke:currentColor;
-    stroke-width:1.75;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    fill:none;
-    flex-shrink:0;
-    display:block;
-  }
-  .icon-sm{ width:14px; height:14px; stroke-width:2; }
-  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
-  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+  .icon{ width:16px;height:16px;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;fill:none;flex-shrink:0;display:block; }
+  .icon-sm{ width:14px;height:14px;stroke-width:2; }
+  .icon-md{ width:18px;height:18px;stroke-width:1.75; }
+  .icon-lg{ width:22px;height:22px;stroke-width:1.5; }
 
-  /* ---------- CONTEÚDO MAIS TIGHT ---------- */
-  .main-content{
-    padding:var(--space-4) var(--space-4) var(--space-6);
-  }
+  /* ---------- MAIN ---------- */
+  .main-content{ padding:var(--space-4) var(--space-4) var(--space-6); }
 
   /* ---------- PAGE TOPBAR ---------- */
-  .page-topbar{
-    display:flex;
-    flex-direction:column;
-    gap:var(--space-2);
-    margin-bottom:var(--space-3);
-  }
-  .page-topbar h1{
-    font-size:var(--font-size-xl);
-    font-weight:var(--font-weight-extrabold);
-    letter-spacing:var(--tracking-tighter);
-    margin:0 0 2px;
-    line-height:var(--line-height-snug);
-  }
-  .page-topbar .sub{
-    font-size:var(--font-size-sm);
-    color:var(--text-secondary);
-    line-height:var(--line-height-normal);
-  }
-  .page-topbar .btn{
-    width:100%;
-    padding:13px 18px;
-    font-size:var(--font-size-sm);
-  }
+  .page-topbar{ display:flex; flex-direction:column; gap:var(--space-2); margin-bottom:var(--space-3); }
+  .page-topbar h1{ font-size:var(--font-size-xl); font-weight:var(--font-weight-extrabold); letter-spacing:var(--tracking-tighter); margin:0 0 2px; line-height:var(--line-height-snug); }
+  .page-topbar .sub{ font-size:var(--font-size-sm); color:var(--text-secondary); line-height:var(--line-height-normal); }
+  .page-topbar .btn{ width:100%; padding:13px 18px; font-size:var(--font-size-sm); }
 
   /* ---------- STAT GRID ---------- */
-  .stat-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:var(--space-2);
-    margin-bottom:var(--space-5);
-  }
-  .stat-card{
-    background:var(--surface-default);
-    border:1px solid var(--border-default);
-    border-radius:var(--radius-md);
-    padding:var(--space-4);
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-    transition:transform var(--duration-base) var(--ease-out),
-               box-shadow var(--duration-base) var(--ease-out);
-  }
-  .stat-card:hover{
-    box-shadow:var(--shadow-sm);
-  }
-  .stat-card.highlight{
-    border-left:3px solid var(--color-brand-blue-deep);
-  }
-  .stat-value{
-    font-size:var(--font-size-2xl);
-    font-weight:var(--font-weight-extrabold);
-    color:var(--text-primary);
-    line-height:1.1;
-    letter-spacing:var(--tracking-tighter);
-    font-variant-numeric:tabular-nums;
-  }
-  .stat-label{
-    font-size:11px;
-    font-weight:var(--font-weight-bold);
-    color:var(--text-secondary);
-    text-transform:uppercase;
-    letter-spacing:var(--tracking-wider);
-    line-height:var(--line-height-snug);
-  }
+  .stat-grid{ display:grid; grid-template-columns:1fr; gap:var(--space-2); margin-bottom:var(--space-5); }
+  .stat-card{ background:var(--surface-default); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:var(--space-4); display:flex; flex-direction:column; gap:2px; transition:transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out); }
+  .stat-card.highlight{ border-left:3px solid var(--color-brand-blue-deep); }
+  .stat-value{ font-size:var(--font-size-2xl); font-weight:var(--font-weight-extrabold); color:var(--text-primary); line-height:1.1; letter-spacing:var(--tracking-tighter); font-variant-numeric:tabular-nums; }
+  .stat-value.is-loading{ color:var(--color-gray-300); }
+  .stat-label{ font-size:11px; font-weight:var(--font-weight-bold); color:var(--text-secondary); text-transform:uppercase; letter-spacing:var(--tracking-wider); line-height:var(--line-height-snug); }
 
   /* ---------- SECTION HEADING ---------- */
-  .section-heading{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:var(--space-3);
-    margin:var(--space-5) 0 var(--space-3);
-  }
-  .section-heading h2{
-    font-size:var(--font-size-base);
-    font-weight:var(--font-weight-bold);
-    color:var(--text-primary);
-    letter-spacing:var(--tracking-tight);
-    margin:0;
-  }
-  .section-heading a{
-    display:inline-flex;
-    align-items:center;
-    gap:4px;
-    font-size:var(--font-size-xs);
-    font-weight:var(--font-weight-semibold);
-    color:var(--text-link);
-    text-decoration:none;
-    white-space:nowrap;
-    transition:opacity var(--duration-fast);
-  }
+  .section-heading{ display:flex; justify-content:space-between; align-items:baseline; gap:var(--space-3); margin:var(--space-5) 0 var(--space-3); }
+  .section-heading h2{ font-size:var(--font-size-base); font-weight:var(--font-weight-bold); color:var(--text-primary); letter-spacing:var(--tracking-tight); margin:0; }
+  .section-heading a{ display:inline-flex; align-items:center; gap:4px; font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); color:var(--text-link); text-decoration:none; white-space:nowrap; transition:opacity var(--duration-fast); }
   .section-heading a:hover{ opacity:0.7; }
 
-  /* ---------- EMPTY STATE COMPACTO ---------- */
-  .empty-state{
-    text-align:center;
-    padding:var(--space-6) var(--space-4);
-    background:var(--surface-default);
-    border:1px dashed var(--border-default);
-    border-radius:var(--radius-md);
-    color:var(--text-secondary);
-  }
-  .empty-state h3{
-    font-size:var(--font-size-sm);
-    font-weight:var(--font-weight-bold);
-    color:var(--text-primary);
-    margin:0 0 4px;
-    letter-spacing:var(--tracking-tight);
-  }
-  .empty-state p{
-    font-size:var(--font-size-xs);
-    line-height:var(--line-height-normal);
-    margin:0 auto;
-    max-width:34ch;
-  }
+  /* ---------- LIST ROW (mesmo padrão de ordens-servico.html) ---------- */
+  .list-row{ cursor:pointer; transition:background var(--duration-fast), border-color var(--duration-fast); }
+  .list-row:hover{ border-color:var(--color-brand-blue-deep); }
+  .list-row-value{ font-weight:var(--font-weight-bold); font-size:var(--font-size-base); color:var(--color-brand-blue-deep); letter-spacing:var(--tracking-tight); font-variant-numeric:tabular-nums; }
+
+  /* ---------- STATUS BADGES ---------- */
+  .status-recebendo{ background:var(--color-gray-100); color:var(--color-gray-700); }
+  .status-andamento{ background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep); }
+  .status-concluido{ background:var(--color-black); color:var(--color-white); }
+  .status-cancelado{ background:var(--color-gray-100); color:var(--color-gray-500); text-decoration:line-through; }
+
+  /* ---------- EMPTY STATE ---------- */
+  .empty-state{ text-align:center; padding:var(--space-6) var(--space-4); background:var(--surface-default); border:1px dashed var(--border-default); border-radius:var(--radius-md); color:var(--text-secondary); }
+  .empty-state h3{ font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); color:var(--text-primary); margin:0 0 4px; letter-spacing:var(--tracking-tight); }
+  .empty-state p{ font-size:var(--font-size-xs); line-height:var(--line-height-normal); margin:0 auto; max-width:34ch; }
+
+  /* ---------- LOADING / SKELETON ---------- */
+  .loading-row{ display:flex; align-items:center; gap:var(--space-3); padding:var(--space-4); background:var(--surface-default); border:1px solid var(--border-default); border-radius:var(--radius-md); color:var(--text-secondary); font-size:var(--font-size-sm); }
+  .loading-row::after{ content:''; display:inline-block; width:16px; height:16px; margin-left:auto; border:2px solid var(--color-gray-200); border-top-color:var(--color-brand-blue-deep); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ---------- TOAST ---------- */
+  .toast-container{ position:fixed; bottom:90px; right:24px; left:24px; z-index:var(--z-toast); display:flex; flex-direction:column; gap:var(--space-2); pointer-events:none; align-items:flex-end; }
+  .toast{ background:var(--color-black); color:var(--color-white); padding:var(--space-3) var(--space-5); border-radius:var(--radius-sm); box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:var(--space-3); font-size:var(--font-size-sm); font-weight:var(--font-weight-medium); animation:slideIn .35s cubic-bezier(.16,1,.3,1) forwards; min-width:260px; max-width:380px; border-left:4px solid var(--color-brand-blue); pointer-events:auto; }
+  .toast.success{ border-left-color:var(--color-success); }
+  .toast.error{ border-left-color:var(--color-error); }
+  .toast .icon{ width:16px;height:16px;stroke-width:2.25; }
+  @keyframes slideIn{ from{ transform:translateX(120%); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+  @keyframes slideOut{ from{ transform:translateX(0); opacity:1; } to{ transform:translateX(120%); opacity:0; } }
 
   /* ---------- MOBILE NAV ---------- */
   .mobile-nav{ display:none; }
-
   @media (max-width:1023px){
-    .mobile-nav{
-      display:grid !important;
-      grid-template-columns:repeat(5, 1fr);
-      position:fixed;
-      bottom:0; left:0; right:0;
-      height:var(--app-mobile-nav-height);
-      background:var(--surface-default);
-      border-top:1px solid var(--border-default);
-      align-items:stretch;
-      z-index:var(--z-sticky);
-      padding-bottom:env(safe-area-inset-bottom);
-      box-shadow:0 -4px 20px rgba(10,10,10,.05);
-      isolation:isolate;
-    }
-    .mobile-nav-item{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:3px;
-      text-decoration:none;
-      color:var(--color-gray-400);
-      font-size:11px;
-      font-weight:var(--font-weight-semibold);
-      height:100%;
-      position:relative;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-      user-select:none;
-      transition:color var(--duration-base) var(--ease-out),
-                 transform var(--duration-fast) var(--ease-out);
-    }
+    .mobile-nav{ display:grid !important; grid-template-columns:repeat(5, 1fr); position:fixed; bottom:0; left:0; right:0; height:var(--app-mobile-nav-height); background:var(--surface-default); border-top:1px solid var(--border-default); align-items:stretch; z-index:var(--z-sticky); padding-bottom:env(safe-area-inset-bottom); box-shadow:0 -4px 20px rgba(10,10,10,.05); isolation:isolate; }
+    .mobile-nav-item{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; text-decoration:none; color:var(--color-gray-400); font-size:11px; font-weight:var(--font-weight-semibold); height:100%; position:relative; -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none; transition:color var(--duration-base) var(--ease-out), transform var(--duration-fast) var(--ease-out); }
     .mobile-nav-item:active{ transform:scale(0.88); }
     .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
-    .mobile-nav-item.active::before{
-      content:'';
-      position:absolute;
-      top:6px; left:50%;
-      transform:translateX(-50%);
-      width:5px; height:5px;
-      background:var(--color-brand-blue);
-      border-radius:50%;
-    }
+    .mobile-nav-item.active::before{ content:''; position:absolute; top:6px; left:50%; transform:translateX(-50%); width:5px; height:5px; background:var(--color-brand-blue); border-radius:50%; }
   }
 
-  /* ---------- TABLET (≥ 640px) ---------- */
+  /* ---------- TABLET ---------- */
   @media (min-width:640px){
-    .main-content{
-      padding:var(--space-5) var(--space-6) var(--space-8);
-    }
-    .page-topbar{
-      flex-direction:row;
-      justify-content:space-between;
-      align-items:flex-end;
-    }
+    .main-content{ padding:var(--space-5) var(--space-6) var(--space-8); }
+    .page-topbar{ flex-direction:row; justify-content:space-between; align-items:flex-end; }
     .page-topbar .btn{ width:auto; }
-
-    .stat-grid{
-      grid-template-columns:repeat(3, 1fr);
-      gap:var(--space-3);
-    }
+    .stat-grid{ grid-template-columns:repeat(3, 1fr); gap:var(--space-3); }
     .stat-card{ padding:var(--space-4) var(--space-5); }
     .stat-value{ font-size:var(--font-size-3xl); }
+    .toast-container{ right:16px; left:auto; }
   }
 
-  /* ---------- DESKTOP (≥ 1024px) ---------- */
+  /* ---------- DESKTOP ---------- */
   @media (min-width:1024px){
-    .main-content{
-      padding:var(--space-6) var(--space-8) var(--space-12);
-    }
-    .stat-card:hover{
-      transform:translateY(-2px);
-      box-shadow:var(--shadow-md);
-    }
-    .nav-item.active{
-      background:rgba(0,87,255,.14);
-      border-left:2px solid var(--color-brand-blue);
-    }
+    .main-content{ padding:var(--space-6) var(--space-8) var(--space-12); }
+    .stat-card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-md); }
+    .nav-item.active{ background:rgba(0,87,255,.14); border-left:2px solid var(--color-brand-blue); }
   }
 </style>
 </head>
@@ -253,82 +119,36 @@
 
     <nav class="sidebar-nav">
       <a class="nav-item active" href="dashboard-prestador.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <rect width="7" height="9" x="3" y="3" rx="1"/>
-            <rect width="7" height="5" x="14" y="3" rx="1"/>
-            <rect width="7" height="9" x="14" y="12" rx="1"/>
-            <rect width="7" height="5" x="3" y="16" rx="1"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
         Visão Geral
       </a>
       <a class="nav-item" href="demandas-disponiveis.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.3-4.3"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
         Demandas Disponíveis
       </a>
       <a class="nav-item" href="minhas-propostas.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" x2="8" y1="13" y2="13"/>
-            <line x1="16" x2="8" y1="17" y2="17"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg></span>
         Minhas Propostas
       </a>
       <a class="nav-item" href="ordens-servico.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-            <path d="m9 14 2 2 4-4"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></span>
         Ordens de Serviço
       </a>
       <a class="nav-item" href="historico-financeiro.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <rect width="20" height="14" x="2" y="5" rx="2"/>
-            <line x1="2" x2="22" y1="10" y2="10"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></span>
         Histórico Financeiro
       </a>
       <a class="nav-item" href="meu-perfil-prestador.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
         Meus Dados
       </a>
       <a class="nav-item" href="meus-trabalhos.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <rect width="20" height="14" x="2" y="7" rx="2"/>
-            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
         Meus Trabalhos
       </a>
       <div style="flex:1"></div>
       <a class="nav-item" href="#" id="logoutBtn" style="margin-top:auto;">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-            <polyline points="16 17 21 12 16 7"/>
-            <line x1="21" x2="9" y1="12" y2="12"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></span>
         Sair
       </a>
     </nav>
@@ -347,26 +167,23 @@
         <div class="sub">Gerencie propostas e acompanhe serviços ativos.</div>
       </div>
       <a class="btn btn-brand" href="demandas-disponiveis.html">
-        <svg class="icon icon-sm" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.3-4.3"/>
-        </svg>
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         Buscar demandas
       </a>
     </div>
 
     <div class="stat-grid">
       <div class="stat-card highlight">
-        <div class="stat-value" id="statDisponiveis">0</div>
+        <div class="stat-value is-loading" id="statDisponiveis">—</div>
         <div class="stat-label">Oportunidades próximas</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="statPropostas">0</div>
+        <div class="stat-value is-loading" id="statPropostas">—</div>
         <div class="stat-label">Propostas enviadas</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="statAndamento">0</div>
-        <div class="stat-label">Serviços em andamento</div>
+        <div class="stat-value is-loading" id="statAndamento">—</div>
+        <div class="stat-label">Serviços ativos</div>
       </div>
     </div>
 
@@ -374,76 +191,50 @@
       <h2>Propostas recentes</h2>
       <a href="minhas-propostas.html">
         ver todas
-        <svg class="icon icon-sm" viewBox="0 0 24 24">
-          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-        </svg>
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
-    <div id="propostasRecentes"></div>
+    <div id="propostasRecentes">
+      <div class="loading-row">Carregando propostas...</div>
+    </div>
 
     <div class="section-heading">
       <h2>Serviços em andamento</h2>
       <a href="ordens-servico.html">
         ver todos
-        <svg class="icon icon-sm" viewBox="0 0 24 24">
-          <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-        </svg>
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
     </div>
-    <div id="servicosAndamento"></div>
+    <div id="servicosAndamento">
+      <div class="loading-row">Carregando serviços...</div>
+    </div>
   </main>
 </div>
 
 <nav class="mobile-nav" aria-label="Navegação principal">
   <a href="dashboard-prestador.html" class="mobile-nav-item active">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
     <span>Início</span>
   </a>
   <a href="demandas-disponiveis.html" class="mobile-nav-item">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"/>
-        <path d="m21 21-4.3-4.3"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
     <span>Demandas</span>
   </a>
   <a href="minhas-propostas.html" class="mobile-nav-item">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" x2="8" y1="13" y2="13"/>
-        <line x1="16" x2="8" y1="17" y2="17"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg></span>
     <span>Propostas</span>
   </a>
   <a href="ordens-servico.html" class="mobile-nav-item">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-        <path d="m9 14 2 2 4-4"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></span>
     <span>Ordens</span>
   </a>
   <a href="meu-perfil-prestador.html" class="mobile-nav-item">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
     <span>Perfil</span>
   </a>
 </nav>
+
+<div class="toast-container" id="toastContainer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
@@ -453,130 +244,394 @@
 <script src="../app.js"></script>
 
 <script>
+  /* ==========================================
+     ESTADO
+     ========================================== */
+  let providerProfileId = null;
+  let currentSessionUserId = null;
+
+  /* ==========================================
+     MAPA DE STATUS — alinhado com ordens-servico.html
+     ========================================== */
+  const CONTRACT_STATUS = {
+    'aguardando_prestador':       { label: 'Você foi contratado',   cls: 'status-recebendo' },
+    'prestador_a_caminho':        { label: 'A caminho',             cls: 'status-recebendo' },
+    'prestador_no_local':         { label: 'Aguardando pagamento',  cls: 'status-andamento' },
+    'aguardando_pagamento':       { label: 'Confirmando Pix',       cls: 'status-andamento' },
+    'em_andamento':               { label: 'Em andamento',          cls: 'status-andamento' },
+    'aguardando_confirmacao_fim': { label: 'Aguardando código',     cls: 'status-andamento' },
+    'finalizado':                 { label: 'Concluída',             cls: 'status-concluido' },
+    'cancelado':                  { label: 'Cancelada',             cls: 'status-cancelado' }
+  };
+
+  const PROPOSAL_STATUS = {
+    'pendente':  { label: 'Aguardando cliente', cls: 'status-recebendo' },
+    'PENDENTE':  { label: 'Aguardando cliente', cls: 'status-recebendo' },
+    'ACEITA':    { label: 'Aceita',             cls: 'status-andamento' },
+    'aceita':    { label: 'Aceita',             cls: 'status-andamento' },
+    'RECUSADA':  { label: 'Recusada',           cls: 'status-cancelado' },
+    'recusada':  { label: 'Recusada',           cls: 'status-cancelado' },
+    'CANCELADA': { label: 'Cancelada',          cls: 'status-cancelado' },
+    'cancelada': { label: 'Cancelada',          cls: 'status-cancelado' }
+  };
+
+  /* Status que contam como "serviço ativo" */
+  const ACTIVE_CONTRACT_STATUSES = [
+    'aguardando_prestador',
+    'prestador_a_caminho',
+    'prestador_no_local',
+    'aguardando_pagamento',
+    'em_andamento',
+    'aguardando_confirmacao_fim'
+  ];
+
+  /* ==========================================
+     HELPERS
+     ========================================== */
+  function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'
+    }[tag]));
+  }
+
+  function formatarMoeda(v) {
+    const n = Number(v) || 0;
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
+  }
+
+  function mostrarToast(mensagem, tipo = 'error') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = `toast ${tipo}`;
+    const icon = tipo === 'success'
+      ? `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+      : `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`;
+    toast.innerHTML = `${icon}<span>${escapeHTML(mensagem)}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'slideOut .3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
+  }
+
+  /* ==========================================
+     INIT
+     ========================================== */
   async function init() {
-    if (!window.supabaseClient) {
-      window.location.reload();
+    const supabase = window.supabaseClient;
+    if (!supabase) {
+      setTimeout(() => window.location.reload(), 800);
       return;
     }
 
     try {
-      const { data: sessionData, error: sessionError } = await window.supabaseClient.auth.getSession();
-
-      if (sessionError || !sessionData.session) {
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !session) {
         window.location.href = '../index.html';
         return;
       }
 
-      const userId = sessionData.session.user.id;
+      currentSessionUserId = session.user.id;
 
-      const { data: profile } = await window.supabaseClient
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('full_name, city, uf, entity_type')
-        .eq('user_id', userId)
+        .select('id, full_name, city, uf')
+        .eq('user_id', currentSessionUserId)
         .single();
 
-      if (profile) {
-        const nomeEl = document.getElementById('userName');
-        const locEl = document.getElementById('userLoc');
-        if (nomeEl) nomeEl.textContent = `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
-        if (locEl) locEl.textContent = profile.city
-          ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
-          : 'Local não definido';
+      if (profileError || !profile) {
+        console.error('Perfil não encontrado:', profileError);
+        document.getElementById('userName').textContent = 'Perfil não encontrado';
+        return;
       }
 
-      let countPropostas = 0;
-      let countOrdens = 0;
-      let countDisponiveis = 0;
+      providerProfileId = profile.id;
 
-      try {
-        const { count } = await window.supabaseClient
-          .from('proposals')
-          .select('*', { count: 'exact', head: true })
-          .eq('provider_id', userId);
-        countPropostas = count || 0;
-      } catch (e) { /* tabela opcional */ }
+      /* Sidebar */
+      document.getElementById('userName').textContent =
+        `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
+      document.getElementById('userLoc').textContent = profile.city
+        ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
+        : 'Local não definido';
 
-      try {
-        const { count } = await window.supabaseClient
-          .from('service_orders')
-          .select('*', { count: 'exact', head: true })
-          .eq('provider_id', userId)
-          .in('status', ['agendado', 'em_andamento', 'andamento']);
-        countOrdens = count || 0;
-      } catch (e) { /* tabela opcional */ }
+      /* Configura realtime e logout antes de carregar (para não travar UI se demorar) */
+      configurarRealtime(supabase);
+      configurarLogout(supabase);
 
-      try {
-        const { count } = await window.supabaseClient
-          .from('demands')
-          .select('*', { count: 'exact', head: true })
-          .in('status', ['OPEN', 'ABERTA', 'EM_PROPOSTAS']);
-        countDisponiveis = count || 0;
-      } catch (e) { /* tabela opcional */ }
-
-      document.getElementById('statDisponiveis').textContent = countDisponiveis;
-      document.getElementById('statPropostas').textContent = countPropostas;
-      document.getElementById('statAndamento').textContent = countOrdens;
-
-      renderPropostas([]);
-      renderServicos([]);
-
-      configurarRealtime();
+      /* Carrega tudo em paralelo */
+      await Promise.all([
+        carregarStats(supabase),
+        carregarPropostasRecentes(supabase),
+        carregarServicosAndamento(supabase)
+      ]);
 
     } catch (err) {
-      console.error("Erro crítico no dashboard:", err);
-      const nomeEl = document.getElementById('userName');
-      if (nomeEl) nomeEl.textContent = "Erro ao carregar.";
+      console.error('Erro crítico no dashboard:', err);
+      document.getElementById('userName').textContent = 'Erro ao carregar';
+      mostrarToast('Erro ao carregar o painel.', 'error');
     }
   }
 
-  function configurarRealtime() {
-    const supabase = window.supabaseClient;
-    if (!supabase) return;
+  /* ==========================================
+     STATS
+     ========================================== */
+  async function carregarStats(supabase) {
+    if (!providerProfileId) return;
 
+    const setStat = (id, value) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = value;
+      el.classList.remove('is-loading');
+    };
+
+    /* Oportunidades disponíveis (demandas abertas) */
+    try {
+      const { count, error } = await supabase
+        .from('demands')
+        .select('*', { count: 'exact', head: true })
+        .in('status', ['OPEN', 'ABERTA', 'EM_PROPOSTAS']);
+
+      if (error) throw error;
+      setStat('statDisponiveis', count || 0);
+    } catch (e) {
+      console.warn('Erro ao contar demandas:', e);
+      setStat('statDisponiveis', 0);
+    }
+
+    /* Propostas enviadas pelo prestador */
+    try {
+      const { count, error } = await supabase
+        .from('proposals')
+        .select('*', { count: 'exact', head: true })
+        .eq('provider_id', providerProfileId);
+
+      if (error) throw error;
+      setStat('statPropostas', count || 0);
+    } catch (e) {
+      console.warn('Erro ao contar propostas:', e);
+      setStat('statPropostas', 0);
+    }
+
+    /* Serviços ativos (contratos em andamento do prestador) */
+    try {
+      const { data, error } = await supabase
+        .from('contracts')
+        .select('id, status, proposal:proposals!inner(provider_id)')
+        .eq('proposal.provider_id', providerProfileId)
+        .in('status', ACTIVE_CONTRACT_STATUSES);
+
+      if (error) throw error;
+      setStat('statAndamento', (data || []).length);
+    } catch (e) {
+      console.warn('Erro ao contar serviços ativos:', e);
+      setStat('statAndamento', 0);
+    }
+  }
+
+  /* ==========================================
+     PROPOSTAS RECENTES (últimas 3)
+     ========================================== */
+  async function carregarPropostasRecentes(supabase) {
+    const el = document.getElementById('propostasRecentes');
+    if (!el || !providerProfileId) return;
+
+    try {
+      const { data: proposals, error } = await supabase
+        .from('proposals')
+        .select(`
+          id, price, status, created_at,
+          demand:demands ( title, city, neighborhood )
+        `)
+        .eq('provider_id', providerProfileId)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      if (error) throw error;
+
+      if (!proposals || proposals.length === 0) {
+        el.innerHTML = `
+          <div class="empty-state">
+            <h3>Nenhuma proposta ainda</h3>
+            <p>Busque demandas disponíveis e envie sua primeira proposta.</p>
+          </div>`;
+        return;
+      }
+
+      el.innerHTML = proposals.map(p => renderPropostaRow(p)).join('');
+
+      el.querySelectorAll('.list-row').forEach(row => {
+        row.addEventListener('click', () => {
+          const id = row.dataset.proposalId;
+          if (id) window.location.href = `detalhe-demanda-prestador.html?id=${id}`;
+        });
+      });
+
+    } catch (err) {
+      console.error('Erro ao carregar propostas:', err);
+      el.innerHTML = `
+        <div class="empty-state">
+          <h3>Não foi possível carregar</h3>
+          <p>Tente novamente em instantes.</p>
+        </div>`;
+    }
+  }
+
+  function renderPropostaRow(p) {
+    const st = PROPOSAL_STATUS[p.status] || { label: p.status || 'Pendente', cls: 'status-recebendo' };
+    const titulo = p.demand?.title || 'Demanda';
+    const local = [p.demand?.neighborhood, p.demand?.city].filter(Boolean).join(', ') || 'Local não definido';
+    const valor = p.price ? formatarMoeda(p.price) : 'A combinar';
+
+    return `
+      <div class="list-row" data-proposal-id="${escapeHTML(p.id)}" style="margin-bottom:var(--space-2);">
+        <div class="avatar avatar-md">
+          <svg class="icon icon-md" viewBox="0 0 24 24" style="color:var(--color-gray-700);">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>
+        <div class="list-row-main">
+          <div class="list-row-title">${escapeHTML(titulo)}</div>
+          <div class="list-row-sub">
+            <span style="display:inline-flex;align-items:center;gap:4px;">
+              <svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2;">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              ${escapeHTML(local)}
+            </span>
+          </div>
+        </div>
+        <div class="list-row-side">
+          <span class="status-badge ${st.cls}">${escapeHTML(st.label)}</span>
+          <span class="list-row-value">${valor}</span>
+        </div>
+      </div>`;
+  }
+
+  /* ==========================================
+     SERVIÇOS EM ANDAMENTO (últimos 3)
+     ========================================== */
+  async function carregarServicosAndamento(supabase) {
+    const el = document.getElementById('servicosAndamento');
+    if (!el || !providerProfileId) return;
+
+    try {
+      const { data: contracts, error } = await supabase
+        .from('contracts')
+        .select(`
+          id, status, final_price, created_at,
+          demand:demands ( title, city, neighborhood ),
+          proposal:proposals!inner ( id, provider_id )
+        `)
+        .eq('proposal.provider_id', providerProfileId)
+        .in('status', ACTIVE_CONTRACT_STATUSES)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      if (error) throw error;
+
+      if (!contracts || contracts.length === 0) {
+        el.innerHTML = `
+          <div class="empty-state">
+            <h3>Nenhum serviço em andamento</h3>
+            <p>Seus serviços ativos aparecerão aqui assim que uma proposta for aceita.</p>
+          </div>`;
+        return;
+      }
+
+      el.innerHTML = contracts.map(c => renderServicoRow(c)).join('');
+
+      el.querySelectorAll('.list-row').forEach(row => {
+        row.addEventListener('click', () => {
+          const proposalId = row.dataset.proposalId;
+          if (proposalId) window.location.href = `detalhe-demanda-prestador.html?id=${proposalId}`;
+        });
+      });
+
+    } catch (err) {
+      console.error('Erro ao carregar serviços:', err);
+      el.innerHTML = `
+        <div class="empty-state">
+          <h3>Não foi possível carregar</h3>
+          <p>Tente novamente em instantes.</p>
+        </div>`;
+    }
+  }
+
+  function renderServicoRow(c) {
+    const st = CONTRACT_STATUS[c.status] || { label: c.status, cls: 'status-recebendo' };
+    const titulo = c.demand?.title || 'Serviço';
+    const local = [c.demand?.neighborhood, c.demand?.city].filter(Boolean).join(', ') || 'Local não definido';
+    const valor = c.final_price ? formatarMoeda(c.final_price) : 'A combinar';
+    const proposalId = c.proposal?.id || '';
+
+    return `
+      <div class="list-row" data-proposal-id="${escapeHTML(proposalId)}" style="margin-bottom:var(--space-2);">
+        <div class="avatar avatar-md">
+          <svg class="icon icon-md" viewBox="0 0 24 24" style="color:var(--color-gray-700);">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div class="list-row-main">
+          <div class="list-row-title">${escapeHTML(titulo)}</div>
+          <div class="list-row-sub">
+            <span style="display:inline-flex;align-items:center;gap:4px;">
+              <svg class="icon" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2;">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              ${escapeHTML(local)}
+            </span>
+          </div>
+        </div>
+        <div class="list-row-side">
+          <span class="status-badge ${st.cls}">${escapeHTML(st.label)}</span>
+          <span class="list-row-value">${valor}</span>
+        </div>
+      </div>`;
+  }
+
+  /* ==========================================
+     REALTIME
+     ========================================== */
+  function configurarRealtime(supabase) {
     supabase
       .channel('dashboard-prestador-realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'proposals' },      () => init())
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'service_orders' }, () => init())
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'demands' },        () => init())
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'proposals' },
+        () => { carregarStats(supabase); carregarPropostasRecentes(supabase); }
+      )
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'contracts' },
+        () => { carregarStats(supabase); carregarServicosAndamento(supabase); }
+      )
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'demands' },
+        () => carregarStats(supabase)
+      )
       .subscribe();
   }
 
-  function renderPropostas(proposals) {
-    const el = document.getElementById('propostasRecentes');
-    if (!el) return;
-
-    if (!proposals || proposals.length === 0) {
-      el.innerHTML = `
-        <div class="empty-state">
-          <h3>Nenhuma proposta ainda</h3>
-          <p>Busque demandas disponíveis e envie sua primeira proposta.</p>
-        </div>`;
-      return;
-    }
+  /* ==========================================
+     LOGOUT
+     ========================================== */
+  function configurarLogout(supabase) {
+    const btn = document.getElementById('logoutBtn');
+    if (!btn) return;
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        await supabase.auth.signOut();
+      } catch (err) {
+        console.warn('Erro no logout:', err);
+      }
+      window.location.href = '../index.html';
+    });
   }
-
-  function renderServicos(orders) {
-    const el = document.getElementById('servicosAndamento');
-    if (!el) return;
-
-    if (!orders || orders.length === 0) {
-      el.innerHTML = `
-        <div class="empty-state">
-          <h3>Nenhum serviço em andamento</h3>
-          <p>Seus serviços ativos aparecerão aqui assim que uma proposta for aceita.</p>
-        </div>`;
-      return;
-    }
-  }
-
-  document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    const supabase = window.supabaseClient;
-    if (supabase) {
-      await supabase.auth.signOut();
-    }
-    window.location.href = '../index.html';
-  });
 
   init();
 </script>
