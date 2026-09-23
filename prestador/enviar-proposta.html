@@ -14,137 +14,70 @@
 <link rel="stylesheet" href="../style.css">
 
 <style>
-  /* ---------- ICON SYSTEM ---------- */
-  .icon{
-    width:16px; height:16px;
-    stroke:currentColor;
-    stroke-width:1.75;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    fill:none;
-    flex-shrink:0;
-    display:block;
-  }
+  .icon{ width:16px; height:16px; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; fill:none; flex-shrink:0; display:block; }
   .icon-sm{ width:14px; height:14px; stroke-width:2; }
   .icon-md{ width:18px; height:18px; stroke-width:1.75; }
   .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
 
-  /* ---------- WRAP ---------- */
   .wrap{ padding:var(--space-4) var(--space-5) var(--space-12); }
 
-  /* ---------- CARD LABEL · azul (prestador) ---------- */
-  .card-label .dot{
-    background:var(--color-brand-blue) !important;
-  }
+  .card-label .dot{ background:var(--color-brand-blue) !important; }
 
-  /* ---------- DETAIL LINES ---------- */
-  .detail-lines{
-    border-top:1px solid var(--border-default);
-    padding-top:var(--space-3);
-  }
+  .detail-lines{ border-top:1px solid var(--border-default); padding-top:var(--space-3); }
   .detail-line{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:var(--space-3);
-    padding:7px 0;
-    font-size:var(--font-size-sm);
+    display:flex; justify-content:space-between; align-items:center;
+    gap:var(--space-3); padding:7px 0; font-size:var(--font-size-sm);
   }
   .detail-line span:first-child{ color:var(--text-secondary); }
   .detail-line span:last-child{
-    font-weight:var(--font-weight-semibold);
-    color:var(--text-primary);
-    text-align:right;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
+    font-weight:var(--font-weight-semibold); color:var(--text-primary);
+    text-align:right; display:inline-flex; align-items:center; gap:6px;
   }
   .detail-line .count-badge{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:24px;
-    padding:2px 8px;
-    background:rgba(0,68,204,.10);
-    color:var(--color-brand-blue-deep);
-    border-radius:var(--radius-full);
-    font-size:var(--font-size-xs);
-    font-weight:var(--font-weight-bold);
-    font-variant-numeric:tabular-nums;
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:24px; padding:2px 8px;
+    background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep);
+    border-radius:var(--radius-full); font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-bold); font-variant-numeric:tabular-nums;
   }
 
-  /* ---------- DEMAND DESC ---------- */
   .demand-desc{
-    font-size:var(--font-size-sm);
-    color:var(--text-secondary);
-    line-height:var(--line-height-relaxed);
-    margin:var(--space-4) 0 0;
+    font-size:var(--font-size-sm); color:var(--text-secondary);
+    line-height:var(--line-height-relaxed); margin:var(--space-4) 0 0;
     font-style:italic;
   }
 
-  /* ---------- SUCCESS ---------- */
-  .success-state{
-    text-align:center;
-    padding:var(--space-6) var(--space-4) var(--space-4);
-    display:none;
-  }
-  .success-state.show{
-    display:block;
-    animation:fadeIn var(--duration-slow) var(--ease-out);
-  }
-  @keyframes fadeIn{
-    from{ opacity:0; transform:translateY(10px); }
-    to{ opacity:1; transform:translateY(0); }
-  }
+  .success-state{ text-align:center; padding:var(--space-6) var(--space-4) var(--space-4); display:none; }
+  .success-state.show{ display:block; animation:fadeIn var(--duration-slow) var(--ease-out); }
+  @keyframes fadeIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
 
   .check-circle{
-    width:56px; height:56px;
-    border-radius:50%;
-    background:rgba(0,68,204,.10);
-    color:var(--color-brand-blue-deep);
+    width:56px; height:56px; border-radius:50%;
+    background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep);
     margin:0 auto var(--space-4);
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    display:flex; align-items:center; justify-content:center;
   }
   .check-circle .icon{ width:26px; height:26px; stroke-width:2.5; }
 
   .success-state h3{
-    font-size:var(--font-size-lg);
-    font-weight:var(--font-weight-extrabold);
-    letter-spacing:var(--tracking-tight);
-    margin:0 0 var(--space-2);
+    font-size:var(--font-size-lg); font-weight:var(--font-weight-extrabold);
+    letter-spacing:var(--tracking-tight); margin:0 0 var(--space-2);
     color:var(--text-primary);
   }
   .success-state p{
-    font-size:var(--font-size-sm);
-    color:var(--text-secondary);
-    margin:0 0 var(--space-5);
-    line-height:var(--line-height-normal);
-    max-width:36ch;
-    margin-left:auto;
-    margin-right:auto;
+    font-size:var(--font-size-sm); color:var(--text-secondary);
+    margin:0 0 var(--space-5); line-height:var(--line-height-normal);
+    max-width:36ch; margin-left:auto; margin-right:auto;
   }
 
-  /* ---------- SEND BUTTON (azul) ---------- */
   .send-btn{
-    width:100%;
-    margin-top:var(--space-3);
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    background:var(--color-brand-blue-deep);
-    color:var(--color-white);
-    border:none;
-    padding:16px 20px;
-    font-family:var(--font-family-base);
-    font-weight:var(--font-weight-bold);
-    font-size:var(--font-size-base);
-    letter-spacing:var(--tracking-wide);
-    text-transform:uppercase;
-    border-radius:var(--radius-sm);
-    cursor:pointer;
+    width:100%; margin-top:var(--space-3);
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--color-brand-blue-deep); color:var(--color-white);
+    border:none; padding:16px 20px;
+    font-family:var(--font-family-base); font-weight:var(--font-weight-bold);
+    font-size:var(--font-size-base); letter-spacing:var(--tracking-wide);
+    text-transform:uppercase; border-radius:var(--radius-sm); cursor:pointer;
     transition:background var(--duration-fast) var(--ease-out),
                opacity var(--duration-fast) var(--ease-out);
   }
@@ -153,7 +86,6 @@
   .send-btn:disabled{ opacity:.55; cursor:not-allowed; }
   .send-btn .icon{ width:14px; height:14px; stroke-width:2.25; }
 
-  /* ---------- SELECT ARROW ---------- */
   select{
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
     background-repeat:no-repeat;
@@ -162,18 +94,40 @@
     padding-right:42px;
   }
 
-  /* ---------- ERROR STATE ---------- */
   .error-state{
-    text-align:center;
-    padding:var(--space-6) var(--space-4);
-    color:var(--color-error);
-    font-size:var(--font-size-sm);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:var(--space-2);
+    text-align:center; padding:var(--space-6) var(--space-4);
+    color:var(--color-error); font-size:var(--font-size-sm);
+    display:flex; flex-direction:column; align-items:center; gap:var(--space-2);
   }
   .error-state .icon{ width:28px; height:28px; }
+
+  /* ---------- JÁ ENVIOU (estado próprio) ---------- */
+  .already-state{
+    text-align:center;
+    padding:var(--space-6) var(--space-4);
+    background:var(--surface-default);
+    border:1px solid var(--border-default);
+    border-radius:var(--radius-md);
+    margin-top:var(--space-3);
+  }
+  .already-icon{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:48px; height:48px; border-radius:50%;
+    background:rgba(0,68,204,.10); color:var(--color-brand-blue-deep);
+    margin:0 auto var(--space-3);
+  }
+  .already-icon .icon{ width:22px; height:22px; stroke-width:2.25; }
+  .already-state h3{
+    font-size:var(--font-size-base); font-weight:var(--font-weight-bold);
+    color:var(--text-primary); margin:0 0 var(--space-2);
+    letter-spacing:var(--tracking-tight);
+  }
+  .already-state p{
+    font-size:var(--font-size-sm); color:var(--text-secondary);
+    margin:0 0 var(--space-4); line-height:var(--line-height-normal);
+    max-width:40ch; margin-left:auto; margin-right:auto;
+  }
+  .already-state .btn{ width:auto; display:inline-flex; padding:13px 22px; }
 </style>
 </head>
 <body>
@@ -183,7 +137,7 @@
   <header class="header-dark">
     <div class="header-top">
       <div class="brand">WENEED<span class="dot">.</span></div>
-      <a class="pill-link" href="demandas-disponiveis.html">
+      <a class="pill-link" href="demandas-disponiveis.html" id="backLink">
         <svg class="icon icon-sm" viewBox="0 0 24 24" style="display:inline-block; vertical-align:middle; margin-right:2px;">
           <path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>
         </svg>
@@ -202,6 +156,20 @@
       <div class="card-label"><div class="dot"></div> Detalhes da demanda</div>
       <div class="detail-lines" id="detailLines"></div>
       <p id="demandDesc" class="demand-desc"></p>
+    </div>
+
+    <!-- ESTADO: JÁ ENVIOU PROPOSTA -->
+    <div class="already-state" id="alreadyState" style="display:none;">
+      <div class="already-icon">
+        <svg class="icon" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h3>Você já enviou uma proposta</h3>
+      <p>Aguarde a resposta do cliente. Você pode acompanhar em "Minhas propostas".</p>
+      <a class="btn btn-primary" href="minhas-propostas.html" style="text-decoration:none;">
+        Ver minhas propostas
+      </a>
     </div>
 
     <!-- FORMULÁRIO -->
@@ -231,6 +199,7 @@
         <div class="field">
           <label for="mensagem">Mensagem para o cliente</label>
           <textarea id="mensagem" placeholder="Ex: Consigo ir amanhã às 14h, já levo o material necessário..." required></textarea>
+          <div class="helper">Seja específico sobre prazo, materiais e experiência.</div>
         </div>
       </div>
 
@@ -252,7 +221,7 @@
       </div>
       <h3>Proposta enviada</h3>
       <p>O cliente vai receber sua proposta e pode entrar em contato a qualquer momento.</p>
-      <a class="btn btn-primary" href="minhas-propostas.html">
+      <a class="btn btn-primary" href="minhas-propostas.html" style="text-decoration:none;">
         Ver minhas propostas
       </a>
     </div>
@@ -278,18 +247,50 @@
 
   let providerProfileId = null;
 
+  const STATUS_ABERTOS = ['OPEN', 'ABERTA', 'EM_PROPOSTAS'];
+
   /* ============================================
      AUXILIARES
      ============================================ */
   function escapeHTML(str) {
-    if (!str) return '';
+    if (str === null || str === undefined) return '';
     return String(str).replace(/[&<>'"]/g, tag => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
+      '&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'
     }[tag]));
+  }
+
+  function mostrarErro(titulo) {
+    document.getElementById('detailCard').innerHTML = `
+      <div class="error-state">
+        <svg class="icon" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" x2="12" y1="8" y2="12"/>
+          <line x1="12" x2="12.01" y1="16" y2="16"/>
+        </svg>
+        ${escapeHTML(titulo)}
+      </div>`;
+    document.getElementById('propostaForm').style.display = 'none';
+    document.getElementById('backLink').style.display = 'inline-flex';
+  }
+
+  function mostrarJaEnviou() {
+    document.getElementById('detailCard').style.display = 'block';
+    document.getElementById('propostaForm').style.display = 'none';
+    document.getElementById('alreadyState').style.display = 'block';
+    document.getElementById('backLink').style.display = 'inline-flex';
+  }
+
+  function mostrarDemandaFechada() {
+    document.getElementById('propostaForm').style.display = 'none';
+    document.getElementById('detailCard').insertAdjacentHTML('beforeend', `
+      <div class="error-state" style="margin-top:var(--space-3);">
+        <svg class="icon" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" x2="12" y1="8" y2="12"/>
+          <line x1="12" x2="12.01" y1="16" y2="16"/>
+        </svg>
+        Esta demanda não está mais aberta para propostas.
+      </div>`);
   }
 
   /* ============================================
@@ -305,13 +306,14 @@
       return;
     }
 
-    /* 1. Sessão e perfil */
+    /* 1. Sessão */
     const { data: { session } } = await db.auth.getSession();
     if (!session) {
       window.location.href = '../index.html';
       return;
     }
 
+    /* 2. Perfil do prestador */
     const { data: profile, error: profErr } = await db
       .from('profiles')
       .select('id')
@@ -325,7 +327,7 @@
     }
     providerProfileId = profile.id;
 
-    /* 2. Buscar demanda */
+    /* 3. Demanda */
     const { data, error } = await db
       .from('demands')
       .select('id, title, description, city, neighborhood, status, created_at, category_id')
@@ -334,20 +336,11 @@
 
     if (error || !data) {
       console.error('Erro ao carregar demanda:', error);
-      document.getElementById('detailCard').innerHTML = `
-        <div class="error-state">
-          <svg class="icon" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" x2="12" y1="8" y2="12"/>
-            <line x1="12" x2="12.01" y1="16" y2="16"/>
-          </svg>
-          Demanda não encontrada.
-        </div>`;
-      document.getElementById('propostaForm').style.display = 'none';
+      mostrarErro('Demanda não encontrada.');
       return;
     }
 
-    /* 3. Categoria (join opcional) */
+    /* 4. Categoria (opcional) */
     let categoriaNome = '—';
     if (data.category_id) {
       const { data: cat } = await db
@@ -359,13 +352,20 @@
       if (cat?.name) categoriaNome = cat.name;
     }
 
-    /* 4. Contar propostas */
+    /* 5. Contar propostas da demanda (todas) */
     const { count: propostasCount } = await db
       .from('proposals')
       .select('id', { count: 'exact', head: true })
       .eq('demand_id', demandId);
 
-    /* 5. Preencher DOM */
+    /* 6. Verificar se EU já enviei proposta */
+    const { count: minhaCount } = await db
+      .from('proposals')
+      .select('id', { count: 'exact', head: true })
+      .eq('demand_id', demandId)
+      .eq('provider_id', providerProfileId);
+
+    /* 7. Render cabeçalho e detalhes */
     document.getElementById('demandTitle').textContent = data.title || 'Demanda';
     document.getElementById('demandDesc').textContent = data.description ? `"${data.description}"` : '';
 
@@ -400,10 +400,21 @@
       </div>
     `;
 
-    /* 6. Bloquear se não estiver aberta */
-    if (data.status !== 'OPEN' && data.status !== 'ABERTA') {
-      document.getElementById('propostaForm').style.display = 'none';
+    /* 8. Bloquear formulário em ordem de prioridade */
+
+    // 8a. Já enviei proposta → mostra estado próprio
+    if (minhaCount && minhaCount > 0) {
+      mostrarJaEnviou();
+      return;
     }
+
+    // 8b. Demanda fechada → bloqueia
+    if (!STATUS_ABERTOS.includes(data.status)) {
+      mostrarDemandaFechada();
+      return;
+    }
+
+    // 8c. Tudo certo → formulário ativo
   }
 
   /* ============================================
@@ -418,6 +429,31 @@
       return;
     }
 
+    /* Validação dos campos */
+    const valorRaw = document.getElementById('valor').value;
+    const prazoRaw = document.getElementById('prazo').value;
+    const mensagem = document.getElementById('mensagem').value.trim();
+
+    const valor = parseFloat(valorRaw);
+    if (!valorRaw || isNaN(valor) || valor <= 0) {
+      alert('Informe um valor válido.');
+      document.getElementById('valor').focus();
+      return;
+    }
+
+    const prazo = parseInt(prazoRaw, 10);
+    if (!prazoRaw || isNaN(prazo) || prazo <= 0) {
+      alert('Selecione um prazo.');
+      document.getElementById('prazo').focus();
+      return;
+    }
+
+    if (mensagem.length < 10) {
+      alert('Escreva uma mensagem com pelo menos 10 caracteres.');
+      document.getElementById('mensagem').focus();
+      return;
+    }
+
     const btn = document.getElementById('sendBtn');
     const originalHTML = btn.innerHTML;
     btn.innerHTML = 'Enviando...';
@@ -426,9 +462,9 @@
     const payload = {
       demand_id: demandId,
       provider_id: providerProfileId,
-      price: parseFloat(document.getElementById('valor').value),
-      deadline_days: parseInt(document.getElementById('prazo').value, 10),
-      message: document.getElementById('mensagem').value.trim(),
+      price: valor,
+      deadline_days: prazo,
+      message: mensagem,
       status: 'pendente'
     };
 
@@ -436,13 +472,20 @@
 
     if (insertError) {
       console.error('Erro insert:', insertError);
+
+      /* Duplicata: unique constraint */
+      if (insertError.code === '23505' || /duplicate/i.test(insertError.message)) {
+        mostrarJaEnviou();
+        return;
+      }
+
       alert('Erro ao enviar: ' + insertError.message);
       btn.innerHTML = originalHTML;
       btn.disabled = false;
       return;
     }
 
-    /* Atualiza status da demanda */
+    /* Atualiza status da demanda para EM_PROPOSTAS */
     await db
       .from('demands')
       .update({ status: 'EM_PROPOSTAS' })
@@ -451,7 +494,7 @@
     document.getElementById('detailCard').style.display = 'none';
     document.getElementById('propostaForm').style.display = 'none';
     document.getElementById('successState').classList.add('show');
-    document.querySelector('.pill-link').style.display = 'none';
+    document.getElementById('backLink').style.display = 'none';
   });
 
   init();
