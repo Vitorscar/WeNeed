@@ -24,305 +24,105 @@
   }
 
   /* ---------- ICON SYSTEM ---------- */
-  .icon{
-    width:16px; height:16px;
-    stroke:currentColor;
-    stroke-width:1.75;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    fill:none;
-    flex-shrink:0;
-    display:block;
-  }
-  .icon-sm{ width:14px; height:14px; stroke-width:2; }
-  .icon-md{ width:18px; height:18px; stroke-width:1.75; }
-  .icon-lg{ width:22px; height:22px; stroke-width:1.5; }
+  .icon{ width:16px;height:16px;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;fill:none;flex-shrink:0;display:block; }
+  .icon-sm{ width:14px;height:14px;stroke-width:2; }
+  .icon-md{ width:18px;height:18px;stroke-width:1.75; }
+  .icon-lg{ width:22px;height:22px;stroke-width:1.5; }
 
-  /* ---------- CONTEÚDO TIGHT ---------- */
-  .main-content{
-    padding:var(--space-4) var(--space-4) var(--space-6);
-  }
+  /* ---------- MAIN ---------- */
+  .main-content{ padding:var(--space-4) var(--space-4) var(--space-6); }
 
   /* ---------- PAGE INTRO ---------- */
-  .intro{
-    margin-bottom:var(--space-4);
-  }
-  .intro h1{
-    font-size:var(--font-size-xl);
-    font-weight:var(--font-weight-extrabold);
-    letter-spacing:var(--tracking-tighter);
-    line-height:var(--line-height-snug);
-    margin:0 0 2px;
-  }
-  .intro p{
-    font-size:var(--font-size-sm);
-    color:var(--text-secondary);
-    margin:0;
-    line-height:var(--line-height-normal);
-  }
+  .intro{ margin-bottom:var(--space-4); }
+  .intro h1{ font-size:var(--font-size-xl); font-weight:var(--font-weight-extrabold); letter-spacing:var(--tracking-tighter); line-height:var(--line-height-snug); margin:0 0 2px; }
+  .intro p{ font-size:var(--font-size-sm); color:var(--text-secondary); margin:0; line-height:var(--line-height-normal); }
 
-  /* ---------- FILTER CHIPS ---------- */
-  .filter-bar{
-    display:flex;
-    gap:var(--space-2);
-    margin-bottom:var(--space-4);
-    flex-wrap:wrap;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-  }
+  /* ---------- TOOLBAR ---------- */
+  .toolbar{ margin:0 0 var(--space-3); }
+  .search-input{ background:var(--surface-default); }
+
+  /* ---------- FILTER BAR ---------- */
+  .filter-bar{ display:flex; gap:var(--space-2); margin-bottom:var(--space-4); flex-wrap:wrap; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
   .filter-bar::-webkit-scrollbar{ display:none; }
-  .filter-chip{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    padding:8px 14px;
-    font-size:var(--font-size-sm);
-    font-weight:var(--font-weight-semibold);
-    color:var(--text-secondary);
-    background:var(--surface-default);
-    border:1.5px solid var(--border-default);
-    border-radius:var(--radius-full);
-    cursor:pointer;
-    user-select:none;
-    line-height:1.2;
-    white-space:nowrap;
-    flex-shrink:0;
-    transition:background   var(--duration-fast) var(--ease-out),
-               border-color var(--duration-fast) var(--ease-out),
-               color        var(--duration-fast) var(--ease-out);
-  }
-  .filter-chip:hover{
-    border-color:var(--color-brand-blue-deep);
-    color:var(--color-brand-blue-deep);
-  }
-  .filter-chip.active{
-    background:var(--color-brand-blue-deep);
-    color:var(--color-white);
-    border-color:var(--color-brand-blue-deep);
-  }
+  .filter-chip{ display:inline-flex; align-items:center; gap:6px; padding:8px 14px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); color:var(--text-secondary); background:var(--surface-default); border:1.5px solid var(--border-default); border-radius:var(--radius-full); cursor:pointer; user-select:none; line-height:1.2; white-space:nowrap; flex-shrink:0; transition:background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out); -webkit-tap-highlight-color:transparent; }
+  .filter-chip:hover{ border-color:var(--color-brand-blue-deep); color:var(--color-brand-blue-deep); }
+  .filter-chip.active{ background:var(--color-brand-blue-deep); color:var(--color-white); border-color:var(--color-brand-blue-deep); }
+  .filter-chip.active:hover{ color:var(--color-white); }
+
+  /* ---------- RESULTS COUNT ---------- */
+  .results-count{ font-size:var(--font-size-xs); color:var(--text-secondary); margin:0 0 var(--space-3); font-weight:var(--font-weight-medium); }
 
   /* ---------- DEMAND CARDS ---------- */
-  .demand-card{
-    display:block;
-    background:var(--surface-default);
-    border:1px solid var(--border-default);
-    border-radius:var(--radius-md);
-    padding:var(--space-4);
-    margin-bottom:var(--space-3);
-    color:inherit;
-    text-decoration:none;
-    cursor:pointer;
-    transition:box-shadow   var(--duration-base) var(--ease-out),
-               border-color var(--duration-base) var(--ease-out),
-               transform    var(--duration-base) var(--ease-out);
-  }
-  .demand-card:hover{
-    box-shadow:var(--shadow-md);
-    border-color:var(--color-gray-300);
-  }
-  .demand-card:active{
-    transform:scale(0.995);
-  }
+  .demand-card{ position:relative; display:block; background:var(--surface-default); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-3); color:inherit; text-decoration:none; cursor:pointer; transition:box-shadow var(--duration-base) var(--ease-out), border-color var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out); }
+  .demand-card:hover{ box-shadow:var(--shadow-md); border-color:var(--color-gray-300); }
+  .demand-card:active{ transform:scale(0.995); }
+  .demand-card.has-proposal{ border-left:3px solid var(--color-brand-blue-deep); }
 
-  .demand-card-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:var(--space-3);
-    margin-bottom:var(--space-3);
-  }
-  .demand-card-title{
-    flex:1;
-    font-size:var(--font-size-base);
-    font-weight:var(--font-weight-bold);
-    color:var(--text-primary);
-    letter-spacing:var(--tracking-tight);
-    line-height:var(--line-height-snug);
-    margin:0;
-    word-break:break-word;
-  }
+  .demand-card-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:var(--space-3); margin-bottom:var(--space-3); }
+  .demand-card-title{ flex:1; font-size:var(--font-size-base); font-weight:var(--font-weight-bold); color:var(--text-primary); letter-spacing:var(--tracking-tight); line-height:var(--line-height-snug); margin:0; word-break:break-word; }
 
-  .demand-card-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:4px;
-    font-size:11px;
-    font-weight:var(--font-weight-bold);
-    letter-spacing:var(--tracking-wider);
-    text-transform:uppercase;
-    padding:5px 10px;
-    border-radius:var(--radius-full);
-    white-space:nowrap;
-    flex-shrink:0;
-    background:var(--color-gray-100);
-    color:var(--color-gray-700);
-  }
-  .demand-card-badge .icon{
-    width:12px;
-    height:12px;
-    stroke-width:2;
-  }
-  .demand-card-badge.freelance{
-    background:rgba(0,87,255,.10);
-    color:var(--color-brand-blue-deep);
-  }
+  .demand-card-badges{ display:flex; flex-direction:column; gap:6px; align-items:flex-end; flex-shrink:0; }
+  .demand-card-badge{ display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:var(--font-weight-bold); letter-spacing:var(--tracking-wider); text-transform:uppercase; padding:5px 10px; border-radius:var(--radius-full); white-space:nowrap; background:var(--color-gray-100); color:var(--color-gray-700); }
+  .demand-card-badge .icon{ width:12px;height:12px;stroke-width:2; }
+  .demand-card-badge.freelance{ background:rgba(0,87,255,.10); color:var(--color-brand-blue-deep); }
+  .demand-card-badge.proposed{ background:var(--color-black); color:var(--color-white); }
 
-  .demand-card-images{
-    display:flex;
-    gap:var(--space-2);
-    margin-bottom:var(--space-3);
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-  }
+  .demand-card-images{ display:flex; gap:var(--space-2); margin-bottom:var(--space-3); overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
   .demand-card-images::-webkit-scrollbar{ display:none; }
-  .demand-card-images img{
-    width:56px;
-    height:56px;
-    object-fit:cover;
-    border-radius:var(--radius-sm);
-    border:1px solid var(--border-default);
-    flex-shrink:0;
-  }
+  .demand-card-images img{ width:56px; height:56px; object-fit:cover; border-radius:var(--radius-sm); border:1px solid var(--border-default); flex-shrink:0; }
 
-  .demand-card-desc{
-    font-size:var(--font-size-sm);
-    color:var(--text-secondary);
-    line-height:var(--line-height-normal);
-    margin:0 0 var(--space-3);
-    display:-webkit-box;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
-  }
+  .demand-card-desc{ font-size:var(--font-size-sm); color:var(--text-secondary); line-height:var(--line-height-normal); margin:0 0 var(--space-3); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 
-  .demand-card-footer{
-    display:flex;
-    flex-direction:column;
-    gap:var(--space-3);
-  }
-  .demand-card-meta{
-    display:flex;
-    flex-wrap:wrap;
-    gap:var(--space-3);
-    font-size:var(--font-size-xs);
-    color:var(--text-secondary);
-    line-height:var(--line-height-normal);
-  }
-  .demand-card-meta span{
-    display:inline-flex;
-    align-items:center;
-    gap:4px;
-  }
-  .demand-card-meta .icon{
-    width:12px;
-    height:12px;
-    stroke-width:2;
-  }
-  .demand-card-budget{
-    font-weight:var(--font-weight-bold);
-    font-size:var(--font-size-base);
-    color:var(--color-brand-blue-deep);
-    letter-spacing:var(--tracking-tight);
-    font-variant-numeric:tabular-nums;
-  }
+  .demand-card-footer{ display:flex; flex-direction:column; gap:var(--space-3); }
+  .demand-card-meta{ display:flex; flex-wrap:wrap; gap:var(--space-3); font-size:var(--font-size-xs); color:var(--text-secondary); line-height:var(--line-height-normal); }
+  .demand-card-meta span{ display:inline-flex; align-items:center; gap:4px; }
+  .demand-card-meta .icon{ width:12px;height:12px;stroke-width:2; }
+  .demand-card-budget{ font-weight:var(--font-weight-bold); font-size:var(--font-size-base); color:var(--color-brand-blue-deep); letter-spacing:var(--tracking-tight); font-variant-numeric:tabular-nums; }
 
-  /* ---------- EMPTY STATE COMPACTO ---------- */
-  .empty-state{
-    text-align:center;
-    padding:var(--space-6) var(--space-4);
-    background:var(--surface-default);
-    border:1px dashed var(--border-default);
-    border-radius:var(--radius-md);
-    color:var(--text-secondary);
-  }
-  .empty-state h3{
-    font-size:var(--font-size-sm);
-    font-weight:var(--font-weight-bold);
-    color:var(--text-primary);
-    margin:0 0 4px;
-    letter-spacing:var(--tracking-tight);
-  }
-  .empty-state p{
-    font-size:var(--font-size-xs);
-    line-height:var(--line-height-normal);
-    margin:0 auto;
-    max-width:34ch;
-  }
+  /* ---------- EMPTY STATE ---------- */
+  .empty-state{ text-align:center; padding:var(--space-6) var(--space-4); background:var(--surface-default); border:1px dashed var(--border-default); border-radius:var(--radius-md); color:var(--text-secondary); }
+  .empty-state .empty-icon{ display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:50%; background:var(--surface-subtle); color:var(--color-gray-400); margin:0 auto var(--space-3); }
+  .empty-state .empty-icon .icon{ width:26px;height:26px;stroke-width:1.5; }
+  .empty-state h3{ font-size:var(--font-size-base); font-weight:var(--font-weight-bold); color:var(--text-primary); margin:0 0 var(--space-2); letter-spacing:var(--tracking-tight); }
+  .empty-state p{ font-size:var(--font-size-sm); line-height:var(--line-height-normal); margin:0 auto; max-width:40ch; }
+
+  /* ---------- LOADING ---------- */
+  .loading-block{ display:flex; align-items:center; justify-content:center; gap:var(--space-3); padding:var(--space-10); color:var(--text-secondary); font-size:var(--font-size-sm); font-weight:var(--font-weight-medium); }
+  .loading-block::after{ content:''; display:inline-block; width:20px; height:20px; border:2.5px solid var(--color-gray-200); border-top-color:var(--color-brand-blue-deep); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ---------- TOAST ---------- */
+  .toast-container{ position:fixed; bottom:90px; right:24px; left:24px; z-index:var(--z-toast); display:flex; flex-direction:column; gap:var(--space-2); pointer-events:none; align-items:flex-end; }
+  .toast{ background:var(--color-black); color:var(--color-white); padding:var(--space-3) var(--space-5); border-radius:var(--radius-sm); box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:var(--space-3); font-size:var(--font-size-sm); font-weight:var(--font-weight-medium); animation:slideIn .35s cubic-bezier(.16,1,.3,1) forwards; min-width:260px; max-width:380px; border-left:4px solid var(--color-brand-blue); pointer-events:auto; }
+  .toast.success{ border-left-color:var(--color-success); }
+  .toast.error{ border-left-color:var(--color-error); }
+  .toast .icon{ width:16px;height:16px;stroke-width:2.25; }
+  @keyframes slideIn{ from{ transform:translateX(120%); opacity:0; } to{ transform:translateX(0); opacity:1; } }
+  @keyframes slideOut{ from{ transform:translateX(0); opacity:1; } to{ transform:translateX(120%); opacity:0; } }
 
   /* ---------- MOBILE NAV ---------- */
   .mobile-nav{ display:none; }
-
   @media (max-width:1023px){
-    .mobile-nav{
-      display:grid !important;
-      grid-template-columns:repeat(5, 1fr);
-      position:fixed;
-      bottom:0; left:0; right:0;
-      height:var(--app-mobile-nav-height);
-      background:var(--surface-default);
-      border-top:1px solid var(--border-default);
-      align-items:stretch;
-      z-index:var(--z-sticky);
-      padding-bottom:env(safe-area-inset-bottom);
-      box-shadow:0 -4px 20px rgba(10,10,10,.05);
-      isolation:isolate;
-    }
-    .mobile-nav-item{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:3px;
-      text-decoration:none;
-      color:var(--color-gray-400);
-      font-size:11px;
-      font-weight:var(--font-weight-semibold);
-      height:100%;
-      position:relative;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-      user-select:none;
-      transition:color var(--duration-base) var(--ease-out),
-                 transform var(--duration-fast) var(--ease-out);
-    }
+    .mobile-nav{ display:grid !important; grid-template-columns:repeat(5, 1fr); position:fixed; bottom:0; left:0; right:0; height:var(--app-mobile-nav-height); background:var(--surface-default); border-top:1px solid var(--border-default); align-items:stretch; z-index:var(--z-sticky); padding-bottom:env(safe-area-inset-bottom); box-shadow:0 -4px 20px rgba(10,10,10,.05); isolation:isolate; }
+    .mobile-nav-item{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; text-decoration:none; color:var(--color-gray-400); font-size:11px; font-weight:var(--font-weight-semibold); height:100%; position:relative; -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none; transition:color var(--duration-base) var(--ease-out), transform var(--duration-fast) var(--ease-out); }
     .mobile-nav-item:active{ transform:scale(0.88); }
     .mobile-nav-item.active{ color:var(--color-brand-blue-deep); }
-    .mobile-nav-item.active::before{
-      content:'';
-      position:absolute;
-      top:6px; left:50%;
-      transform:translateX(-50%);
-      width:5px; height:5px;
-      background:var(--color-brand-blue);
-      border-radius:50%;
-    }
+    .mobile-nav-item.active::before{ content:''; position:absolute; top:6px; left:50%; transform:translateX(-50%); width:5px; height:5px; background:var(--color-brand-blue); border-radius:50%; }
   }
 
-  /* ---------- TABLET (≥ 640px) ---------- */
+  /* ---------- TABLET ---------- */
   @media (min-width:640px){
-    .main-content{
-      padding:var(--space-5) var(--space-6) var(--space-8);
-    }
-    .demand-card-footer{
-      flex-direction:row;
-      justify-content:space-between;
-      align-items:center;
-    }
+    .main-content{ padding:var(--space-5) var(--space-6) var(--space-8); }
+    .demand-card-footer{ flex-direction:row; justify-content:space-between; align-items:center; }
     .demand-card-meta{ flex:1; }
+    .toast-container{ right:16px; left:auto; }
   }
 
-  /* ---------- DESKTOP (≥ 1024px) ---------- */
+  /* ---------- DESKTOP ---------- */
   @media (min-width:1024px){
-    .main-content{
-      padding:var(--space-6) var(--space-8) var(--space-12);
-    }
+    .main-content{ padding:var(--space-6) var(--space-8) var(--space-12); }
     .intro h1{ font-size:var(--font-size-2xl); }
-    .nav-item.active{
-      background:rgba(0,87,255,.14);
-      border-left:2px solid var(--color-brand-blue);
-    }
+    .nav-item.active{ background:rgba(0,87,255,.14); border-left:2px solid var(--color-brand-blue); }
   }
 </style>
 </head>
@@ -335,90 +135,36 @@
 
     <nav class="sidebar-nav">
       <a class="nav-item" href="dashboard-prestador.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <rect width="7" height="9" x="3" y="3" rx="1"/>
-            <rect width="7" height="5" x="14" y="3" rx="1"/>
-            <rect width="7" height="9" x="14" y="12" rx="1"/>
-            <rect width="7" height="5" x="3" y="16" rx="1"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
         Visão Geral
       </a>
-
       <a class="nav-item active" href="demandas-disponiveis.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.3-4.3"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
         Demandas Disponíveis
       </a>
-
       <a class="nav-item" href="minhas-propostas.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" x2="8" y1="13" y2="13"/>
-            <line x1="16" x2="8" y1="17" y2="17"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg></span>
         Minhas Propostas
       </a>
-
       <a class="nav-item" href="ordens-servico.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-            <path d="m9 14 2 2 4-4"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></span>
         Ordens de Serviço
       </a>
-
       <a class="nav-item" href="historico-financeiro.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <rect width="20" height="14" x="2" y="5" rx="2"/>
-            <line x1="2" x2="22" y1="10" y2="10"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></span>
         Histórico Financeiro
       </a>
-
       <a class="nav-item" href="meu-perfil-prestador.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
         Meus Dados
       </a>
-
       <a class="nav-item" href="meus-trabalhos.html">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <rect width="20" height="14" x="2" y="7" rx="2"/>
-            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
         Meus Trabalhos
       </a>
-
       <div style="flex:1"></div>
-
       <a class="nav-item" href="#" id="logoutBtn" style="margin-top:auto;">
-        <span class="nav-icon">
-          <svg class="icon icon-md" viewBox="0 0 24 24">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-            <polyline points="16 17 21 12 16 7"/>
-            <line x1="21" x2="9" y1="12" y2="12"/>
-          </svg>
-        </span>
+        <span class="nav-icon"><svg class="icon icon-md" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></span>
         Sair
       </a>
     </nav>
@@ -434,18 +180,21 @@
   <main class="main-content">
     <div class="intro">
       <h1>Demandas Disponíveis</h1>
-      <p>Encontre oportunidades na sua região e envie propostas.</p>
+      <p>Encontre oportunidades e envie propostas.</p>
+    </div>
+
+    <div class="toolbar">
+      <input class="search-input" id="search" type="text" placeholder="Buscar por título ou descrição..." aria-label="Buscar demandas">
     </div>
 
     <div class="filter-bar" id="filterBar">
-      <span class="filter-chip active" onclick="filtrarPorCategoria('TODAS', this)">Todas</span>
-      <!-- Categorias carregadas via JS -->
+      <span class="filter-chip active" data-cat="TODAS" role="button" tabindex="0">Todas</span>
     </div>
 
+    <div class="results-count" id="resultsCount"></div>
+
     <div id="demandasList">
-      <div class="empty-state">
-        <h3>Carregando demandas...</h3>
-      </div>
+      <div class="loading-block">Carregando demandas...</div>
     </div>
   </main>
 </div>
@@ -453,58 +202,28 @@
 <!-- MOBILE NAV -->
 <nav class="mobile-nav" aria-label="Navegação principal">
   <a href="dashboard-prestador.html" class="mobile-nav-item">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
     <span>Início</span>
   </a>
-
   <a href="demandas-disponiveis.html" class="mobile-nav-item active">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"/>
-        <path d="m21 21-4.3-4.3"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
     <span>Demandas</span>
   </a>
-
   <a href="minhas-propostas.html" class="mobile-nav-item">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" x2="8" y1="13" y2="13"/>
-        <line x1="16" x2="8" y1="17" y2="17"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg></span>
     <span>Propostas</span>
   </a>
-
   <a href="ordens-servico.html" class="mobile-nav-item">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-        <path d="m9 14 2 2 4-4"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></span>
     <span>Ordens</span>
   </a>
-
   <a href="meu-perfil-prestador.html" class="mobile-nav-item">
-    <span class="nav-icon">
-      <svg class="icon icon-lg" viewBox="0 0 24 24">
-        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-    </span>
+    <span class="nav-icon"><svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
     <span>Perfil</span>
   </a>
 </nav>
+
+<div class="toast-container" id="toastContainer"></div>
 
 <!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -515,75 +234,195 @@
 
 <script>
   /* ==========================================
+     CONSTANTES
+     ========================================== */
+  const OPEN_STATUSES = ['OPEN', 'ABERTA', 'EM_PROPOSTAS'];
+  const DEMANDS_LIMIT = 100;
+  const REALTIME_DEBOUNCE_MS = 800;
+
+  /* ==========================================
      ESTADO
      ========================================== */
   let providerProfileId = null;
-  let providerCategories = [];
+  let providerCategoryIds = [];
   let allDemands = [];
-  let currentFilter = 'TODAS';
+  let proposedDemandIds = new Set();
+  let currentCategoryFilter = 'TODAS';
+  let searchTerm = '';
+  let realtimeTimer = null;
+  let loading = true;
+
+  /* ==========================================
+     HELPERS
+     ========================================== */
+  function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'
+    }[tag]));
+  }
+
+  /* Bloqueia javascript:, data: e outros esquemas perigosos */
+  function safeUrl(url) {
+    if (!url) return '';
+    const s = String(url).trim();
+    if (/^(javascript|data|vbscript):/i.test(s)) return '';
+    if (!/^https?:\/\//i.test(s)) return '';
+    return escapeHTML(s);
+  }
+
+  function formatarValor(v) {
+    if (v === null || v === undefined || v === '') return '';
+    const n = Number(v);
+    if (isNaN(n)) return '';
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
+  }
+
+  function mostrarToast(mensagem, tipo = 'error') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = `toast ${tipo}`;
+    const icon = tipo === 'success'
+      ? `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+      : `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`;
+    toast.innerHTML = `${icon}<span>${escapeHTML(mensagem)}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'slideOut .3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
+  }
 
   /* ==========================================
      INIT
      ========================================== */
   async function init() {
-    if (!window.supabaseClient) {
-      alert('Erro de configuração.');
+    const supabase = window.supabaseClient;
+    if (!supabase) {
+      setTimeout(() => window.location.reload(), 800);
       return;
     }
 
-    const { data: { session } } = await window.supabaseClient.auth.getSession();
-    if (!session) {
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError || !session) {
       window.location.href = '../index.html';
       return;
     }
 
-    const { data: profile } = await window.supabaseClient
+    /* Perfil do prestador */
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('id, full_name, city, uf')
       .eq('user_id', session.user.id)
       .single();
 
-    if (!profile) {
-      alert('Perfil não encontrado.');
+    if (profileError || !profile) {
+      console.error('Erro ao carregar perfil:', profileError);
+      document.getElementById('userName').textContent = 'Olá, Profissional';
+      document.getElementById('userLoc').textContent = 'Local não definido';
+      mostrarToast('Não foi possível carregar seu perfil.', 'error');
       return;
     }
+
     providerProfileId = profile.id;
 
-    const nomeEl = document.getElementById('userName');
-    const locEl = document.getElementById('userLoc');
-    if (nomeEl) nomeEl.textContent = `Olá, ${profile.full_name ? profile.full_name.split(' ')[0] : 'Profissional'}`;
-    if (locEl) locEl.textContent = profile.city
+    document.getElementById('userName').textContent =
+      `Olá, ${(profile.full_name || 'Profissional').split(' ')[0]}`;
+    document.getElementById('userLoc').textContent = profile.city
       ? `${profile.city}${profile.uf ? ', ' + profile.uf : ''}`
       : 'Local não definido';
 
-    const { data: cats } = await window.supabaseClient
-      .from('provider_categories')
-      .select('category_id, categories(name, icon)')
-      .eq('provider_id', providerProfileId);
+    /* Categorias do prestador (filtros) + propostas já enviadas */
+    await Promise.all([
+      carregarCategoriasPrestador(supabase),
+      carregarPropostasEnviadas(supabase)
+    ]);
 
-    if (cats && cats.length > 0) {
-      providerCategories = cats.map(c => c.category_id);
-      renderizarFiltros(cats);
-    }
+    /* Demandas */
+    await carregarDemandas(supabase);
 
-    await carregarDemandas();
-    configurarRealtime();
+    configurarEventListeners(supabase);
+    configurarRealtime(supabase);
   }
 
   /* ==========================================
-     REALTIME
+     CATEGORIAS DO PRESTADOR
      ========================================== */
-  function configurarRealtime() {
-    const supabase = window.supabaseClient;
-    if (!supabase) return;
+  async function carregarCategoriasPrestador(supabase) {
+    try {
+      const { data: cats, error } = await supabase
+        .from('provider_categories')
+        .select('category_id, categories ( id, name, icon )')
+        .eq('provider_id', providerProfileId);
 
-    supabase
-      .channel('demandas-disponiveis-realtime')
-      .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'demands' },
-        () => carregarDemandas()
-      )
-      .subscribe();
+      if (error) throw error;
+
+      const valid = (cats || []).filter(c => c.categories && c.categories.id);
+      providerCategoryIds = valid.map(c => c.category_id);
+      renderizarFiltros(valid);
+    } catch (err) {
+      console.warn('Erro ao carregar categorias:', err);
+      /* Filtros ficam só com "Todas" */
+    }
+  }
+
+  /* ==========================================
+     PROPOSTAS JÁ ENVIADAS
+     ========================================== */
+  async function carregarPropostasEnviadas(supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('proposals')
+        .select('demand_id')
+        .eq('provider_id', providerProfileId);
+
+      if (error) throw error;
+      proposedDemandIds = new Set((data || []).map(p => p.demand_id));
+    } catch (err) {
+      console.warn('Erro ao carregar propostas enviadas:', err);
+    }
+  }
+
+  /* ==========================================
+     CARREGAR DEMANDAS
+     ========================================== */
+  async function carregarDemandas(supabase) {
+    loading = true;
+    renderizar();
+
+    try {
+      const { data, error } = await supabase
+        .from('demands')
+        .select(`
+          id, title, description, budget_min, budget_max, status, created_at,
+          city, neighborhood, zip_code, media_urls,
+          category_id, categories ( name, icon, service_type )
+        `)
+        .in('status', OPEN_STATUSES)
+        .order('created_at', { ascending: false })
+        .limit(DEMANDS_LIMIT);
+
+      if (error) throw error;
+
+      allDemands = data || [];
+      loading = false;
+      renderizar();
+
+    } catch (err) {
+      console.error('Erro ao buscar demandas:', err);
+      loading = false;
+      mostrarToast('Erro ao carregar demandas.', 'error');
+      document.getElementById('demandasList').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          </div>
+          <h3>Não foi possível carregar</h3>
+          <p>Tente novamente em instantes.</p>
+        </div>`;
+      document.getElementById('resultsCount').textContent = '';
+    }
   }
 
   /* ==========================================
@@ -591,188 +430,239 @@
      ========================================== */
   function renderizarFiltros(cats) {
     const bar = document.getElementById('filterBar');
-    while (bar.children.length > 1) {
-      bar.removeChild(bar.lastChild);
-    }
+    /* Limpa tudo, mantendo o chip "Todas" original */
+    bar.innerHTML = `<span class="filter-chip active" data-cat="TODAS" role="button" tabindex="0">Todas</span>`;
 
     cats.forEach(c => {
-      if (c.categories) {
-        const chip = document.createElement('span');
-        chip.className = 'filter-chip';
-        chip.textContent = c.categories.name;
-        chip.onclick = () => filtrarPorCategoria(c.category_id, chip);
-        bar.appendChild(chip);
-      }
+      const chip = document.createElement('span');
+      chip.className = 'filter-chip';
+      chip.dataset.cat = c.category_id;
+      chip.textContent = c.categories.name;
+      chip.setAttribute('role', 'button');
+      chip.setAttribute('tabindex', '0');
+      bar.appendChild(chip);
     });
   }
 
-  function filtrarPorCategoria(catId, element) {
-    currentFilter = catId;
-    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    element.classList.add('active');
-    renderizarDemandas();
-  }
-
-  /* ==========================================
-     CARREGAR DEMANDAS
-     ========================================== */
-  async function carregarDemandas() {
-    const { data, error } = await window.supabaseClient
-      .from('demands')
-      .select(`
-        id, title, description, budget_min, budget_max, status, created_at,
-        city, neighborhood, zip_code, media_urls,
-        category_id, categories(name, icon, service_type)
-      `)
-      .in('status', ['OPEN', 'ABERTA', 'EM_PROPOSTAS'])
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Erro ao buscar demandas:', error);
-      document.getElementById('demandasList').innerHTML =
-        '<div class="empty-state"><h3>Erro ao carregar demandas</h3></div>';
-      return;
-    }
-
-    allDemands = data || [];
-    renderizarDemandas();
-  }
-
-  /* ==========================================
-     AUXILIARES
-     ========================================== */
-  function escapeHTML(str) {
-    if (str === null || str === undefined) return '';
-    return String(str).replace(/[&<>'"]/g, tag => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag]));
-  }
-
-  function formatarValor(v) {
-    if (!v && v !== 0) return '';
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(v);
+  function aplicarFiltroCategoria(catId) {
+    currentCategoryFilter = catId;
+    document.querySelectorAll('#filterBar .filter-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.cat === catId);
+    });
+    renderizar();
   }
 
   /* ==========================================
      RENDER
      ========================================== */
-  function renderizarDemandas() {
+  function renderizar() {
     const container = document.getElementById('demandasList');
+    const countEl = document.getElementById('resultsCount');
 
-    let filtered = allDemands;
-    if (currentFilter !== 'TODAS') {
-      filtered = allDemands.filter(d => d.category_id === currentFilter);
+    if (loading) {
+      container.innerHTML = `<div class="loading-block">Carregando demandas...</div>`;
+      countEl.textContent = '';
+      return;
     }
 
+    const filtered = allDemands.filter(d => {
+      /* Filtro categoria */
+      if (currentCategoryFilter !== 'TODAS' && d.category_id !== currentCategoryFilter) {
+        return false;
+      }
+      /* Busca */
+      if (searchTerm) {
+        const haystack = `${d.title || ''} ${d.description || ''} ${d.city || ''} ${d.neighborhood || ''}`.toLowerCase();
+        if (!haystack.includes(searchTerm)) return false;
+      }
+      return true;
+    });
+
+    countEl.textContent = filtered.length
+      ? `${filtered.length} demanda${filtered.length !== 1 ? 's' : ''} disponíve${filtered.length !== 1 ? 'is' : 'l'}`
+      : '';
+
     if (filtered.length === 0) {
+      const isEmptyOverall = allDemands.length === 0;
+      const isSearching = searchTerm.length > 0;
+      const isFiltering = currentCategoryFilter !== 'TODAS';
+
+      let title = 'Nenhuma demanda encontrada';
+      let text = 'Novas demandas aparecerão aqui quando clientes publicarem.';
+
+      if (isEmptyOverall) {
+        title = 'Tudo em dia por aqui';
+        text = 'Novas demandas aparecerão aqui assim que clientes publicarem.';
+      } else if (isSearching) {
+        title = 'Nada encontrado';
+        text = 'Nenhuma demanda corresponde à sua busca.';
+      } else if (isFiltering) {
+        title = 'Nada nessa categoria';
+        text = 'Tente outra categoria ou veja todas as demandas.';
+      }
+
       container.innerHTML = `
         <div class="empty-state">
-          <h3>Nenhuma demanda encontrada</h3>
-          <p>Novas demandas aparecerão aqui quando clientes publicarem.</p>
+          <div class="empty-icon">
+            <svg class="icon" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+          </div>
+          <h3>${escapeHTML(title)}</h3>
+          <p>${escapeHTML(text)}</p>
         </div>`;
       return;
     }
 
-    container.innerHTML = filtered.map(d => {
-      const isFreelance = d.categories?.service_type === 'FREELANCE';
-      const badgeClass = isFreelance ? 'demand-card-badge freelance' : 'demand-card-badge';
+    container.innerHTML = filtered.map(d => renderDemandCard(d)).join('');
+  }
 
-      const badgeIcon = isFreelance
-        ? `<svg class="icon" viewBox="0 0 24 24">
-             <rect width="20" height="14" x="2" y="3" rx="2"/>
-             <line x1="8" x2="16" y1="21" y2="21"/>
-             <line x1="12" x2="12" y1="17" y2="21"/>
-           </svg>`
-        : `<svg class="icon" viewBox="0 0 24 24">
-             <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-           </svg>`;
-      const badgeText = isFreelance ? 'Online' : 'Presencial';
+  function renderDemandCard(d) {
+    const isFreelance = d.categories?.service_type === 'FREELANCE';
+    const jaEnviou = proposedDemandIds.has(d.id);
 
-      const budget = d.budget_max
-        ? `Até ${formatarValor(d.budget_max)}`
-        : (d.budget_min
-          ? `A partir de ${formatarValor(d.budget_min)}`
-          : 'A combinar');
+    const badgePresencialOuOnline = `
+      <span class="demand-card-badge ${isFreelance ? 'freelance' : ''}">
+        ${isFreelance
+          ? `<svg class="icon" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>`
+          : `<svg class="icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`}
+        ${isFreelance ? 'Online' : 'Presencial'}
+      </span>`;
 
-      const date = new Date(d.created_at).toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: 'short'
-      });
+    const badgeProposta = jaEnviou
+      ? `<span class="demand-card-badge proposed">
+           <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+           Proposta enviada
+         </span>`
+      : '';
 
-      const location = d.city
+    const budget = d.budget_max
+      ? `Até ${formatarValor(d.budget_max)}`
+      : (d.budget_min ? `A partir de ${formatarValor(d.budget_min)}` : 'A combinar');
+
+    const date = d.created_at
+      ? new Date(d.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })
+      : '';
+
+    const location = isFreelance
+      ? 'Online'
+      : (d.city
         ? `${d.city}${d.neighborhood ? ' · ' + d.neighborhood : ''}`
-        : 'Online';
+        : 'Local não definido');
 
-      let imagesHtml = '';
-      if (d.media_urls && d.media_urls.length > 0) {
+    /* Imagens — só URLs http(s) válidas */
+    let imagesHtml = '';
+    if (Array.isArray(d.media_urls) && d.media_urls.length > 0) {
+      const validUrls = d.media_urls.map(safeUrl).filter(Boolean).slice(0, 4);
+      if (validUrls.length > 0) {
         imagesHtml = `
           <div class="demand-card-images">
-            ${d.media_urls.slice(0, 4).map(url =>
-              `<img src="${escapeHTML(url)}" alt="" loading="lazy">`
+            ${validUrls.map(url =>
+              `<img src="${url}" alt="" loading="lazy" onerror="this.style.display='none'">`
             ).join('')}
           </div>`;
       }
+    }
 
-      return `
-        <a href="enviar-proposta.html?demand_id=${d.id}" class="demand-card">
-          <div class="demand-card-header">
-            <h3 class="demand-card-title">${escapeHTML(d.title)}</h3>
-            <span class="${badgeClass}">${badgeIcon}${badgeText}</span>
+    const cardClass = `demand-card${jaEnviou ? ' has-proposal' : ''}`;
+
+    return `
+      <a href="enviar-proposta.html?demand_id=${encodeURIComponent(d.id)}" class="${cardClass}">
+        <div class="demand-card-header">
+          <h3 class="demand-card-title">${escapeHTML(d.title || 'Demanda')}</h3>
+          <div class="demand-card-badges">
+            ${badgePresencialOuOnline}
+            ${badgeProposta}
           </div>
+        </div>
 
-          ${imagesHtml}
+        ${imagesHtml}
 
-          <p class="demand-card-desc">${escapeHTML(d.description)}</p>
+        <p class="demand-card-desc">${escapeHTML(d.description || '')}</p>
 
-          <div class="demand-card-footer">
-            <div class="demand-card-meta">
-              <span>
-                <svg class="icon" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="3"/>
-                  <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
-                </svg>
-                ${escapeHTML(d.categories?.name || 'Serviço')}
-              </span>
-              <span>
-                <svg class="icon" viewBox="0 0 24 24">
-                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-                ${escapeHTML(location)}
-              </span>
+        <div class="demand-card-footer">
+          <div class="demand-card-meta">
+            <span>
+              <svg class="icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+              </svg>
+              ${escapeHTML(d.categories?.name || 'Serviço')}
+            </span>
+            <span>
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              ${escapeHTML(location)}
+            </span>
+            ${date ? `
               <span>
                 <svg class="icon" viewBox="0 0 24 24">
                   <rect width="18" height="18" x="3" y="4" rx="2"/>
                   <path d="M16 2v4M8 2v4M3 10h18"/>
                 </svg>
-                ${date}
-              </span>
-            </div>
-            <span class="demand-card-budget">${budget}</span>
+                ${escapeHTML(date)}
+              </span>` : ''}
           </div>
-        </a>
-      `;
-    }).join('');
+          <span class="demand-card-budget">${escapeHTML(budget)}</span>
+        </div>
+      </a>`;
   }
 
   /* ==========================================
-     LOGOUT
+     EVENT LISTENERS
      ========================================== */
-  document.getElementById('logoutBtn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    const supabase = window.supabaseClient;
-    if (supabase) {
-      await supabase.auth.signOut();
-    }
-    window.location.href = '../index.html';
-  });
+  function configurarEventListeners(supabase) {
+    /* Filtros por categoria */
+    document.getElementById('filterBar').addEventListener('click', (e) => {
+      const chip = e.target.closest('.filter-chip');
+      if (!chip) return;
+      aplicarFiltroCategoria(chip.dataset.cat);
+    });
+
+    /* Busca com debounce */
+    let searchTimer = null;
+    document.getElementById('search').addEventListener('input', (e) => {
+      clearTimeout(searchTimer);
+      const value = e.target.value.trim().toLowerCase();
+      searchTimer = setTimeout(() => {
+        searchTerm = value;
+        renderizar();
+      }, 180);
+    });
+
+    /* Logout */
+    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      try { await supabase.auth.signOut(); } catch (err) { console.warn(err); }
+      window.location.href = '../index.html';
+    });
+  }
+
+  /* ==========================================
+     REALTIME (com debounce)
+     ========================================== */
+  function configurarRealtime(supabase) {
+    supabase
+      .channel('demandas-disponiveis-realtime')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'demands' },
+        () => {
+          clearTimeout(realtimeTimer);
+          realtimeTimer = setTimeout(() => carregarDemandas(supabase), REALTIME_DEBOUNCE_MS);
+        }
+      )
+      .on('postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'proposals', filter: `provider_id=eq.${providerProfileId}` },
+        () => {
+          /* Atualiza o badge "proposta enviada" quando o prestador propõe em outra aba */
+          carregarPropostasEnviadas(supabase).then(() => renderizar());
+        }
+      )
+      .subscribe();
+  }
 
   init();
 </script>
