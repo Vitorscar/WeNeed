@@ -13,6 +13,14 @@
 <meta name="theme-color" content="#0A0A0A">
 <link rel="stylesheet" href="../style.css">
 
+<!-- ============================================================
+     SDK DO MERCADO PAGO (frontend)
+     Exigido pelo wizard de integração do MP.
+     Não é usado diretamente (Pix é gerado no backend),
+     mas precisa estar carregado.
+     ============================================================ -->
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+
 <style>
   .icon{ width:16px;height:16px;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;fill:none;flex-shrink:0;display:block; }
   .icon-sm{ width:14px;height:14px;stroke-width:2; }
@@ -38,6 +46,7 @@
   .service-info h3{
     font-size:var(--font-size-base); font-weight:var(--font-weight-bold);
     letter-spacing:var(--tracking-tight); margin:0 0 2px; line-height:var(--line-height-snug);
+    word-break:break-word;
   }
   .service-info .provider{
     font-size:var(--font-size-sm); color:var(--text-secondary);
@@ -91,6 +100,7 @@
     font-weight:var(--font-weight-bold); font-size:var(--font-size-sm);
     letter-spacing:var(--tracking-wide); text-transform:uppercase; cursor:pointer;
     transition:background var(--duration-fast);
+    -webkit-tap-highlight-color:transparent;
   }
   .copy-btn:hover{ background:var(--color-gray-900); }
   .copy-btn.copied{ background:var(--color-success); }
@@ -158,6 +168,77 @@
   .error-state h3{ font-size:var(--font-size-base); font-weight:var(--font-weight-bold); margin:0 0 var(--space-2); }
   .error-state p{ font-size:var(--font-size-sm); color:var(--text-secondary); margin:0 0 var(--space-4); line-height:var(--line-height-normal); }
   .error-state .btn{ width:auto; display:inline-flex; padding:13px 22px; }
+
+  /* ---------- Erro inline (não destrói a tela) ---------- */
+  .inline-error{
+    margin-top:var(--space-3);
+    padding:var(--space-4);
+    background:rgba(240,68,56,.06);
+    border:1px solid rgba(240,68,56,.25);
+    border-radius:var(--radius-md);
+    display:flex; flex-direction:column; align-items:center; gap:var(--space-3);
+    text-align:center;
+  }
+  .inline-error .err-icon{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:44px; height:44px; border-radius:50%;
+    background:rgba(240,68,56,.10); color:var(--color-error);
+  }
+  .inline-error .err-icon .icon{ width:22px;height:22px;stroke-width:2.25; }
+  .inline-error h4{
+    font-size:var(--font-size-sm); font-weight:var(--font-weight-bold);
+    color:var(--text-primary); margin:0; letter-spacing:var(--tracking-tight);
+  }
+  .inline-error p{
+    font-size:var(--font-size-xs); color:var(--text-secondary);
+    margin:0; line-height:var(--line-height-normal);
+    max-width:34ch;
+  }
+  .inline-error details{
+    width:100%;
+    font-size:11px;
+    color:var(--text-secondary);
+    background:var(--surface-subtle);
+    border-radius:var(--radius-sm);
+    padding:var(--space-2) var(--space-3);
+    text-align:left;
+  }
+  .inline-error details summary{
+    cursor:pointer; font-weight:var(--font-weight-semibold);
+    color:var(--text-primary); font-size:var(--font-size-xs);
+    user-select:none;
+  }
+  .inline-error details pre{
+    margin:var(--space-2) 0 0;
+    font-family:monospace; font-size:10px;
+    white-space:pre-wrap; word-break:break-all;
+    color:var(--text-secondary);
+    max-height:140px; overflow-y:auto;
+  }
+  .inline-error .btn{ padding:11px 20px; font-size:var(--font-size-xs); }
+
+  /* ---------- Toast ---------- */
+  .toast-container{
+    position:fixed; bottom:24px; right:16px; left:16px;
+    z-index:var(--z-toast); display:flex; flex-direction:column;
+    gap:var(--space-2); pointer-events:none; align-items:flex-end;
+  }
+  .toast{
+    background:var(--color-black); color:var(--color-white);
+    padding:var(--space-3) var(--space-5); border-radius:var(--radius-sm);
+    box-shadow:var(--shadow-lg); display:flex; align-items:center;
+    gap:var(--space-3); font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-medium);
+    animation:slideIn .35s cubic-bezier(.16,1,.3,1) forwards;
+    min-width:240px; max-width:380px;
+    border-left:4px solid var(--color-brand-blue);
+    pointer-events:auto;
+  }
+  .toast.success{ border-left-color:var(--color-success); }
+  .toast.error{ border-left-color:var(--color-error); }
+  .toast .icon{ width:16px;height:16px;stroke-width:2.25; }
+  @keyframes slideIn{ from{ transform:translateX(120%); opacity:0;} to{ transform:translateX(0); opacity:1;} }
+  @keyframes slideOut{ from{ transform:translateX(0); opacity:1;} to{ transform:translateX(120%); opacity:0;} }
 </style>
 </head>
 <body>
@@ -205,19 +286,59 @@
   </div>
 </div>
 
+<div class="toast-container" id="toastContainer"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/supabase-cliente.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../app.js"></script>
 
 <script>
+  /* ============================================
+     MERCADO PAGO · SDK INIT
+     Inicializa o SDK no frontend com a Public Key.
+     O Pix em si é gerado no backend (create-payment),
+     mas o SDK precisa estar inicializado para a
+     integração ficar completa no painel do MP.
+     ============================================ */
+  const MP_PUBLIC_KEY = 'APP_USR-231641a2-11b9-4e62-83c3-98de7ff3ce13';
+
+  (function initMPSdk() {
+    try {
+      if (typeof MercadoPago === 'undefined') {
+        console.warn('⚠️ SDK do Mercado Pago não carregado (script bloqueado ou offline)');
+        return;
+      }
+      window.mp = new MercadoPago(MP_PUBLIC_KEY, { locale: 'pt-BR' });
+      console.log('✅ SDK Mercado Pago inicializado');
+    } catch (err) {
+      console.warn('⚠️ Erro ao inicializar SDK MP:', err);
+    }
+  })();
+
+  /* ============================================
+     CONFIG
+     ============================================ */
+  const SUPABASE_URL = 'https://kwshthfbhzjaxyaoiokz.supabase.co';
+  const CREATE_PAYMENT_URL = `${SUPABASE_URL}/functions/v1/create-payment`;
+  const POLLING_INTERVAL_MS = 3000;
+
+  /* ============================================
+     ESTADO
+     ============================================ */
   const urlParams = new URLSearchParams(window.location.search);
-  const contractId = urlParams.get('contract_id') || urlParams.get('id');
+  const rawContractId = urlParams.get('contract_id') || urlParams.get('id');
+  const contractId = rawContractId ? rawContractId.replace(/[^a-zA-Z0-9-]/g, '').slice(0, 64) : null;
+
   let contractData = null;
   let pollingInterval = null;
   let countdownInterval = null;
-  let actionInProgress = false;
+  let generatingPix = false;
+  let lastPixError = null;
 
+  /* ============================================
+     HELPERS
+     ============================================ */
   function escapeHTML(str) {
     if (str === null || str === undefined) return '';
     return String(str).replace(/[&<>'"]/g, tag => ({
@@ -225,15 +346,42 @@
     }[tag]));
   }
 
+  /* Base64 seguro — nunca escapar com HTML entity */
+  function safeBase64(str) {
+    if (!str) return '';
+    return String(str).replace(/[^A-Za-z0-9+/=]/g, '');
+  }
+
   function formatarMoeda(v) {
     const n = Number(v) || 0;
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
   }
 
-  function mostrarErro(titulo, mensagem) {
+  function mostrarToast(mensagem, tipo = 'success') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = `toast ${tipo}`;
+    const icon = tipo === 'success'
+      ? `<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+      : tipo === 'error'
+        ? `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`
+        : `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>`;
+    toast.innerHTML = `${icon}<span>${escapeHTML(mensagem)}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'slideOut .3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3400);
+  }
+
+  /* Erro fatal — mata a tela, volta pro painel */
+  function mostrarErroFatal(titulo, mensagem, linkVoltar = 'dashboard-cliente.html') {
     document.getElementById('content').style.display = 'none';
-    document.getElementById('errorState').style.display = 'block';
-    document.getElementById('errorState').innerHTML = `
+    document.getElementById('successState').classList.remove('show');
+    const err = document.getElementById('errorState');
+    err.style.display = 'block';
+    err.innerHTML = `
       <div class="error-state">
         <div class="error-icon">
           <svg class="icon" viewBox="0 0 24 24">
@@ -244,22 +392,46 @@
         </div>
         <h3>${escapeHTML(titulo)}</h3>
         <p>${escapeHTML(mensagem)}</p>
-        <a class="btn btn-primary" href="dashboard-cliente.html">Voltar ao painel</a>
+        <a class="btn btn-primary" href="${escapeHTML(linkVoltar)}">Voltar ao painel</a>
       </div>`;
     document.getElementById('backLink').style.display = 'none';
+    pararTudo();
   }
 
+  function pararTudo() {
+    if (pollingInterval) { clearInterval(pollingInterval); pollingInterval = null; }
+    if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+  }
+
+  /* ============================================
+     INIT
+     ============================================ */
   async function init() {
     const supabase = window.supabaseClient;
-    if (!supabase) return mostrarErro('Erro de configuração', 'Recarregue a página.');
-    if (!contractId) return mostrarErro('Link inválido', 'Nenhum contrato foi especificado.');
+    if (!supabase) {
+      mostrarErroFatal('Erro de configuração', 'Recarregue a página.');
+      return;
+    }
+    if (!contractId) {
+      mostrarErroFatal('Link inválido', 'Nenhum contrato foi especificado.');
+      return;
+    }
 
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return (window.location.href = '../index.html');
+    const { data: { session }, error: sessErr } = await supabase.auth.getSession();
+    if (sessErr || !session) {
+      window.location.href = '../index.html';
+      return;
+    }
+
+    /* Back link já com o id correto */
+    document.getElementById('backLink').href = `detalhe-ordem.html?id=${encodeURIComponent(contractId)}`;
 
     await carregarContrato(supabase);
   }
 
+  /* ============================================
+     CARREGAR CONTRATO
+     ============================================ */
   async function carregarContrato(supabase) {
     const { data, error } = await supabase
       .from('contracts')
@@ -276,19 +448,28 @@
       .single();
 
     if (error || !data) {
-      console.error(error);
-      return mostrarErro('Contrato não encontrado', 'Verifique o link ou volte ao painel.');
+      console.error('Erro ao carregar contrato:', error);
+      mostrarErroFatal('Contrato não encontrado', 'Verifique o link ou volte ao painel.');
+      return;
     }
 
     contractData = data;
 
-    // Se já foi pago enquanto o cliente estava aqui
+    /* Já pago enquanto cliente estava aqui */
     if (data.mp_status === 'approved' || data.status === 'em_andamento') {
-      return mostrarSucesso();
+      mostrarSucesso();
+      return;
     }
 
-    // Se ainda não gerou o Pix, gera agora
+    /* Contrato já cancelado */
+    if (data.status === 'cancelado') {
+      mostrarErroFatal('Pagamento cancelado', 'O prazo expirou ou o serviço foi cancelado.', 'dashboard-cliente.html');
+      return;
+    }
+
+    /* Sem QR ainda → gera */
     if (!data.mp_qr_code && !data.mp_qr_code_base64) {
+      renderResumoComLoading();
       await gerarPix(supabase);
     } else {
       renderPix();
@@ -297,50 +478,214 @@
     iniciarPolling(supabase);
   }
 
+  /* ============================================
+     RENDER · resumo + loading enquanto gera Pix
+     ============================================ */
+  function renderResumoComLoading() {
+    const c = contractData;
+    const provider = c.proposal?.provider || {};
+    const providerName = provider.company_name || provider.full_name || 'Prestador';
+    const demandTitle = c.demand?.title || 'Serviço';
+    const total = Number(c.final_price) || 0;
+
+    document.getElementById('content').innerHTML = `
+      <div class="card">
+        <div class="card-label"><div class="dot"></div> Resumo</div>
+        <div class="service-summary">
+          <div class="service-icon">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <div class="service-info">
+            <h3>${escapeHTML(demandTitle)}</h3>
+            <span class="provider">
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              ${escapeHTML(providerName)}
+            </span>
+          </div>
+        </div>
+        <div class="detail-lines">
+          <div class="detail-line total">
+            <span>Total a pagar</span>
+            <span>${formatarMoeda(total)}</span>
+          </div>
+        </div>
+      </div>
+      <div id="pixContainer" style="margin-top:var(--space-3);">
+        <div class="loading-spinner">Gerando QR Code Pix...</div>
+      </div>
+    `;
+  }
+
+  /* ============================================
+     GERAR PIX (via Edge Function)
+     ============================================ */
   async function gerarPix(supabase) {
-    if (actionInProgress) return;
-    actionInProgress = true;
+    if (generatingPix) return;
+    generatingPix = true;
+
+    const pixContainer = document.getElementById('pixContainer');
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
-
-      const res = await fetch(
-        'https://kwshthfbhzjaxyaoiokz.supabase.co/functions/v1/create-payment',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
-          },
-          body: JSON.stringify({ contract_id: contractId }),
-        }
-      );
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || 'Erro ao gerar Pix');
+      if (!session) {
+        throw new Error('Sessão expirada');
       }
 
-      const { qr_code, qr_code_base64, mp_qr_code } = await res.json();
+      const res = await fetch(CREATE_PAYMENT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ contract_id: contractId }),
+      });
 
-      contractData.mp_qr_code = qr_code || mp_qr_code;
-      contractData.mp_qr_code_base64 = qr_code_base64;
+      /* SEMPRE lê o texto — mesmo em erro */
+      const raw = await res.text();
+      let data;
+      try { data = JSON.parse(raw); } catch { data = { raw }; }
+
+      if (!res.ok) {
+        console.error('create-payment falhou:', {
+          status: res.status,
+          statusText: res.statusText,
+          body: data,
+        });
+
+        /* Traduz status HTTP em mensagem útil */
+        let msg;
+        if (res.status === 502 || res.status === 504) {
+          msg = data?.detail
+            ? 'O Mercado Pago recusou a cobrança. Tente novamente em instantes.'
+            : 'Servidor de pagamento indisponível. Tente novamente em alguns segundos.';
+        } else if (res.status === 401 || res.status === 403) {
+          msg = 'Sessão inválida. Faça login novamente.';
+        } else if (res.status === 400) {
+          msg = data?.error || 'Dados do pagamento inválidos.';
+        } else if (res.status === 404) {
+          msg = data?.error || 'Contrato não encontrado.';
+        } else if (res.status === 500) {
+          msg = 'Erro interno ao gerar Pix. Contate o suporte.';
+        } else {
+          msg = data?.error || `Erro ${res.status} ao gerar Pix.`;
+        }
+
+        /* Guarda o detail técnico pra mostrar no <details> */
+        lastPixError = {
+          status: res.status,
+          message: msg,
+          detail: data?.detail || data?.error || raw,
+        };
+
+        renderErroInline();
+        return;
+      }
+
+      /* Sucesso */
+      lastPixError = null;
+
+      /* Alinha com o novo formato do create-payment */
+      contractData.mp_qr_code = data.qr_code || data.mp_qr_code || null;
+      contractData.mp_qr_code_base64 = data.qr_code_base64 || null;
+      contractData.mp_ticket_url = data.ticket_url || null;
+      contractData.mp_expires_at = data.expires_at || null;
 
       renderPix();
+
     } catch (err) {
-      console.error('gerarPix:', err);
-      mostrarErro('Não foi possível gerar o Pix', err.message);
+      console.error('gerarPix exception:', err);
+      lastPixError = {
+        status: 0,
+        message: 'Não foi possível conectar ao servidor.',
+        detail: String(err),
+      };
+      renderErroInline();
     } finally {
-      actionInProgress = false;
+      generatingPix = false;
     }
   }
 
+  /* ============================================
+     ERRO INLINE (não destrói a tela)
+     ============================================ */
+  function renderErroInline() {
+    const container = document.getElementById('pixContainer');
+    if (!container) {
+      /* Fallback: se nem o resumo renderizou, mostra fatal */
+      mostrarErroFatal(
+        'Não foi possível gerar o Pix',
+        lastPixError?.message || 'Tente novamente.'
+      );
+      return;
+    }
+
+    const err = lastPixError || {};
+    const canRetry = err.status === 0 || err.status === 502 || err.status === 504 || err.status === 500;
+
+    container.innerHTML = `
+      <div class="inline-error">
+        <div class="err-icon">
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" x2="12" y1="8" y2="12"/>
+            <line x1="12" x2="12.01" y1="16" y2="16"/>
+          </svg>
+        </div>
+        <h4>Não foi possível gerar o Pix</h4>
+        <p>${escapeHTML(err.message || 'Tente novamente em instantes.')}</p>
+
+        ${err.detail ? `
+          <details>
+            <summary>Detalhes técnicos</summary>
+            <pre>${escapeHTML(typeof err.detail === 'string' ? err.detail : JSON.stringify(err.detail, null, 2))}</pre>
+          </details>
+        ` : ''}
+
+        ${canRetry ? `
+          <button class="btn btn-brand" id="retryPixBtn" type="button" style="width:auto; padding:11px 22px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M8 16H3v5"/>
+            </svg>
+            Tentar novamente
+          </button>
+        ` : `
+          <a class="btn btn-outline" href="dashboard-cliente.html" style="width:auto; padding:11px 22px; text-decoration:none;">
+            Voltar ao painel
+          </a>
+        `}
+      </div>
+    `;
+
+    const retryBtn = document.getElementById('retryPixBtn');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', async () => {
+        retryBtn.disabled = true;
+        retryBtn.textContent = 'Gerando...';
+        await gerarPix(window.supabaseClient);
+      });
+    }
+  }
+
+  /* ============================================
+     RENDER · Pix pronto
+     ============================================ */
   function renderPix() {
     const c = contractData;
     const provider = c.proposal?.provider || {};
     const providerName = provider.company_name || provider.full_name || 'Prestador';
     const demandTitle = c.demand?.title || 'Serviço';
     const total = Number(c.final_price) || 0;
+
+    const qrBase64 = safeBase64(c.mp_qr_code_base64);
+    const pixCode = c.mp_qr_code ? escapeHTML(c.mp_qr_code) : '';
 
     document.getElementById('content').innerHTML = `
       <div class="countdown" id="countdownBox">
@@ -395,14 +740,14 @@
         <div class="card-label"><div class="dot"></div> Pague com Pix</div>
 
         <div class="qr-block">
-          ${c.mp_qr_code_base64 ? `
+          ${qrBase64 ? `
             <div class="qr-image">
-              <img src="data:image/png;base64,${escapeHTML(c.mp_qr_code_base64)}" alt="QR Code Pix">
+              <img src="data:image/png;base64,${qrBase64}" alt="QR Code Pix">
             </div>
           ` : ''}
 
-          ${c.mp_qr_code ? `
-            <div class="qr-code-text" id="pixCodeBox">${escapeHTML(c.mp_qr_code)}</div>
+          ${pixCode ? `
+            <div class="qr-code-text" id="pixCodeBox">${pixCode}</div>
             <button class="copy-btn" id="copyBtn" type="button">
               <svg class="icon" viewBox="0 0 24 24">
                 <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
@@ -419,41 +764,65 @@
       </p>
     `;
 
-    // Botão copiar
-    const copyBtn = document.getElementById('copyBtn');
-    if (copyBtn) {
-      copyBtn.addEventListener('click', async () => {
-        const code = document.getElementById('pixCodeBox')?.textContent || '';
-        try {
-          await navigator.clipboard.writeText(code);
-          copyBtn.classList.add('copied');
-          copyBtn.innerHTML = `
-            <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            Copiado
-          `;
-          setTimeout(() => {
-            copyBtn.classList.remove('copied');
-            copyBtn.innerHTML = `
-              <svg class="icon" viewBox="0 0 24 24">
-                <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
-                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
-              </svg>
-              Copiar código Pix
-            `;
-          }, 2500);
-        } catch (e) {
-          alert('Não foi possível copiar. Selecione o texto e copie manualmente.');
-        }
-      });
-    }
-
+    configurarBotaoCopiar();
     iniciarCountdown();
   }
 
+  /* ============================================
+     COPIAR PIX
+     ============================================ */
+  function configurarBotaoCopiar() {
+    const copyBtn = document.getElementById('copyBtn');
+    if (!copyBtn) return;
+
+    const originalHTML = copyBtn.innerHTML;
+
+    copyBtn.addEventListener('click', async () => {
+      const code = document.getElementById('pixCodeBox')?.textContent || '';
+      if (!code) return;
+
+      try {
+        /* Tenta Clipboard API moderna */
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(code);
+        } else {
+          /* Fallback: textarea + execCommand */
+          const ta = document.createElement('textarea');
+          ta.value = code;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = `
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Copiado
+        `;
+        mostrarToast('Código Pix copiado', 'success');
+
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = originalHTML;
+        }, 2500);
+
+      } catch (e) {
+        console.warn('Falha ao copiar:', e);
+        mostrarToast('Selecione o código e copie manualmente.', 'error');
+      }
+    });
+  }
+
+  /* ============================================
+     COUNTDOWN
+     ============================================ */
   function iniciarCountdown() {
     if (countdownInterval) clearInterval(countdownInterval);
 
-    const deadline = contractData.payment_deadline_at
+    const deadline = contractData?.payment_deadline_at
       ? new Date(contractData.payment_deadline_at)
       : new Date(Date.now() + 30 * 60 * 1000);
 
@@ -465,7 +834,8 @@
       if (diff <= 0) {
         el.textContent = '00:00';
         clearInterval(countdownInterval);
-        mostrarErro('Tempo esgotado', 'O prazo para pagamento expirou. O serviço foi cancelado.');
+        countdownInterval = null;
+        mostrarErroFatal('Tempo esgotado', 'O prazo para pagamento expirou. O serviço foi cancelado.');
         return;
       }
 
@@ -478,6 +848,9 @@
     countdownInterval = setInterval(update, 1000);
   }
 
+  /* ============================================
+     POLLING · verifica se pagamento confirmou
+     ============================================ */
   function iniciarPolling(supabase) {
     if (pollingInterval) clearInterval(pollingInterval);
 
@@ -491,26 +864,35 @@
       if (!data) return;
 
       if (data.mp_status === 'approved' || data.status === 'em_andamento') {
-        clearInterval(pollingInterval);
-        clearInterval(countdownInterval);
+        pararTudo();
         mostrarSucesso();
+        mostrarToast('Pagamento confirmado!', 'success');
+        return;
       }
 
       if (data.status === 'cancelado') {
-        clearInterval(pollingInterval);
-        clearInterval(countdownInterval);
-        mostrarErro('Pagamento cancelado', 'O prazo expirou ou o serviço foi cancelado.');
+        pararTudo();
+        mostrarErroFatal('Pagamento cancelado', 'O prazo expirou ou o serviço foi cancelado.');
       }
-    }, 3000);
+    }, POLLING_INTERVAL_MS);
   }
 
+  /* ============================================
+     SUCESSO
+     ============================================ */
   function mostrarSucesso() {
+    pararTudo();
     document.getElementById('content').style.display = 'none';
     document.getElementById('errorState').style.display = 'none';
     document.getElementById('successState').classList.add('show');
     document.getElementById('backLink').style.display = 'none';
-    document.getElementById('goToOrderBtn').href = `detalhe-ordem.html?id=${contractId}`;
+    document.getElementById('goToOrderBtn').href = `detalhe-ordem.html?id=${encodeURIComponent(contractId)}`;
   }
+
+  /* ============================================
+     CLEANUP
+     ============================================ */
+  window.addEventListener('beforeunload', pararTudo);
 
   init();
 </script>
