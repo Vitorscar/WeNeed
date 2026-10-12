@@ -1,0 +1,121 @@
+Listagem de caminhos de pasta
+O n£mero de s‚rie do volume ‚ 94D8-A400
+C:.
+|   404.html
+|   app.js
+|   arvore.txt
+|   cadastro-cliente.html
+|   cadastro-prestador.html
+|   central-ajuda.html
+|   CNAME
+|   como-funciona.html
+|   condominios.html
+|   escolha-perfil.html
+|   esqueci-senha.html
+|   index.html
+|   landing.html
+|   manifest.json
+|   privacidade.html
+|   seguranca.html
+|   sobre-nos.html
+|   style.css
+|   sw.js
+|   termos.html
+|   txt
+|   
++---.vscode
+|       settings.json
+|       
++---api
+|   +---admin
+|   |       dashboard.html
+|   |       denuncias.html
+|   |       disputas.html
+|   |       financeiro.html
+|   |       prestadores.html
+|   |       usuarios.html
+|   |       
+|   +---demandas
+|   |       publicar.js
+|   |       
+|   +---lib
+|   |       auth.js
+|   |       pythonClient.js
+|   |       supabaseAdmin.js
+|   |       validators.js
+|   |       
+|   +---ordens
+|   |       concluir.js
+|   |       iniciar.js
+|   |       
+|   +---pagamentos
+|   |       create-payment.js
+|   |       mp-webhook.js
+|   |       
+|   \---propostas
+|           index.js
+|           
++---assets
+|   \---icons
+|           .gitkeep
+|           icon-192.png
+|           icon-512.png
+|           
++---cliente
+|       avaliar.html
+|       dashboard-cliente.html
+|       detalhe-demanda-cliente.html
+|       detalhe-ordem.html
+|       meu-perfil-cliente.html
+|       minhas-demandas.html
+|       nova-demanda.html
+|       pagamento.html
+|       prestador-publico.html
+|       servicos-contratados.html
+|       
++---js
+|       auth.js
+|       cadastro.js
+|       chat.js
+|       guard.js
+|       mobile-nav.js
+|       notifications.js
+|       pagamentos.js
+|       supabase-cliente.js
+|       upload.js
+|       utils.js
+|       
++---prestador
+|       dashboard-prestador.html
+|       demandas-disponiveis.html
+|       detalhe-demanda-prestador.html
+|       enviar-proposta.html
+|       historico-financeiro.html
+|       meu-perfil-prestador.html
+|       meus-trabalhos.html
+|       minhas-propostas.html
+|       onboarding-prestador.html
+|       ordens-servico.html
+|       perfil-publico-preview.html
+|       propostas.html
+|       
++---services
+|   \---matching
+|           dockerfile
+|           geo.py
+|           main.py
+|           ranking.py
+|           requirements.txt
+|           
++---shared
+|       chat-widget.html
+|       notification-center.html
+|       
+\---supabase
+    \---functions
+        +---create-payment
+        |       index.ts
+        |       
+        \---mp-webhook
+                index.ts
+                
