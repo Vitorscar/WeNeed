@@ -298,13 +298,13 @@
   async function init() {
     const supabase = window.supabaseClient;
     if (!supabase) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     if (sessionError || !session) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
@@ -494,7 +494,7 @@
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
       try { await supabase.auth.signOut(); } catch (err) { console.warn(err); }
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
     });
   }
 

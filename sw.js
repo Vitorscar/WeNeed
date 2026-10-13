@@ -2,7 +2,7 @@ const CACHE_NAME = 'weneed-cache-v1';
 
 const ASSETS_TO_CACHE = [
   './',
-  './index.html',
+  './entrar.html',
   './style.css',
   './js/supabase-cliente.js', // Estes continuam na pasta js/
   './js/auth.js',

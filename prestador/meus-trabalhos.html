@@ -1095,13 +1095,13 @@
     const supabase = window.supabaseClient;
 
     if (!supabase) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
@@ -1619,7 +1619,7 @@
       if (supabase) {
         await supabase.auth.signOut();
       }
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
     });
 
     document.querySelectorAll('.modal-overlay').forEach(overlay => {

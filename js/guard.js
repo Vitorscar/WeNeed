@@ -1,20 +1,9 @@
 // ============================================================
 // guard.js — protege páginas por sessão e por tipo de conta.
-// Inclua ANTES do conteúdo customizado de cada página, logo
-// depois de supabase-client.js:
-//
-//   <script src="../js/supabase-client.js"></script>
-//   <script src="../js/guard.js"></script>
-//   <script>
-//     Guard.require('cliente').then(profile => { ... usa o profile ... });
-//   </script>
 // ============================================================
 
 const Guard = {
 
-  // exige sessão ativa e, opcionalmente, um tipo de conta específico
-  // ('cliente' | 'prestador' | 'admin'). Redireciona para o login
-  // (ou para o painel certo) quando a checagem falha.
   async require(tipoEsperado = null) {
     const { data: { session } } = await supabase.auth.getSession();
 
@@ -50,17 +39,17 @@ const Guard = {
     return profile;
   },
 
-  // calcula "../index.html" ou "index.html" dependendo da pasta atual
+  // ✅ MUDOU: agora aponta para entrar.html, não index.html
   _loginPathFromHere() {
     const inSubfolder = /\/(cliente|prestador|admin|publico)\//.test(window.location.pathname);
-    return inSubfolder ? '../index.html' : 'index.html';
+    return inSubfolder ? '../entrar.html' : 'entrar.html';
   },
 
   _dashboardPathFromHere(tipo) {
     const inSubfolder = /\/(cliente|prestador|admin|publico)\//.test(window.location.pathname);
     const prefix = inSubfolder ? '../' : '';
     if (tipo === 'admin') return prefix + 'admin/dashboard.html';
-    if (tipo === 'prestador') return prefix + 'prestador/dashboard.html';
+    if (tipo === 'prestador') return prefix + 'prestador/dashboard-prestador.html';
     return prefix + 'cliente/dashboard-cliente.html';
   }
 

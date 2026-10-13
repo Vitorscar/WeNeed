@@ -364,10 +364,10 @@
      ========================================== */
   async function init() {
     const supabase = window.supabaseClient;
-    if (!supabase) { window.location.href = '../index.html'; return; }
+    if (!supabase) { window.location.href = '../entrar.html'; return; }
 
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) { window.location.href = '../index.html'; return; }
+    if (!session) { window.location.href = '../entrar.html'; return; }
 
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
@@ -377,7 +377,7 @@
 
     if (profileError || !profile) {
       console.error('Erro ao carregar perfil:', profileError);
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
@@ -849,7 +849,7 @@
     document.getElementById('logoutBtn').addEventListener('click', async (e) => {
       e.preventDefault();
       if (supabase) await supabase.auth.signOut();
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
     });
   }
 

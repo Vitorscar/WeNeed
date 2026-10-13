@@ -329,7 +329,7 @@
     try {
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       if (sessionError || !session) {
-        window.location.href = '../index.html';
+        window.location.href = '../entrar.html';
         return;
       }
 
@@ -629,7 +629,7 @@
       } catch (err) {
         console.warn('Erro no logout:', err);
       }
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
     });
   }
 

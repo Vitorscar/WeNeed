@@ -1,7 +1,7 @@
 
 weneed/  #CONCLUIDO
 │
-├── index.html                              # Login (ponto de entrada)
+├── entrar.html                              # Login (ponto de entrada)
 ├── escolha-perfil.html                     # "Sou cliente" / "Sou prestador"
 ├── cadastro-cliente.html
 ├── cadastro-prestador.html

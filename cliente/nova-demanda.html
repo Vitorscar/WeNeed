@@ -503,7 +503,7 @@
 
     const { data: { session } } = await window.supabaseClient.auth.getSession();
     if (!session) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
@@ -516,7 +516,7 @@
     if (error || !profile) {
       console.error('Erro ao buscar perfil:', error);
       alert('Erro ao carregar seu perfil. Faça login novamente.');
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 

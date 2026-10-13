@@ -654,13 +654,13 @@
   async function init() {
     const supabaseClient = window.supabaseClient;
     if (!supabaseClient) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
     const { data: { session } } = await supabaseClient.auth.getSession();
     if (!session) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
@@ -881,7 +881,7 @@
       if (supabaseClient) {
         await supabaseClient.auth.signOut();
       }
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
     });
   }
 

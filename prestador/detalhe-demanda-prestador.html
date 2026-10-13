@@ -599,10 +599,10 @@
      ============================================ */
   async function init() {
     const supabase = window.supabaseClient;
-    if (!supabase) { window.location.href = '../index.html'; return; }
+    if (!supabase) { window.location.href = '../entrar.html'; return; }
 
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) { window.location.href = '../index.html'; return; }
+    if (!session) { window.location.href = '../entrar.html'; return; }
     currentUserId = session.user.id;
 
     if (!currentProposalId) { window.location.href = 'minhas-propostas.html'; return; }

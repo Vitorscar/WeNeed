@@ -438,7 +438,7 @@
     const supabase = window.supabaseClient;
 
     if (!supabase) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
@@ -446,7 +446,7 @@
       const { data: { user }, error } = await supabase.auth.getUser();
 
       if (error || !user) {
-        window.location.href = '../index.html';
+        window.location.href = '../entrar.html';
         return;
       }
 
@@ -454,7 +454,7 @@
 
     } catch (error) {
       console.error('Erro ao verificar autenticação:', error);
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
     }
   }
 
@@ -611,7 +611,7 @@
           await supabase.auth.signOut();
         }
 
-        window.location.href = '../index.html';
+        window.location.href = '../entrar.html';
       });
     }
   }

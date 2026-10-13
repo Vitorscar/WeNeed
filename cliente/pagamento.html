@@ -419,7 +419,7 @@
 
     const { data: { session }, error: sessErr } = await supabase.auth.getSession();
     if (sessErr || !session) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 

@@ -306,7 +306,7 @@
 
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     if (sessionError || !session) {
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
       return;
     }
 
@@ -637,7 +637,7 @@
     document.getElementById('logoutBtn').addEventListener('click', async (e) => {
       e.preventDefault();
       try { await supabase.auth.signOut(); } catch (err) { console.warn(err); }
-      window.location.href = '../index.html';
+      window.location.href = '../entrar.html';
     });
   }
 

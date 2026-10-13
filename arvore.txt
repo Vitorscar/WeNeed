@@ -1,5 +1,5 @@
 Listagem de caminhos de pasta
-O n£mero de s‚rie do volume ‚ 94D8-A400
+O nï¿½mero de sï¿½rie do volume ï¿½ 94D8-A400
 C:.
 |   404.html
 |   app.js
@@ -12,7 +12,7 @@ C:.
 |   condominios.html
 |   escolha-perfil.html
 |   esqueci-senha.html
-|   index.html
+|   entrar.html
 |   landing.html
 |   manifest.json
 |   privacidade.html

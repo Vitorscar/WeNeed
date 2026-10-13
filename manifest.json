@@ -1,7 +1,7 @@
 {
   "name": "weneed",
   "short_name": "weneed",
-  "start_url": "./index.html",
+  "start_url": "./entrar.html",
   "display": "standalone",
   "background_color": "#0B0B0D",
   "theme_color": "#4F46E5",
